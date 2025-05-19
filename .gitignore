@@ -105,3 +105,4 @@ launchSettings.json
 **/wwwroot/dist/
 **/wwwroot/uploads/
 node_modules/
+.fake
