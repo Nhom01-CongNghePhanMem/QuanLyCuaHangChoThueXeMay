@@ -20,7 +20,7 @@ namespace MotorbikeRental.View.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            return View();c
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
