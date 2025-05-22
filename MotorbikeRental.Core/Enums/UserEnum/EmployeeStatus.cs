@@ -7,8 +7,8 @@ namespace MotorbikeRental.Core.Enums
 {
     public enum EmployeeStatus
     {
-        Active = 0,
-        Inactive = 1,
-        OnLeave = 2,
+        Active = 0,  //Đang làm
+        Inactive = 1, //Xin nghỉ
+        OnLeave = 2, //Đã nghỉ
     }
 }
