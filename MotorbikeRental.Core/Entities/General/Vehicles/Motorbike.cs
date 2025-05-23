@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using MotorbikeRental.Core.Entities.General.Contract;
 using MotorbikeRental.Core.Entities.General.Vehicles;
 using MotorbikeRental.Core.Enums;
+using MotorbikeRental.Core.Enums.VehicleEnum;
 
 namespace MotorbikeRental.Core.Entities.General
 {
@@ -35,10 +37,13 @@ namespace MotorbikeRental.Core.Entities.General
         public decimal RentalPricePerDay { get; set; } //Giá thuê theo ngày
         [MaxLength(100)]
         public string? Description { get; set; } // Mô tả
+        [Required]
+        public MotorbikeConditionStatus MotorbikeConditionStatus { get; set; } //Tình trạng xe(mới, cũ, ...)
         public string? ImageUrl { get; set; }
         public decimal? Mileage { get; set; } // Số km đã đi
         [Required]
         public MotorbikeStatus Status { get; set; } //Thông tin xe
         public virtual ICollection<MaintenanceRecord> MaintenanceRecords { get; set; } //Hồ sơ bảo trì
+        public virtual ICollection<RentalContract> RentalContracts { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using MotorbikeRental.Infrastructure.Data;
 namespace MotorbikeRental.Infrastructure.Migrations
 {
     [DbContext(typeof(MotorbikeRentalDbContext))]
-    [Migration("20250522103610_Edit_OnDelete")]
-    partial class Edit_OnDelete
+    [Migration("20250522113218_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,6 +87,10 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<decimal?>("Mileage")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("MotorbikeConditionStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("RentalPricePerDay")
                         .HasColumnType("decimal(18,2)");

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MotorbikeRental.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTableMotorbike_Category_MaintenanceRecord : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,6 +22,19 @@ namespace MotorbikeRental.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Category", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,6 +54,7 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     RentalPricePerHour = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RentalPricePerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    MotorbikeConditionStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Mileage = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -53,6 +67,36 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Category",
                         principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employee",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    DeteOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employee", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Employee_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -89,6 +133,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employee_RoleId",
+                table: "Employee",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MaintenanceRecord_EmployeeId",
                 table: "MaintenanceRecord",
                 column: "EmployeeId");
@@ -111,7 +160,13 @@ namespace MotorbikeRental.Infrastructure.Migrations
                 name: "MaintenanceRecord");
 
             migrationBuilder.DropTable(
+                name: "Employee");
+
+            migrationBuilder.DropTable(
                 name: "Motorbike");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Category");

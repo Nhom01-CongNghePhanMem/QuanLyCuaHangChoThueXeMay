@@ -12,6 +12,8 @@ namespace MotorbikeRental.Core.Entities.General
         [Required]
         [MaxLength(20)]
         public string CategoryName { get; set; }
+        [Required]
+        public decimal DepositAmount { get; set; }
         public virtual ICollection<Motorbike> Motorbikes { get; set; }
     }
 }

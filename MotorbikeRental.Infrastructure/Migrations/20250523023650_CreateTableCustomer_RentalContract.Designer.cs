@@ -12,8 +12,8 @@ using MotorbikeRental.Infrastructure.Data;
 namespace MotorbikeRental.Infrastructure.Migrations
 {
     [DbContext(typeof(MotorbikeRentalDbContext))]
-    [Migration("20250522095653_CreateTableMotorbike_Category_MaintenanceRecord")]
-    partial class CreateTableMotorbike_Category_MaintenanceRecord
+    [Migration("20250523023650_CreateTableCustomer_RentalContract")]
+    partial class CreateTableCustomer_RentalContract
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,9 +38,101 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<decimal>("DepositAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("CategoryId");
 
                     b.ToTable("Category", (string)null);
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Contract.RentalContract", b =>
+                {
+                    b.Property<int>("ContractId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContractId"));
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DepositAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IdCardHeld")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MotorbikeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RentalContractStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RentalDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("RentalTypeStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ContractId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("RentalContract", (string)null);
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Customers.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("IdNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customer", (string)null);
                 });
 
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Motorbike", b =>
@@ -87,6 +179,10 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<decimal?>("Mileage")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("MotorbikeConditionStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("RentalPricePerDay")
                         .HasColumnType("decimal(18,2)");
@@ -231,6 +327,16 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.ToTable("MaintenanceRecord", (string)null);
                 });
 
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Contract.RentalContract", b =>
+                {
+                    b.HasOne("MotorbikeRental.Core.Entities.General.Customers.Customer", "Customer")
+                        .WithMany("RentalContracts")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Motorbike", b =>
                 {
                     b.HasOne("MotorbikeRental.Core.Entities.General.Category", "Category")
@@ -247,7 +353,7 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.HasOne("MotorbikeRental.Core.Entities.General.User.Roles", "Roles")
                         .WithMany("Employees")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Roles");
@@ -275,6 +381,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Category", b =>
                 {
                     b.Navigation("Motorbikes");
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Customers.Customer", b =>
+                {
+                    b.Navigation("RentalContracts");
                 });
 
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Motorbike", b =>
