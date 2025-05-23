@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using MotorbikeRental.Core.Entities.General.Contract;
 using MotorbikeRental.Core.Entities.General.Vehicles;
+using MotorbikeRental.Core.Entities.Incidents;
 using MotorbikeRental.Core.Enums;
 
 namespace MotorbikeRental.Core.Entities.General.User
@@ -17,7 +19,7 @@ namespace MotorbikeRental.Core.Entities.General.User
         [Required]
         [StringLength(30)]
         public string FullName { get; set; }
-        public DateTime DeteOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         [StringLength(50)]
@@ -35,5 +37,7 @@ namespace MotorbikeRental.Core.Entities.General.User
         [Required]
         public EmployeeStatus Status { get; set; }
         public virtual ICollection<MaintenanceRecord>? MaintenanceRecords { get; set; }
+        public virtual ICollection<RentalContract> RentalContracts { get; set; }
+        public virtual ICollection<Incident> Incidents { get; set; }
     }
 }

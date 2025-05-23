@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using MotorbikeRental.Core.Entities.General.Contract;
+using MotorbikeRental.Core.Entities.General.Pricing;
 using MotorbikeRental.Core.Entities.General.Vehicles;
+using MotorbikeRental.Core.Entities.Incidents;
 using MotorbikeRental.Core.Enums;
 using MotorbikeRental.Core.Enums.VehicleEnum;
 
@@ -31,10 +33,6 @@ namespace MotorbikeRental.Core.Entities.General
         public string ChassisNumber { get; set; } //Số khung 
         [Required]
         public string EngineNumber { get; set; } //Số máy
-        [Required]
-        public decimal RentalPricePerHour { get; set; } // Giá thuê theo giờ
-        [Required]
-        public decimal RentalPricePerDay { get; set; } //Giá thuê theo ngày
         [MaxLength(100)]
         public string? Description { get; set; } // Mô tả
         [Required]
@@ -44,6 +42,8 @@ namespace MotorbikeRental.Core.Entities.General
         [Required]
         public MotorbikeStatus Status { get; set; } //Thông tin xe
         public virtual ICollection<MaintenanceRecord> MaintenanceRecords { get; set; } //Hồ sơ bảo trì
-        public virtual ICollection<RentalContract> RentalContracts { get; set; }
+        public virtual ICollection<RentalContract> RentalContracts { get; set; } //Hơp đồng thuê xe với khách
+        public virtual ICollection<Incident> Incidents { get; set; }  //Sự cố
+        public virtual PriceList PriceList { get; set; }
     }
 }
