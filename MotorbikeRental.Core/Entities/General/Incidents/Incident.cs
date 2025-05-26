@@ -9,7 +9,7 @@ using MotorbikeRental.Core.Entities.General.Contract;
 using MotorbikeRental.Core.Entities.General.User;
 using MotorbikeRental.Core.Enums.IncidentEnum;
 
-namespace MotorbikeRental.Core.Entities.Incidents
+namespace MotorbikeRental.Core.Entities.General.Incidents
 {
     public class Incident //Sự cố
     {

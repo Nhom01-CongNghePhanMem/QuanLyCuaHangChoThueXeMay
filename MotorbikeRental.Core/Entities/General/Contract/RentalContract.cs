@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MotorbikeRental.Core.Entities.General.Customers;
 using MotorbikeRental.Core.Entities.General.User;
-using MotorbikeRental.Core.Entities.Incidents;
+using MotorbikeRental.Core.Entities.General.Incidents;
 using MotorbikeRental.Core.Enums.ContractEnum;
 
 namespace MotorbikeRental.Core.Entities.General.Contract

@@ -9,7 +9,7 @@ using MotorbikeRental.Core.Entities.General.Customers;
 using MotorbikeRental.Core.Entities.General.Pricing;
 using MotorbikeRental.Core.Entities.General.User;
 using MotorbikeRental.Core.Entities.General.Vehicles;
-using MotorbikeRental.Core.Entities.Incidents;
+using MotorbikeRental.Core.Entities.General.Incidents;
 
 namespace MotorbikeRental.Infrastructure.Data
 {

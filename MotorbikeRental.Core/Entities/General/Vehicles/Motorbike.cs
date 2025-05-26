@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MotorbikeRental.Core.Entities.General.Contract;
 using MotorbikeRental.Core.Entities.General.Pricing;
 using MotorbikeRental.Core.Entities.General.Vehicles;
-using MotorbikeRental.Core.Entities.Incidents;
+using MotorbikeRental.Core.Entities.General.Incidents;
 using MotorbikeRental.Core.Enums;
 using MotorbikeRental.Core.Enums.VehicleEnum;
 
