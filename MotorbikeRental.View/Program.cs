@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MotorbikeRental.Infrastructure.Data;
+using MotorbikeRental.View.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddDbContext<MotorbikeRentalDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MotorbikeRentalDB"));
 });
-
+ServiceExtension.RegisterServices(builder.Services);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

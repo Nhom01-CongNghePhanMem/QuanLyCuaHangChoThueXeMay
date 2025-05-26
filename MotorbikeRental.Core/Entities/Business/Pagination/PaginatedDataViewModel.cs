@@ -9,7 +9,7 @@ namespace MotorbikeRental.Core.Entities.Business.Pagination
     {
         public IEnumerable<T> Data { get; set; }
         public int TotalCount { get; set; }
-        public PaginatedDataViewModel(IEnumerable<T> data, int totalCount, int pageNumber, int pageSize)
+        public PaginatedDataViewModel(IEnumerable<T> data, int totalCount)
         {
             this.Data = data;
             this.TotalCount = totalCount;
