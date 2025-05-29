@@ -166,7 +166,8 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -188,6 +189,92 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.ToTable("Customer", (string)null);
                 });
 
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Incidents.Incident", b =>
+                {
+                    b.Property<int>("IncidentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IncidentId"));
+
+                    b.Property<int?>("ContractId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("DamageCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("IncidentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsResolved")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("MotorbikeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("ReportedByEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ResolvedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("IncidentId");
+
+                    b.HasIndex("ContractId")
+                        .IsUnique()
+                        .HasFilter("[ContractId] IS NOT NULL");
+
+                    b.HasIndex("MotorbikeId");
+
+                    b.HasIndex("ReportedByEmployeeId");
+
+                    b.ToTable("Incident", (string)null);
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Incidents.IncidentImage", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("IncidentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("IncidentId");
+
+                    b.ToTable("IncidentImage", (string)null);
+                });
+
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Motorbike", b =>
                 {
                     b.Property<int>("MotorbikeId")
@@ -206,10 +293,12 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<string>("ChassisNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
@@ -220,10 +309,12 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<string>("EngineNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("LicensePlate")
                         .IsRequired()
@@ -331,10 +422,15 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("CredentialId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -349,13 +445,10 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -390,13 +483,53 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.User.UserCredentials", b =>
+                {
+                    b.Property<int>("CredentialId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CredentialId"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastLogin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("CredentialId");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.ToTable("UserCredentials", (string)null);
                 });
 
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Vehicles.MaintenanceRecord", b =>
@@ -417,7 +550,8 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -442,91 +576,6 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.HasIndex("MotorbikeId");
 
                     b.ToTable("MaintenanceRecord", (string)null);
-                });
-
-            modelBuilder.Entity("MotorbikeRental.Core.Entities.Incidents.Incident", b =>
-                {
-                    b.Property<int>("IncidentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IncidentId"));
-
-                    b.Property<int?>("ContractId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("DamageCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("IncidentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsResolved")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MotorbikeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReportedByEmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ResolvedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Severity")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("IncidentId");
-
-                    b.HasIndex("ContractId")
-                        .IsUnique()
-                        .HasFilter("[ContractId] IS NOT NULL");
-
-                    b.HasIndex("MotorbikeId");
-
-                    b.HasIndex("ReportedByEmployeeId");
-
-                    b.ToTable("Incident", (string)null);
-                });
-
-            modelBuilder.Entity("MotorbikeRental.Core.Entities.Incidents.IncidentImage", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IncidentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ImageId");
-
-                    b.HasIndex("IncidentId");
-
-                    b.ToTable("IncidentImage", (string)null);
                 });
 
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Contract.Payment", b =>
@@ -579,6 +628,41 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("Motorbike");
                 });
 
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Incidents.Incident", b =>
+                {
+                    b.HasOne("MotorbikeRental.Core.Entities.General.Contract.RentalContract", "RentalContract")
+                        .WithOne("Incident")
+                        .HasForeignKey("MotorbikeRental.Core.Entities.General.Incidents.Incident", "ContractId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("MotorbikeRental.Core.Entities.General.Motorbike", "Motorbike")
+                        .WithMany("Incidents")
+                        .HasForeignKey("MotorbikeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("MotorbikeRental.Core.Entities.General.User.Employee", "ReportedByEmployee")
+                        .WithMany("Incidents")
+                        .HasForeignKey("ReportedByEmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Motorbike");
+
+                    b.Navigation("RentalContract");
+
+                    b.Navigation("ReportedByEmployee");
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Incidents.IncidentImage", b =>
+                {
+                    b.HasOne("MotorbikeRental.Core.Entities.General.Incidents.Incident", "Incident")
+                        .WithMany("Images")
+                        .HasForeignKey("IncidentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Incident");
+                });
+
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Motorbike", b =>
                 {
                     b.HasOne("MotorbikeRental.Core.Entities.General.Category", "Category")
@@ -623,6 +707,17 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("Roles");
                 });
 
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.User.UserCredentials", b =>
+                {
+                    b.HasOne("MotorbikeRental.Core.Entities.General.User.Employee", "Employee")
+                        .WithOne("UserCredentials")
+                        .HasForeignKey("MotorbikeRental.Core.Entities.General.User.UserCredentials", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Vehicles.MaintenanceRecord", b =>
                 {
                     b.HasOne("MotorbikeRental.Core.Entities.General.User.Employee", "Employee")
@@ -640,41 +735,6 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Motorbike");
-                });
-
-            modelBuilder.Entity("MotorbikeRental.Core.Entities.Incidents.Incident", b =>
-                {
-                    b.HasOne("MotorbikeRental.Core.Entities.General.Contract.RentalContract", "RentalContract")
-                        .WithOne("Incident")
-                        .HasForeignKey("MotorbikeRental.Core.Entities.Incidents.Incident", "ContractId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("MotorbikeRental.Core.Entities.General.Motorbike", "Motorbike")
-                        .WithMany("Incidents")
-                        .HasForeignKey("MotorbikeId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("MotorbikeRental.Core.Entities.General.User.Employee", "ReportedByEmployee")
-                        .WithMany("Incidents")
-                        .HasForeignKey("ReportedByEmployeeId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Motorbike");
-
-                    b.Navigation("RentalContract");
-
-                    b.Navigation("ReportedByEmployee");
-                });
-
-            modelBuilder.Entity("MotorbikeRental.Core.Entities.Incidents.IncidentImage", b =>
-                {
-                    b.HasOne("MotorbikeRental.Core.Entities.Incidents.Incident", "Incident")
-                        .WithMany("Images")
-                        .HasForeignKey("IncidentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Incident");
                 });
 
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Category", b =>
@@ -699,6 +759,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("RentalContracts");
                 });
 
+            modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Incidents.Incident", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.Motorbike", b =>
                 {
                     b.Navigation("Incidents");
@@ -718,16 +783,14 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("MaintenanceRecords");
 
                     b.Navigation("RentalContracts");
+
+                    b.Navigation("UserCredentials")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MotorbikeRental.Core.Entities.General.User.Roles", b =>
                 {
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("MotorbikeRental.Core.Entities.Incidents.Incident", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

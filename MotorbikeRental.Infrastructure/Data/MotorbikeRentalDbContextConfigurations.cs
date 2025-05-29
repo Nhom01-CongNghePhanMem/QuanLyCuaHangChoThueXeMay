@@ -10,6 +10,7 @@ using MotorbikeRental.Core.Entities.General.Pricing;
 using MotorbikeRental.Core.Entities.General.User;
 using MotorbikeRental.Core.Entities.General.Vehicles;
 using MotorbikeRental.Core.Entities.General.Incidents;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MotorbikeRental.Infrastructure.Data
 {
@@ -29,6 +30,7 @@ namespace MotorbikeRental.Infrastructure.Data
             ConfigurationIncidentImage(modelBuilder);
             ConfigurationPayment(modelBuilder);
             ConfigurationPriceList(modelBuilder);
+            ConfigurationUserCredentials(modelBuilder);
         }
 
         public static void ConfigurationRoles(ModelBuilder modelBuilder)
@@ -59,6 +61,9 @@ namespace MotorbikeRental.Infrastructure.Data
                     .OnDelete(DeleteBehavior.Restrict);
                 entity.HasMany(e => e.MaintenanceRecords)
                     .WithOne(e => e.Employee);
+                entity.HasOne(e => e.UserCredentials)
+                    .WithOne(e => e.Employee)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
 
@@ -240,6 +245,19 @@ namespace MotorbikeRental.Infrastructure.Data
                 entity.HasOne(e => e.Motorbike)
                     .WithOne(e => e.PriceList)
                     .HasForeignKey<PriceList>(e => e.MotorbikeId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
+        public static void ConfigurationUserCredentials(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserCredentials>(entity =>
+            {
+                entity.ToTable("UserCredentials");
+                entity.HasKey(e => e.CredentialId);
+                entity.Property(e => e.CredentialId).ValueGeneratedOnAdd();
+                entity.HasOne(e => e.Employee)
+                    .WithOne(e => e.UserCredentials)
+                    .HasForeignKey<UserCredentials>(e => e.EmployeeId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
         }

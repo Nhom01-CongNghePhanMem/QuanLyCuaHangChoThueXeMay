@@ -11,10 +11,22 @@ namespace MotorbikeRental.Infrastructure.Repositories.VehicleRepositories
 {
     public class MotorbikeRepository : BaseRepository<Motorbike>, IMotorbikeRepository
     {
-        public MotorbikeRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext){}
+        public MotorbikeRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext) { }
         public async Task<bool> IsExists(int id)
         {
-            return await dbContext.Set<Motorbike>().AnyAsync(m => m.MotorbikeId == id);
+            return await dbContext.Set<Motorbike>().AsNoTracking().AnyAsync(m => m.MotorbikeId == id);
+        }
+        public async Task<bool> LicensePlateExists(string LicensePlate)
+        {
+            return await dbContext.Set<Motorbike>().AsNoTracking().AnyAsync(m => m.LicensePlate == m.LicensePlate);
+        }
+        public async Task<bool> ChassisNumberExists(string ChassisNumber)
+        {
+            return await dbContext.Set<Motorbike>().AsNoTracking().AnyAsync(m => m.ChassisNumber == ChassisNumber);
+        }
+        public async Task<bool> EngineNumberExists(string EngineNumber)
+        {
+            return await dbContext.Set<Motorbike>().AsNoTracking().AnyAsync(m => m.EngineNumber == EngineNumber);
         }
     }
 }
