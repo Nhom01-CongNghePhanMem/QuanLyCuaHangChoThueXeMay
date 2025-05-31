@@ -46,7 +46,16 @@ namespace MotorbikeRental.Core.Entities.Business.Vehicles
         public string? ImageUrl { get; set; }
         [Range(0, 999999, ErrorMessage = "Mileage must be positive")]
         public decimal? Mileage { get; set; } // Số km đã đi
-         [Required(ErrorMessage = "Motorbike status is required")]
+        [Required(ErrorMessage = "Motorbike status is required")]
+        public MotorbikeStatus Status { get; set; } //Thông tin xe
+    }
+    //OUTPUT
+    public class MotorbikeListViewModel
+    {
+        public int MotorbikeId { get; set; }
+        public string MotorbikeName { get; set; }
+        public string CategoryName { get; set; }
+        public string Brand { get; set; }
         public MotorbikeStatus Status { get; set; } //Thông tin xe
     }
 }

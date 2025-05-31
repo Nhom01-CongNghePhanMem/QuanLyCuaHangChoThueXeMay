@@ -52,7 +52,7 @@ namespace MotorbikeRental.UnitTest.Infrastructure
         public async Task GetByIdTests()
         {
             MotorbikeRepository motorbikeRepository = new MotorbikeRepository(GetInMemoryDbContext());
-            Motorbike motorbike = await motorbikeRepository.GetById(435);
+            Motorbike motorbike = await motorbikeRepository.GetById(1);
             Assert.Equal(motorbike, motorbike);
         }
         [Fact]

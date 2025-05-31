@@ -7,6 +7,7 @@ using MotorbikeRental.Core.Entities.Business.Vehicles;
 using MotorbikeRental.Core.Entities.General;
 using MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories;
 using MotorbikeRental.Core.Interfaces.IServices.IVehicleServices;
+using MotorbikeRental.Core.Interfaces.IValidators.IVehicleValidators;
 
 namespace MotorbikeRental.Core.Services.VehicleServices
 {
@@ -14,21 +15,19 @@ namespace MotorbikeRental.Core.Services.VehicleServices
     {
         private readonly IMapper mapper;
         private readonly ICategoryRepository categoryRepository;
-        public CategoryService(IMapper mapper, ICategoryRepository categoryRepository)
+        private readonly ICategoryValidator categoryValidator;
+        public CategoryService(IMapper mapper, ICategoryRepository categoryRepository, ICategoryValidator categoryValidator)
         {
             this.mapper = mapper;
             this.categoryRepository = categoryRepository;
+            this.categoryValidator = categoryValidator;
         }
         public async Task<Category> CreateCategory(CategoryViewModel categoryViewModel)
         {
-            bool isExist = await categoryRepository.CategoryNameExists(categoryViewModel.CategoryName);
-            if (!isExist)
-            {
-                Category category = mapper.Map<Category>(categoryViewModel);
-                await categoryRepository.Create(category);
-                return category;
-            }
-            throw new Exception("Category name already exists");
+            await categoryValidator.ValidateForCreate(categoryViewModel);
+            Category category = mapper.Map<Category>(categoryViewModel);
+            await categoryRepository.Create(category);
+            return category;
         }
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategories()
         {
@@ -39,18 +38,14 @@ namespace MotorbikeRental.Core.Services.VehicleServices
         {
             if (id < 0)
                 throw new Exception("Invalid category ID");
-            bool exists = await categoryRepository.CategoryIdExists(id);
-            if (!exists)
-                throw new Exception("Category not found");
+            await categoryValidator.ValidateForDelete(id);
             Category category = await categoryRepository.GetById(id);
             await categoryRepository.Delete(category);
             return true;
         }
         public async Task<CategoryViewModel> UpdateCategory(CategoryViewModel categoryViewModel)
         {
-            bool exists = await categoryRepository.CategoryIdExists(categoryViewModel.CategoryId);
-            if (!exists)
-                throw new Exception($"Entity with ID: {categoryViewModel.CategoryId} not found");
+            await categoryValidator.ValidateForUpdate(categoryViewModel);
             Category category = mapper.Map<Category>(categoryViewModel);
             await categoryRepository.Update(category);
             return categoryViewModel;
@@ -59,9 +54,7 @@ namespace MotorbikeRental.Core.Services.VehicleServices
         {
             if (id < 0)
                 throw new Exception("Invalid category ID");
-            bool exists = await categoryRepository.CategoryIdExists(id);
-            if (!exists)
-                throw new Exception("Category ID not found");
+            await categoryValidator.ValidateForGet(id);
             Category category = await categoryRepository.GetById(id);
             return mapper.Map<CategoryViewModel>(category);
         }

@@ -10,7 +10,13 @@ using MotorbikeRental.Core.Interfaces.IRepositories.IIncidents;
 using MotorbikeRental.Core.Interfaces.IRepositories.IPricingRepositories;
 using MotorbikeRental.Core.Interfaces.IRepositories.IUserRepositories;
 using MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories;
+using MotorbikeRental.Core.Interfaces.IServices.IUserServices;
+using MotorbikeRental.Core.Interfaces.IServices.IVehicleServices;
+using MotorbikeRental.Core.Interfaces.IValidators.IVehicleValidators;
 using MotorbikeRental.Core.Mapper;
+using MotorbikeRental.Core.Services.UserServices;
+using MotorbikeRental.Core.Services.VehicleServices;
+using MotorbikeRental.Core.Validators.VehicleValidators;
 using MotorbikeRental.Infrastructure.Repositories.ContractRepositories;
 using MotorbikeRental.Infrastructure.Repositories.CustomerRepositories;
 using MotorbikeRental.Infrastructure.Repositories.IncidentRepositories;
@@ -45,15 +51,23 @@ namespace MotorbikeRental.View.Extensions
             services.AddScoped<IPriceListRepository, PriceListRepository>();
             #endregion
 
+            #region  RegisterServices
+            //UserServices
+            services.AddScoped<IRoleService, RoleService>();
+            //VehicleServices
+            services.AddScoped<IMotorbikeService, MotorbikeService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            #endregion
 
-            
+
             #region RegisterAutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
             #endregion
 
-
-
-
+            #region RegisterValidator
+            services.AddScoped<IMotorbikeValidator, MotorbikeValidator>();
+            services.AddScoped<ICategoryValidator, CategoryValidator>();
+            #endregion
             return services;
         }
     }

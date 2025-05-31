@@ -26,6 +26,7 @@ namespace MotorbikeRental.Core.Mapper
             #region MapMotorbike
             CreateMap<Motorbike, MotorbikeViewModel>();
             CreateMap<MotorbikeViewModel, Motorbike>();
+            CreateMap<Motorbike, MotorbikeListViewModel>();
             #endregion
         }
     }

@@ -10,5 +10,6 @@ namespace MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories
     {
         Task<bool> CategoryNameExists(string categoryName);
         Task<bool> CategoryIdExists(int id);
+        Task<Category> GetByIdNoAsTracking(int id);
     }
 }

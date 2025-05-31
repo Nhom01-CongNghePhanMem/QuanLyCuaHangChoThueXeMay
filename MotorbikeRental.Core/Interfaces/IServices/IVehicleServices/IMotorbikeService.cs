@@ -12,8 +12,9 @@ namespace MotorbikeRental.Core.Interfaces.IServices.IVehicleServices
     {
         Task<MotorbikeViewModel> CreateMotorbike(MotorbikeViewModel motorbikeViewModel);
         Task<bool> DeleteMotorbike(int categoryId);
-        Task<CategoryViewModel> UpdateMotorbike(MotorbikeViewModel motorbikeViewModel);
-        Task<CategoryViewModel> GetMotorbikeById(int id);
-        Task<PaginatedDataViewModel<CategoryViewModel>> GetAllMotorbikes();
+        Task<MotorbikeViewModel> UpdateMotorbike(MotorbikeViewModel motorbikeViewModel);
+        Task<MotorbikeViewModel> GetMotorbikeById(int id);
+        Task<PaginatedDataViewModel<MotorbikeListViewModel>> GetAllMotorbikes(int pageNumber, int pageSize);
+        Task<PaginatedDataViewModel<MotorbikeListViewModel>> GetMotorbikesByCategoryId(int pageNumber, int pageSize, int categoryId);
     }
 }

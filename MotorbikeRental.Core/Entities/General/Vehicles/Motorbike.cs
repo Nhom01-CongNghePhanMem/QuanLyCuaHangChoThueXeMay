@@ -15,6 +15,9 @@ namespace MotorbikeRental.Core.Entities.General
     public class Motorbike
     {
         public int MotorbikeId { get; set; }
+        [Required(ErrorMessage ="MotorbikeName is required")]
+        [MaxLength(50)]
+        public string MotorbikeName { get; set; }
 
         [Required(ErrorMessage = "Category ID is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Invalid category ID")]

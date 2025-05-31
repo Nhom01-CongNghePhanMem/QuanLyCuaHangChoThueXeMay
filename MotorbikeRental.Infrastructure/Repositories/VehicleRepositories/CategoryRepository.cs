@@ -20,5 +20,9 @@ namespace MotorbikeRental.Infrastructure.Repositories.VehicleRepositories
         {
             return await dbContext.Set<Category>().AsNoTracking().AnyAsync(c => c.CategoryId == categoryId);
         }
+        public async Task<Category> GetByIdNoAsTracking(int id)
+        {
+            return await dbContext.Categories.Where(c => c.CategoryId == id).AsNoTracking().FirstAsync() ?? throw new Exception("Category not found");
+        }
     }
 }
