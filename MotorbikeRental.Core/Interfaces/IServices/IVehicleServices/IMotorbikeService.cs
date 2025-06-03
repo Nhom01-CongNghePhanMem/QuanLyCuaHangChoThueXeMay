@@ -14,7 +14,6 @@ namespace MotorbikeRental.Core.Interfaces.IServices.IVehicleServices
         Task<bool> DeleteMotorbike(int categoryId);
         Task<MotorbikeViewModel> UpdateMotorbike(MotorbikeViewModel motorbikeViewModel);
         Task<MotorbikeViewModel> GetMotorbikeById(int id);
-        Task<PaginatedDataViewModel<MotorbikeListViewModel>> GetAllMotorbikes(int pageNumber, int pageSize);
-        Task<PaginatedDataViewModel<MotorbikeListViewModel>> GetMotorbikesByCategoryId(int pageNumber, int pageSize, int categoryId);
+        Task<MotorbikeIndexViewModel> GetMotorbikesByFilter(MotorbikeFilterViewModel motorbikeFilterViewModel);
     }
 }

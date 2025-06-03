@@ -11,12 +11,22 @@ namespace MotorbikeRental.Core.Entities.Business.Vehicles
 {
     public class MotorbikeViewModel
     {
-        public int MotorbikeId { get; set; }
+        public int MotorbikeId { get; set; }    
+        [Required(ErrorMessage = "MotorbikeName is required")]
+        [MaxLength(50)]
+        public string MotorbikeName { get; set; }
         [Required(ErrorMessage = "Category ID is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Invalid category ID")]
         public int CategoryId { get; set; } //FK tới Category table
         [MaxLength(20, ErrorMessage = "Category name cannot exceed 20 characters")]
         public string CategoryName { get; set; }
+        [Required(ErrorMessage = "Hourly rate is required")]
+        [Range(0.01, 9999999, ErrorMessage = "Hourly rate must be greater than 0")]
+        public decimal HourlyRate { get; set; }//Thuê theo giờ
+        
+        [Required(ErrorMessage = "Daily rate is required")]
+        [Range(0.01, 9999999, ErrorMessage = "Daily rate must be greater than 0")]
+        public decimal DailyRate { get; set; }//Giá theo ngày
         [Required(ErrorMessage = "Category name is required")]
         [MaxLength(20, ErrorMessage = "Category name cannot exceed 20 characters")]
         public string LicensePlate { get; set; } // Biển số xe
@@ -47,15 +57,6 @@ namespace MotorbikeRental.Core.Entities.Business.Vehicles
         [Range(0, 999999, ErrorMessage = "Mileage must be positive")]
         public decimal? Mileage { get; set; } // Số km đã đi
         [Required(ErrorMessage = "Motorbike status is required")]
-        public MotorbikeStatus Status { get; set; } //Thông tin xe
-    }
-    //OUTPUT
-    public class MotorbikeListViewModel
-    {
-        public int MotorbikeId { get; set; }
-        public string MotorbikeName { get; set; }
-        public string CategoryName { get; set; }
-        public string Brand { get; set; }
         public MotorbikeStatus Status { get; set; } //Thông tin xe
     }
 }

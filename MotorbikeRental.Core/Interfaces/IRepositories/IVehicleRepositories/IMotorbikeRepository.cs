@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MotorbikeRental.Core.Entities.Business.Pagination;
 using MotorbikeRental.Core.Entities.Business.Vehicles;
 using MotorbikeRental.Core.Entities.General;
+using MotorbikeRental.Core.Enums;
 
 namespace MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories
 {
@@ -18,6 +19,8 @@ namespace MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories
         Task<bool> DupChassisNumExceptId(string chassisNumber, int id);
         Task<bool> DupEngineNumExceptId(string engineNumber, int id);
         Task<bool> DupLicensePlateExceptId(string licensePlate, int id);
-        Task<PaginatedDataViewModel<Motorbike>> GetMotorbikesByCategory(int pageNumber, int pageSize, int categoryId);
+        Task<Motorbike> GetByIdWithIncludes(int id);
+        Task<(IEnumerable<Motorbike>, int totalCount)> GetFilterData(MotorbikeFilterViewModel motorbikeFilterViewModel);
+        Task<IEnumerable<string>> GetDistinctBrands();
     }
 }

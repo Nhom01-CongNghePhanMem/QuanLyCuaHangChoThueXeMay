@@ -15,7 +15,9 @@ namespace MotorbikeRental.Infrastructure.Data
 {
     public class MotorbikeRentalDbContext : DbContext
     {
-        public MotorbikeRentalDbContext(DbContextOptions<MotorbikeRentalDbContext> options) : base(options) { }
+        public MotorbikeRentalDbContext(DbContextOptions<MotorbikeRentalDbContext> options) : base(options)
+        {
+        }
         #region DbSet Section
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Employee> Employees { get; set; }

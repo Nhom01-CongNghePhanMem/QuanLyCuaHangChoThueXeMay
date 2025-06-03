@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MotorbikeRental.Core.Entities.Business.Pagination;
+using MotorbikeRental.Core.Entities.Business.Vehicles;
 using MotorbikeRental.Core.Entities.General;
+using MotorbikeRental.Core.Enums;
 using MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories;
 using MotorbikeRental.Infrastructure.Data;
 
@@ -19,7 +21,7 @@ namespace MotorbikeRental.Infrastructure.Repositories.VehicleRepositories
         }
         public async Task<bool> LicensePlateExists(string LicensePlate)
         {
-            return await dbContext.Set<Motorbike>().AsNoTracking().AnyAsync(m => m.LicensePlate == m.LicensePlate);
+            return await dbContext.Set<Motorbike>().AsNoTracking().AnyAsync(m => m.LicensePlate == LicensePlate);
         }
         public async Task<bool> ChassisNumberExists(string ChassisNumber)
         {
@@ -31,7 +33,7 @@ namespace MotorbikeRental.Infrastructure.Repositories.VehicleRepositories
         }
         public async Task<Motorbike> GetByIdNoAsTracking(int id)
         {
-            return await dbContext.Motorbikes.Where(c => c.MotorbikeId == id).AsNoTracking().FirstAsync() ?? throw new Exception("Category not found");
+            return await dbContext.Motorbikes.Where(c => c.MotorbikeId == id).AsNoTracking().FirstOrDefaultAsync() ?? throw new Exception("Category not found");
         }
         public async Task<bool> DupEngineNumExceptId(string engineNumber, int id)
         {
@@ -45,10 +47,38 @@ namespace MotorbikeRental.Infrastructure.Repositories.VehicleRepositories
         {
             return await dbContext.Motorbikes.AsNoTracking().AnyAsync(m => m.LicensePlate == licensePlate && m.MotorbikeId != id);
         }
-        public async Task<PaginatedDataViewModel<Motorbike>> GetMotorbikesByCategory(int pageNumber, int pageSize, int categoryId)
+        public async Task<Motorbike> GetByIdWithIncludes(int id)
         {
-            IQueryable<Motorbike> query = dbContext.Motorbikes.Where(s => s.CategoryId == categoryId);
-            return new PaginatedDataViewModel<Motorbike>(await query.AsNoTracking().Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(), await query.AsNoTracking().CountAsync());
+            return await dbContext.Motorbikes.Where(m => m.MotorbikeId == id)
+                .AsNoTracking()
+                .Include(m => m.Category)
+                .Include(m => m.PriceList)
+                .Include(m => m.Incidents)
+                .FirstOrDefaultAsync() ?? throw new Exception("Motorbike not found");
+        }
+        public async Task<(IEnumerable<Motorbike>, int totalCount)> GetFilterData(MotorbikeFilterViewModel motorbikeFilterViewModel)
+        {
+            IQueryable<Motorbike> queryable = dbContext.Motorbikes
+                .Include(m => m.Category)
+                .Include(m => m.PriceList)
+                .AsQueryable();
+            if (motorbikeFilterViewModel.CategoryId.HasValue)
+                queryable = queryable.Where(m => m.CategoryId == motorbikeFilterViewModel.CategoryId);
+            if (motorbikeFilterViewModel.Status.HasValue)
+                queryable = queryable.Where(m => m.Status == motorbikeFilterViewModel.Status);
+            if (!string.IsNullOrWhiteSpace(motorbikeFilterViewModel.Brand))
+                queryable = queryable.Where(m => m.Brand == motorbikeFilterViewModel.Brand);
+            int totalCount = await queryable.CountAsync();
+            queryable = queryable.AsNoTracking().Skip((motorbikeFilterViewModel.PageNumber - 1) * motorbikeFilterViewModel.PageSize).Take(motorbikeFilterViewModel.PageSize);
+            return (await queryable.ToListAsync(), totalCount);
+        }
+        public async Task<IEnumerable<string>> GetDistinctBrands()
+        {
+            return await dbContext.Motorbikes
+                .Where(m => !string.IsNullOrEmpty(m.Brand))
+                .Select(m => m.Brand)
+                .Distinct()
+                .ToListAsync();
         }
     }
 }

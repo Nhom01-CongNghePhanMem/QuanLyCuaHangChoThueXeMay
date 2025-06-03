@@ -9,13 +9,14 @@ using MotorbikeRental.Core.Entities.General.Vehicles;
 using MotorbikeRental.Core.Entities.General.Incidents;
 using MotorbikeRental.Core.Enums;
 using MotorbikeRental.Core.Enums.VehicleEnum;
+using System.Reflection.Emit;
 
 namespace MotorbikeRental.Core.Entities.General
 {
     public class Motorbike
     {
         public int MotorbikeId { get; set; }
-        [Required(ErrorMessage ="MotorbikeName is required")]
+        [Required(ErrorMessage = "MotorbikeName is required")]
         [MaxLength(50)]
         public string MotorbikeName { get; set; }
 
@@ -71,6 +72,6 @@ namespace MotorbikeRental.Core.Entities.General
         public virtual ICollection<MaintenanceRecord> MaintenanceRecords { get; set; } //Hồ sơ bảo trì
         public virtual ICollection<RentalContract> RentalContracts { get; set; } //Hơp đồng thuê xe với khách
         public virtual ICollection<Incident> Incidents { get; set; }  //Sự cố
-        public virtual PriceList PriceList { get; set; }
-    }
+        public virtual PriceList PriceList { get; set; } //Bảng giá thuê xe
+        }
 }

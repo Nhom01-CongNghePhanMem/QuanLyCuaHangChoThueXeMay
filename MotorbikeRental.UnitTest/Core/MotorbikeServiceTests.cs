@@ -8,6 +8,7 @@ using MotorbikeRental.Core.Entities.Business.Vehicles;
 using MotorbikeRental.Core.Entities.General;
 using MotorbikeRental.Core.Enums;
 using MotorbikeRental.Core.Enums.VehicleEnum;
+using MotorbikeRental.Core.Interfaces.IRepositories.IPricingRepositories;
 using MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories;
 using MotorbikeRental.Core.Interfaces.IServices.IVehicleServices;
 using MotorbikeRental.Core.Interfaces.IValidators.IVehicleValidators;
@@ -18,22 +19,22 @@ namespace MotorbikeRental.UnitTest.Core
     public class MotorbikeServiceTests
     {
         private readonly Mock<IMotorbikeRepository> mockMotorbikeRepository;
-        private readonly Mock<ICategoryRepository> mockCategoryRepository;
         private readonly Mock<IMotorbikeValidator> mockMotorbikeValidator;
+        private readonly Mock<ICategoryRepository> mockCategoryRepository;
         private readonly IMapper mapper;
         private readonly IMotorbikeService motorbikeService;
         public MotorbikeServiceTests()
         {
             mockMotorbikeRepository = new Mock<IMotorbikeRepository>();
-            mockCategoryRepository = new Mock<ICategoryRepository>();
             mockMotorbikeValidator = new Mock<IMotorbikeValidator>();
+            mockCategoryRepository = new Mock<ICategoryRepository>();
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Motorbike, MotorbikeViewModel>();
                 cfg.CreateMap<MotorbikeViewModel, Motorbike>();
             });
             mapper = mapperConfiguration.CreateMapper();
-            motorbikeService = new MotorbikeService(mapper, mockMotorbikeRepository.Object, mockCategoryRepository.Object, mockMotorbikeValidator.Object);
+            motorbikeService = new MotorbikeService(mapper, mockMotorbikeRepository.Object, mockMotorbikeValidator.Object, mockCategoryRepository.Object);
         }
         [Fact]
         public async Task CreateMotorbikeTests()
@@ -49,8 +50,6 @@ namespace MotorbikeRental.UnitTest.Core
                 CategoryId = 5,
                 CategoryName = "Sport"
             };
-            mockCategoryRepository.Setup(r => r.GetByIdNoAsTracking(motorbike.CategoryId))
-                .ReturnsAsync(category);
             MotorbikeViewModel motorbikeViewModel1 = await motorbikeService.CreateMotorbike(motorbikeViewModel);
             Assert.Equal("Sport", motorbikeViewModel1.CategoryName);
         }
