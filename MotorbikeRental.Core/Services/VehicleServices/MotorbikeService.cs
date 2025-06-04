@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using AutoMapper;
 using MotorbikeRental.Core.Entities.Business.Pagination;
 using MotorbikeRental.Core.Entities.Business.Vehicles;
 using MotorbikeRental.Core.Entities.General;
 using MotorbikeRental.Core.Entities.General.Pricing;
-using MotorbikeRental.Core.Enums;
-using MotorbikeRental.Core.Interfaces.IRepositories.IPricingRepositories;
 using MotorbikeRental.Core.Interfaces.IRepositories.IVehicleRepositories;
 using MotorbikeRental.Core.Interfaces.IServices.IVehicleServices;
 using MotorbikeRental.Core.Interfaces.IValidators.IVehicleValidators;
@@ -66,7 +59,7 @@ namespace MotorbikeRental.Core.Services.VehicleServices
                 Brands = await motorbikeRepository.GetDistinctBrands(),
                 CategoryViewModels = mapper.Map<IEnumerable<CategoryViewModel>>(await categoryRepository.GetCategoriesNoTracking()),
                 PaginatedDataViewModel = new PaginatedDataViewModel<MotorbikeListViewModel>(motorbikeListViewModels, total)
-            };         
+            };
         }
 
         public async Task<MotorbikeViewModel> GetMotorbikeById(int id)

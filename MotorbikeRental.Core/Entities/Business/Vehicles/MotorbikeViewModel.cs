@@ -11,7 +11,7 @@ namespace MotorbikeRental.Core.Entities.Business.Vehicles
 {
     public class MotorbikeViewModel
     {
-        public int MotorbikeId { get; set; }    
+        public int MotorbikeId { get; set; }
         [Required(ErrorMessage = "MotorbikeName is required")]
         [MaxLength(50)]
         public string MotorbikeName { get; set; }
@@ -23,7 +23,7 @@ namespace MotorbikeRental.Core.Entities.Business.Vehicles
         [Required(ErrorMessage = "Hourly rate is required")]
         [Range(0.01, 9999999, ErrorMessage = "Hourly rate must be greater than 0")]
         public decimal HourlyRate { get; set; }//Thuê theo giờ
-        
+
         [Required(ErrorMessage = "Daily rate is required")]
         [Range(0.01, 9999999, ErrorMessage = "Daily rate must be greater than 0")]
         public decimal DailyRate { get; set; }//Giá theo ngày

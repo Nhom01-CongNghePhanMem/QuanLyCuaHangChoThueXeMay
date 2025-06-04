@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotorbikeRental.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using MotorbikeRental.Infrastructure.Data;
 namespace MotorbikeRental.Infrastructure.Migrations
 {
     [DbContext(typeof(MotorbikeRentalDbContext))]
-    partial class MotorbikeRentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250604105709_UpdateDBV1")]
+    partial class UpdateDBV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

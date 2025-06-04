@@ -8,6 +8,6 @@ namespace MotorbikeRental.Core.Interfaces.IRepositories.IIncidents
 {
     public interface IIncidentRepository : IBaseRepository<Incident>
     {
-        
+
     }
 }

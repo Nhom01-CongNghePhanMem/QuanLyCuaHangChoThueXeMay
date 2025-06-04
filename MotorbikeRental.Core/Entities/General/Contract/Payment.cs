@@ -14,7 +14,7 @@ namespace MotorbikeRental.Core.Entities.General.Contract
         public int PaymentId { get; set; }
 
         public int? ContractId { get; set; } //FK Hợp đồng
-        public RentalContract RentalContract { get; set; }
+        public virtual RentalContract RentalContract { get; set; }
 
         [Required(ErrorMessage = "Amount is required")]
         [Range(0.01, 999999999, ErrorMessage = "Amount must be greater than 0")]
@@ -39,6 +39,6 @@ namespace MotorbikeRental.Core.Entities.General.Contract
         [Required(ErrorMessage = "Employee ID is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Invalid employee ID")]
         public int EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

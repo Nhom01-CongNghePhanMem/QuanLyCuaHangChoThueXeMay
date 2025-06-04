@@ -23,7 +23,7 @@ namespace MotorbikeRental.Core.Entities.General
         [Required(ErrorMessage = "Category ID is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Invalid category ID")]
         public int CategoryId { get; set; } //FK tới Category table
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         [Required(ErrorMessage = "License plate is required")]
         [MaxLength(15, ErrorMessage = "License plate cannot exceed 15 characters")]
@@ -73,5 +73,5 @@ namespace MotorbikeRental.Core.Entities.General
         public virtual ICollection<RentalContract> RentalContracts { get; set; } //Hơp đồng thuê xe với khách
         public virtual ICollection<Incident> Incidents { get; set; }  //Sự cố
         public virtual PriceList PriceList { get; set; } //Bảng giá thuê xe
-        }
+    }
 }

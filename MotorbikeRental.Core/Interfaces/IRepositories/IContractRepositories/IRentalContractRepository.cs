@@ -8,6 +8,6 @@ namespace MotorbikeRental.Core.Interfaces.IRepositories.IContractRepositories
 {
     public interface IRentalContractRepository : IBaseRepository<RentalContract>
     {
-        
+
     }
 }

@@ -8,6 +8,6 @@ namespace MotorbikeRental.Core.Interfaces.IRepositories.IUserRepositories
 {
     public interface IEmployeeRepository : IBaseRepository<Employee>
     {
-        
+
     }
 }

@@ -129,6 +129,8 @@ namespace MotorbikeRental.Infrastructure.Data
                     .HasDefaultValueSql("GETDATE()");
                 entity.HasMany(e => e.RentalContracts)
                     .WithOne(e => e.Customer);
+                entity.Property(e => e.Gender)
+                    .HasConversion<string>();
             });
         }
         public static void ConfigurationRentalContract(ModelBuilder modelBuilder)

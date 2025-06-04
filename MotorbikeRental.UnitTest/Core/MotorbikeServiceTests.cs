@@ -64,7 +64,7 @@ namespace MotorbikeRental.UnitTest.Core
             mockMotorbikeRepository.Setup(r => r.Delete(motorbike))
                 .Returns(Task.CompletedTask);
             bool result = await motorbikeService.DeleteMotorbike(1);
-            Assert.Equal(true, result);
+            Assert.True(result);
         }
         [Fact]
         public async Task GetMotorbikeByIdTest()

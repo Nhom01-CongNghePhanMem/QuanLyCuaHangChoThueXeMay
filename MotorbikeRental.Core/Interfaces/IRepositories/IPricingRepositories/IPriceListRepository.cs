@@ -8,6 +8,6 @@ namespace MotorbikeRental.Core.Interfaces.IRepositories.IPricingRepositories
 {
     public interface IPriceListRepository : IBaseRepository<PriceList>
     {
-        
+
     }
 }

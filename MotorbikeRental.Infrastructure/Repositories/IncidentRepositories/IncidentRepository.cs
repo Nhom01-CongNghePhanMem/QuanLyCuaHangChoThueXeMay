@@ -8,8 +8,8 @@ using MotorbikeRental.Infrastructure.Data;
 
 namespace MotorbikeRental.Infrastructure.Repositories.IncidentRepositories
 {
-    public class IncidentRepository : BaseRepository<Incident> , IIncidentRepository
+    public class IncidentRepository : BaseRepository<Incident>, IIncidentRepository
     {
-        public IncidentRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext){}
+        public IncidentRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext) { }
     }
 }

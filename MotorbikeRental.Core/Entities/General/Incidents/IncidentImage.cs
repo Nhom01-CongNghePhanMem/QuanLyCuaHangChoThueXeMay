@@ -9,12 +9,12 @@ namespace MotorbikeRental.Core.Entities.General.Incidents
     public class IncidentImage
     {
         public int ImageId { get; set; }
-        
+
         [Required(ErrorMessage = "Incident ID is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Invalid incident ID")]
         public int IncidentId { get; set; } //Mã sự cố
-        public Incident Incident { get; set; }
-        
+        public virtual Incident Incident { get; set; }
+
         [Required(ErrorMessage = "Image URL is required")]
         [MaxLength(500, ErrorMessage = "Image URL cannot exceed 500 characters")]
         [Url(ErrorMessage = "Invalid URL format")]

@@ -8,8 +8,8 @@ using MotorbikeRental.Infrastructure.Data;
 
 namespace MotorbikeRental.Infrastructure.Repositories.ContractRepositories
 {
-    public class RentalContractRepository : BaseRepository<RentalContract> , IRentalContractRepository
+    public class RentalContractRepository : BaseRepository<RentalContract>, IRentalContractRepository
     {
-        public RentalContractRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext){}
+        public RentalContractRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext) { }
     }
 }
