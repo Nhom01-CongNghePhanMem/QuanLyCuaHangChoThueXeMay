@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorbikeRental.Domain", "MotorbikeRental.Domain\MotorbikeRental.Domain.csproj", "{43F3EE9B-EEC1-4B57-9731-B233486E620B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorbikeRental.Web", "MotorbikeRental.Web\MotorbikeRental.Web.csproj", "{B7A8193D-293D-4ECB-BF76-135CA9A979EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorbikeRental.Application", "MotorbikeRental.Application\MotorbikeRental.Application.csproj", "{940E30DF-01C3-4A41-A22F-83F184A8F2E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorbikeRental.Infrastructure", "MotorbikeRental.Infrastructure\MotorbikeRental.Infrastructure.csproj", "{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorbikeRental.Tests", "..\..\tests\MotorbikeRental.Tests\MotorbikeRental.Tests.csproj", "{8D753C2E-8401-4D15-A43F-118B2D014206}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43F3EE9B-EEC1-4B57-9731-B233486E620B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43F3EE9B-EEC1-4B57-9731-B233486E620B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43F3EE9B-EEC1-4B57-9731-B233486E620B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43F3EE9B-EEC1-4B57-9731-B233486E620B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7A8193D-293D-4ECB-BF76-135CA9A979EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7A8193D-293D-4ECB-BF76-135CA9A979EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7A8193D-293D-4ECB-BF76-135CA9A979EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7A8193D-293D-4ECB-BF76-135CA9A979EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{940E30DF-01C3-4A41-A22F-83F184A8F2E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{940E30DF-01C3-4A41-A22F-83F184A8F2E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{940E30DF-01C3-4A41-A22F-83F184A8F2E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{940E30DF-01C3-4A41-A22F-83F184A8F2E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D753C2E-8401-4D15-A43F-118B2D014206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D753C2E-8401-4D15-A43F-118B2D014206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D753C2E-8401-4D15-A43F-118B2D014206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D753C2E-8401-4D15-A43F-118B2D014206}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C89F7FFE-3425-4875-8281-9860CD755F02}
+	EndGlobalSection
+EndGlobal

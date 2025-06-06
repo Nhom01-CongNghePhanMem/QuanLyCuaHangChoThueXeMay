@@ -1,0 +1,439 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.infrastructure\\data\\repositories\\vehiclerepositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|solutionrelative:motorbikerental.infrastructure\\data\\repositories\\vehiclerepositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D753C2E-8401-4D15-A43F-118B2D014206}|..\\..\\tests\\MotorbikeRental.Tests\\MotorbikeRental.Tests.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\tests\\motorbikerental.tests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\vehicles\\motorbikefilterdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\vehicles\\motorbikefilterdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\vehicles\\motorbikeindexdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\vehicles\\motorbikeindexdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.infrastructure\\data\\repositories\\vehiclerepositories\\motorbikerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|solutionrelative:motorbikerental.infrastructure\\data\\repositories\\vehiclerepositories\\motorbikerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\interfaces\\irepositories\\ivehiclerepositories\\imotorbikerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\interfaces\\irepositories\\ivehiclerepositories\\imotorbikerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\vehicles\\motorbike.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\vehicles\\motorbike.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.infrastructure\\data\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|solutionrelative:motorbikerental.infrastructure\\data\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\vehicles\\motorbikelistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\vehicles\\motorbikelistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\customers\\customerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\customers\\customerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\vehicles\\maintenancerecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\vehicles\\maintenancerecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\user\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\user\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\incidents\\incident.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\incidents\\incident.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\customers\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\customers\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\contract\\rentalcontract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\contract\\rentalcontract.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\entities\\contract\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\entities\\contract\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\vehicles\\motorbikedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\vehicles\\motorbikedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\vehicles\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\vehicles\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\user\\roledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\user\\roledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\pagination\\paginateddatadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\pagination\\paginateddatadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.domain\\dtos\\customers\\customerlistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43F3EE9B-EEC1-4B57-9731-B233486E620B}|MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj|solutionrelative:motorbikerental.domain\\dtos\\customers\\customerlistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.infrastructure\\data\\contexts\\motorbikerentaldbcontextconfigurations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|solutionrelative:motorbikerental.infrastructure\\data\\contexts\\motorbikerentaldbcontextconfigurations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.infrastructure\\data\\contexts\\motorbikerentaldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|solutionrelative:motorbikerental.infrastructure\\data\\contexts\\motorbikerentaldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|d:\\c sharp\\\u0111\u1ED3 \u00E1n\\quanlycuahangchothuexemay\\src\\motorbikerental\\motorbikerental.infrastructure\\motorbikerental.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{BBDDF9B6-EC8D-4734-AEE6-CE8991D18950}|MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj|solutionrelative:motorbikerental.infrastructure\\motorbikerental.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 259,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UnitTest1.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\tests\\MotorbikeRental.Tests\\UnitTest1.cs",
+              "RelativeDocumentMoniker": "..\\..\\tests\\MotorbikeRental.Tests\\UnitTest1.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\tests\\MotorbikeRental.Tests\\UnitTest1.cs",
+              "RelativeToolTip": "..\\..\\tests\\MotorbikeRental.Tests\\UnitTest1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:17:24.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IMotorbikeRepository.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Interfaces\\IRepositories\\IVehicleRepositories\\IMotorbikeRepository.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Interfaces\\IRepositories\\IVehicleRepositories\\IMotorbikeRepository.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Interfaces\\IRepositories\\IVehicleRepositories\\IMotorbikeRepository.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Interfaces\\IRepositories\\IVehicleRepositories\\IMotorbikeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:10:34.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BaseRepository.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Repositories\\BaseRepository.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Infrastructure\\Data\\Repositories\\BaseRepository.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Repositories\\BaseRepository.cs",
+              "RelativeToolTip": "MotorbikeRental.Infrastructure\\Data\\Repositories\\BaseRepository.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwAYAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:10:28.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Motorbike.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Vehicles\\Motorbike.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\Vehicles\\Motorbike.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Vehicles\\Motorbike.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\Vehicles\\Motorbike.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAiwAgAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:08:51.164Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CustomerDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Customers\\CustomerDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Customers\\CustomerDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Customers\\CustomerDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Customers\\CustomerDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:03:45.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MotorbikeFilterDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeFilterDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeFilterDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeFilterDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeFilterDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:04:39.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MotorbikeIndexDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeIndexDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeIndexDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeIndexDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeIndexDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:04:55.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MotorbikeListDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeListDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeListDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeListDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeListDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA0AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:05:08.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CategoryRepository.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\CategoryRepository.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\CategoryRepository.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\CategoryRepository.cs",
+              "RelativeToolTip": "MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\CategoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T18:59:10.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MaintenanceRecord.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Vehicles\\MaintenanceRecord.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\Vehicles\\MaintenanceRecord.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Vehicles\\MaintenanceRecord.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\Vehicles\\MaintenanceRecord.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABYAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:08:47.504Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MotorbikeRepository.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\MotorbikeRepository.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\MotorbikeRepository.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\MotorbikeRepository.cs",
+              "RelativeToolTip": "MotorbikeRental.Infrastructure\\Data\\Repositories\\VehicleRepositories\\MotorbikeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T18:59:14.596Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\User\\Employee.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\User\\Employee.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\User\\Employee.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\User\\Employee.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAYwDgAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:08:35.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Incident.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Incidents\\Incident.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\Incidents\\Incident.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Incidents\\Incident.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\Incidents\\Incident.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAYwBwAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:08:14.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Customers\\Customer.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\Customers\\Customer.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Customers\\Customer.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\Customers\\Customer.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA5wA4AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:08:06.649Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "RentalContract.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Contract\\RentalContract.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\Contract\\RentalContract.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Contract\\RentalContract.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\Contract\\RentalContract.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAQwDMAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:08:00.617Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Contract\\Payment.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\Entities\\Contract\\Payment.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\Entities\\Contract\\Payment.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\Entities\\Contract\\Payment.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAwwBYAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:07:36.142Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "MotorbikeDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Vehicles\\MotorbikeDto.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAkwC4AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:05:22.661Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "CategoryDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\CategoryDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Vehicles\\CategoryDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Vehicles\\CategoryDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Vehicles\\CategoryDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:04:27.679Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "RoleDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\User\\RoleDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\User\\RoleDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\User\\RoleDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\User\\RoleDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:04:12.494Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "PaginatedDataDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Pagination\\PaginatedDataDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Pagination\\PaginatedDataDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Pagination\\PaginatedDataDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Pagination\\PaginatedDataDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:04:02.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "CustomerListDto.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Customers\\CustomerListDto.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Domain\\DTOs\\Customers\\CustomerListDto.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\DTOs\\Customers\\CustomerListDto.cs",
+              "RelativeToolTip": "MotorbikeRental.Domain\\DTOs\\Customers\\CustomerListDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T19:03:32.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "MotorbikeRentalDbContextConfigurations.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContextConfigurations.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContextConfigurations.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContextConfigurations.cs",
+              "RelativeToolTip": "MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContextConfigurations.cs",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T18:58:18.563Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "MotorbikeRental.Infrastructure",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj",
+              "RelativeToolTip": "MotorbikeRental.Infrastructure\\MotorbikeRental.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-06T18:55:45.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "MotorbikeRentalDbContext.cs",
+              "DocumentMoniker": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContext.cs",
+              "RelativeDocumentMoniker": "MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContext.cs",
+              "ToolTip": "D:\\C Sharp\\\u0110\u1ED3 \u00E1n\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContext.cs",
+              "RelativeToolTip": "MotorbikeRental.Infrastructure\\Data\\Contexts\\MotorbikeRentalDbContext.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T18:55:24.513Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
