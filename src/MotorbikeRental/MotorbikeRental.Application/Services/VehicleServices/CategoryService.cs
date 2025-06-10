@@ -1,9 +1,9 @@
 using AutoMapper;
+using MotorbikeRental.Application.DTOs.Vehicles;
+using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
-using MotorbikeRental.Domain.DTOs.Vehicles;
 using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
-using MotorbikeRental.Domain.Interfaces.IServices.IVehicleServices;
 
 namespace MotorbikeRental.Application.Services.VehicleServices
 {

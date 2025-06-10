@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MotorbikeRental.Domain.DTOs.Vehicles
+namespace MotorbikeRental.Application.DTOs.Vehicles
 {
     public class CategoryDto
     {

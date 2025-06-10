@@ -1,4 +1,4 @@
-namespace MotorbikeRental.Domain.DTOs.Pagination
+namespace MotorbikeRental.Application.DTOs.Pagination
 {
     public class PaginatedDataDto<T>
     {

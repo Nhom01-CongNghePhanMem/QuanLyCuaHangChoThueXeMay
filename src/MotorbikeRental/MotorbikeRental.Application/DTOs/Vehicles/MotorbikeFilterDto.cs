@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MotorbikeRental.Domain.Enums.VehicleEnum;
 
-namespace MotorbikeRental.Domain.DTOs.Vehicles
+namespace MotorbikeRental.Application.DTOs.Vehicles
 {
     public class MotorbikeFilterDto
     {

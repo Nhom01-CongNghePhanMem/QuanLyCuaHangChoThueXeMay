@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MotorbikeRental.Infrastructure.Data.Contexts;
 using MotorbikeRental.Web.Extensions;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

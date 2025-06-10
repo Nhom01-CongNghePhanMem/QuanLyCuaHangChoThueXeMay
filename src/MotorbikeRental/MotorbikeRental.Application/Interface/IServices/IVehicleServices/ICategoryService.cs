@@ -1,7 +1,7 @@
-using MotorbikeRental.Domain.DTOs.Vehicles;
+using MotorbikeRental.Application.DTOs.Vehicles;
 using MotorbikeRental.Domain.Entities.Vehicles;
 
-namespace MotorbikeRental.Domain.Interfaces.IServices.IVehicleServices
+namespace MotorbikeRental.Application.Interface.IServices.IVehicleServices
 {
     public interface ICategoryService
     {

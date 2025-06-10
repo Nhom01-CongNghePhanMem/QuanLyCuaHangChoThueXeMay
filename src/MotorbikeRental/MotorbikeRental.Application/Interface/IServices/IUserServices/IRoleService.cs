@@ -1,7 +1,7 @@
-using MotorbikeRental.Domain.DTOs.User;
+using MotorbikeRental.Application.DTOs.User;
 using MotorbikeRental.Domain.Entities.User;
 
-namespace MotorbikeRental.Domain.Interfaces.IServices.IUserServices
+namespace MotorbikeRental.Application.Interface.IServices.IUserServices
 {
     public interface IRoleService
     {

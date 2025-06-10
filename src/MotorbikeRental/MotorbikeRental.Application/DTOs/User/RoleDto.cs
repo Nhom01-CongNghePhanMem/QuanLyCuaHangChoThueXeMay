@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MotorbikeRental.Domain.DTOs.User
+namespace MotorbikeRental.Application.DTOs.User
 {
     public class RoleDto
     {

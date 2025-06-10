@@ -1,11 +1,13 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using MotorbikeRental.Application.DTOs.Pagination;
+using MotorbikeRental.Application.DTOs.Vehicles;
+using MotorbikeRental.Application.Interface.IExternalServices.Storage;
+using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
-using MotorbikeRental.Domain.DTOs.Pagination;
-using MotorbikeRental.Domain.DTOs.Vehicles;
 using MotorbikeRental.Domain.Entities.Pricing;
 using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
-using MotorbikeRental.Domain.Interfaces.IServices.IVehicleServices;
 
 namespace MotorbikeRental.Application.Services.VehicleServices
 {
@@ -15,19 +17,22 @@ namespace MotorbikeRental.Application.Services.VehicleServices
         private readonly IMotorbikeRepository motorbikeRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly IMotorbikeValidator motorbikeValidator;
-        public MotorbikeService(IMapper mapper, IMotorbikeRepository motorbikeRepository, IMotorbikeValidator motorbikeValidator, ICategoryRepository categoryRepository)
+        private readonly IFileService fileService;
+        public MotorbikeService(IMapper mapper, IMotorbikeRepository motorbikeRepository, IMotorbikeValidator motorbikeValidator, ICategoryRepository categoryRepository, IFileService fileService)
         {
             this.mapper = mapper;
             this.motorbikeRepository = motorbikeRepository;
             this.motorbikeValidator = motorbikeValidator;
             this.categoryRepository = categoryRepository;
+            this.fileService = fileService;
         }
 
-        public async Task<MotorbikeDto> CreateMotorbike(MotorbikeDto motorbikeDto)
+        public async Task<MotorbikeDto> CreateMotorbike(MotorbikeDto motorbikeDto, IFormFile formFile)
         {
             await motorbikeValidator.ValidateForCreate(motorbikeDto);
             Motorbike motorbike = mapper.Map<Motorbike>(motorbikeDto);
             motorbike.PriceList = new PriceList { HourlyRate = motorbikeDto.HourlyRate, DailyRate = motorbikeDto.DailyRate };
+            motorbike.ImageUrl = await fileService.SaveImage(formFile, "Motorbike");
             return mapper.Map<MotorbikeDto>(await motorbikeRepository.Create(motorbike));
         }
 
@@ -38,55 +43,44 @@ namespace MotorbikeRental.Application.Services.VehicleServices
                 throw new Exception("MotorBike not found");
             motorbikeValidator.ValidateForDelete(motorbike);
             await motorbikeRepository.Delete(motorbike);
+            fileService.DeleteFile(motorbike.ImageUrl);
             return true;
         }
 
         public async Task<MotorbikeIndexDto> GetMotorbikesByFilter(MotorbikeFilterDto motorbikeFilterDto)
         {
-            var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto);
-            List<Motorbike> motorbikes = data.ToList();
-            List<MotorbikeListDto> motorbikeListViewModels = new List<MotorbikeListDto>();
-            for (int i = 0; i < motorbikes.Count; i++)
-            {
-                MotorbikeListDto motorbikeListDto = mapper.Map<MotorbikeListDto>(motorbikes[i]);
-                motorbikeListDto.CategoryName = motorbikes[i].Category.CategoryName;
-                motorbikeListDto.HourlyRate = motorbikes[i].PriceList.HourlyRate;
-                motorbikeListDto.DailyRate = motorbikes[i].PriceList.DailyRate;
-                motorbikeListViewModels.Add(motorbikeListDto);
-            }
-            return new MotorbikeIndexDto()
-            {
-                Brands = await motorbikeRepository.GetDistinctBrands(),
-                CategoryViewModels = mapper.Map<IEnumerable<CategoryDto>>(await categoryRepository.GetCategoriesNoTracking()),
-                PaginatedDataViewModel = new PaginatedDataDto<MotorbikeListDto>(motorbikeListViewModels, total)
-            };
+                var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto.CategoryId, motorbikeFilterDto.Brand, motorbikeFilterDto.Status, motorbikeFilterDto.PageNumber, motorbikeFilterDto.PageSize);
+                List<Motorbike> motorbikes = data.ToList();
+                List<MotorbikeListDto> motorbikeListDto = new List<MotorbikeListDto>();
+                for (int i = 0; i < motorbikes.Count; i++)
+                {
+                    motorbikeListDto.Add(mapper.Map<MotorbikeListDto>(motorbikes[i]));
+                }
+                return new MotorbikeIndexDto()
+                {
+                    Brands = await motorbikeRepository.GetDistinctBrands(),
+                    CategoryViewModels = mapper.Map<IEnumerable<CategoryDto>>(await categoryRepository.GetCategoriesNoTracking()),
+                    PaginatedDataViewModel = new PaginatedDataDto<MotorbikeListDto>(motorbikeListDto, total)
+                };
         }
 
         public async Task<MotorbikeDto> GetMotorbikeById(int id)
         {
-            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(id);
-            MotorbikeDto motorbikeDto = mapper.Map<MotorbikeDto>(motorbike);
-            motorbikeDto.HourlyRate = motorbike.PriceList.HourlyRate;
-            motorbikeDto.DailyRate = motorbike.PriceList.DailyRate;
-            motorbikeDto.CategoryName = motorbike.Category.CategoryName;
-            return motorbikeDto;
+            return mapper.Map<MotorbikeDto>(await motorbikeRepository.GetByIdWithIncludes(id));
         }
 
-        public async Task<MotorbikeDto> UpdateMotorbike(MotorbikeDto motorbikeViewModel)
+        public async Task<MotorbikeDto> UpdateMotorbike(MotorbikeDto motorbikeDto, IFormFile? formFile)
         {
-            await motorbikeValidator.ValidateForUpdate(motorbikeViewModel);
-            Motorbike motorbike = await motorbikeRepository.GetById(motorbikeViewModel.MotorbikeId);
+            await motorbikeValidator.ValidateForUpdate(motorbikeDto);
+            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(motorbikeDto.MotorbikeId);
             if (motorbike == null)
                 throw new Exception("Motorbike not found");
-            motorbike.PriceList.DailyRate = motorbikeViewModel.DailyRate;
-            motorbike.PriceList.HourlyRate = motorbikeViewModel.HourlyRate;
+            motorbike.PriceList.DailyRate = motorbikeDto.DailyRate;
+            motorbike.PriceList.HourlyRate = motorbikeDto.HourlyRate;
+            if (formFile != null)
+                motorbike.ImageUrl = await fileService.SaveImage(formFile, "motorbikes");
             await motorbikeRepository.Update(motorbike);
-            Motorbike motorbike1 = await motorbikeRepository.GetByIdWithIncludes(motorbikeViewModel.MotorbikeId);
-            MotorbikeDto motorbikeViewModel1 = mapper.Map<MotorbikeDto>(motorbike1);
-            motorbikeViewModel1.CategoryName = motorbike1.Category.CategoryName;
-            motorbikeViewModel1.HourlyRate = motorbike1.PriceList.HourlyRate;
-            motorbikeViewModel1.DailyRate = motorbike1.PriceList.DailyRate;
-            return motorbikeViewModel1;
+            return mapper.Map<MotorbikeDto>(motorbike);
         }
     }
 }

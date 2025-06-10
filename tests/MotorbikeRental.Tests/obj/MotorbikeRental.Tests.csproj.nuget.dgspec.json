@@ -57,6 +57,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[14.0.0, )"
+            },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.3.0, )"
             }
           },
           "imports": [
@@ -172,6 +176,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "D:\\C Sharp\\Đồ án\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Application\\MotorbikeRental.Application.csproj": {
+                "projectPath": "D:\\C Sharp\\Đồ án\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Application\\MotorbikeRental.Application.csproj"
+              },
               "D:\\C Sharp\\Đồ án\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj": {
                 "projectPath": "D:\\C Sharp\\Đồ án\\QuanLyCuaHangChoThueXeMay\\src\\MotorbikeRental\\MotorbikeRental.Domain\\MotorbikeRental.Domain.csproj"
               }
@@ -194,6 +201,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.5, )"

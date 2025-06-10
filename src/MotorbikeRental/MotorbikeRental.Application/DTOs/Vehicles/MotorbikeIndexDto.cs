@@ -1,7 +1,7 @@
-using MotorbikeRental.Domain.DTOs.Pagination;
+using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Domain.Enums.VehicleEnum;
 
-namespace MotorbikeRental.Domain.DTOs.Vehicles
+namespace MotorbikeRental.Application.DTOs.Vehicles
 {
     public class MotorbikeIndexDto
     {

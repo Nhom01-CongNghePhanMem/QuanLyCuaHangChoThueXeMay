@@ -1,5 +1,5 @@
+using MotorbikeRental.Application.DTOs.Vehicles;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
-using MotorbikeRental.Domain.DTOs.Vehicles;
 using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Enums.VehicleEnum;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
@@ -15,15 +15,15 @@ namespace MotorbikeRental.Application.Validators.VehicleValidators
             this.motorbikeRepository = motorbikeRepository;
             this.categoryRepository = categoryRepository;
         }
-        public async Task<bool> ValidateForCreate(MotorbikeDto motorbikeViewModel)
+        public async Task<bool> ValidateForCreate(MotorbikeDto motorbikeDto)
         {
-            if (!await categoryRepository.CategoryIdExists(motorbikeViewModel.CategoryId))
+            if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeDto.CategoryId))
                 throw new Exception("Category not found");
-            if (await motorbikeRepository.LicensePlateExists(motorbikeViewModel.LicensePlate))
+            if (await motorbikeRepository.IsExists(nameof(Motorbike.LicensePlate), motorbikeDto.LicensePlate))
                 throw new Exception("License plate number already exists.");
-            if (await motorbikeRepository.ChassisNumberExists(motorbikeViewModel.ChassisNumber))
+            if (await motorbikeRepository.IsExists(nameof(Motorbike.ChassisNumber), motorbikeDto.ChassisNumber))
                 throw new Exception("Chassis number already exists.");
-            if (await motorbikeRepository.EngineNumberExists(motorbikeViewModel.EngineNumber))
+            if (await motorbikeRepository.IsExists(nameof(Motorbike.EngineNumber), motorbikeDto.EngineNumber))
                 throw new Exception("Engine number already exists");
             return true;
         }
@@ -35,19 +35,19 @@ namespace MotorbikeRental.Application.Validators.VehicleValidators
             return true;
         }
 
-        public async Task<bool> ValidateForUpdate(MotorbikeDto motorbikeViewModel)
+        public async Task<bool> ValidateForUpdate(MotorbikeDto motorbikeDto)
         {
-            if (!await motorbikeRepository.IsExists(motorbikeViewModel.MotorbikeId))
+            if (!await motorbikeRepository.IsExists(nameof(Motorbike.MotorbikeId),motorbikeDto.MotorbikeId))
                 throw new Exception("MotorBike not found");
-            if (motorbikeViewModel.Status == MotorbikeStatus.Rented)
+            if (motorbikeDto.Status == MotorbikeStatus.Rented)
                 throw new Exception("This motorbike is currently rented and cannot be edited.");
-            if (!await categoryRepository.CategoryIdExists(motorbikeViewModel.CategoryId))
+            if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeDto.CategoryId))
                 throw new Exception("Category not found");
-            if (await motorbikeRepository.DupLicensePlateExceptId(motorbikeViewModel.LicensePlate, motorbikeViewModel.MotorbikeId))
+            if (await motorbikeRepository.IsExistsForUpdate(motorbikeDto.MotorbikeId ,nameof(Motorbike.LicensePlate), motorbikeDto.LicensePlate, nameof(Motorbike.MotorbikeId) ))
                 throw new Exception("License plate number already exists.");
-            if (await motorbikeRepository.DupChassisNumExceptId(motorbikeViewModel.ChassisNumber, motorbikeViewModel.MotorbikeId))
+            if (await motorbikeRepository.IsExistsForUpdate(motorbikeDto.MotorbikeId, nameof(Motorbike.ChassisNumber), motorbikeDto.ChassisNumber, nameof(Motorbike.MotorbikeId)))
                 throw new Exception("Chassis number already exists.");
-            if (await motorbikeRepository.DupEngineNumExceptId(motorbikeViewModel.EngineNumber, motorbikeViewModel.MotorbikeId))
+            if (await motorbikeRepository.IsExistsForUpdate(motorbikeDto.MotorbikeId, nameof(Motorbike.EngineNumber), motorbikeDto.EngineNumber, nameof(Motorbike.MotorbikeId)))
                 throw new Exception("Engine number already exists");
             return true;
         }

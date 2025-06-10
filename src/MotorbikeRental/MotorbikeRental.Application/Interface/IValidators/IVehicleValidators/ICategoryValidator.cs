@@ -1,4 +1,4 @@
-using MotorbikeRental.Domain.DTOs.Vehicles;
+using MotorbikeRental.Application.DTOs.Vehicles;
 
 namespace MotorbikeRental.Application.Interface.IValidators.IVehicleValidators
 {

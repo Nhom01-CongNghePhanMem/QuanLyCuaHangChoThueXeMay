@@ -1,5 +1,9 @@
+using MotorbikeRental.Application.Interface.IServices.ICustomerServices;
+using MotorbikeRental.Application.Interface.IServices.IUserServices;
+using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
 using MotorbikeRental.Application.Mappers;
+using MotorbikeRental.Application.Services.CustomerServices;
 using MotorbikeRental.Application.Services.UserServices;
 using MotorbikeRental.Application.Services.VehicleServices;
 using MotorbikeRental.Application.Validators.VehicleValidators;
@@ -9,8 +13,6 @@ using MotorbikeRental.Domain.Interfaces.IRepositories.IIncidents;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IPricingRepositories;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
-using MotorbikeRental.Domain.Interfaces.IServices.IUserServices;
-using MotorbikeRental.Domain.Interfaces.IServices.IVehicleServices;
 using MotorbikeRental.Infrastructure.Data.Repositories.ContractRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.CustomerRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.IncidentRepositories;
@@ -51,6 +53,8 @@ namespace MotorbikeRental.Web.Extensions
             //VehicleServices
             services.AddScoped<IMotorbikeService, MotorbikeService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            //CustomerServices
+            services.AddScoped<ICustomerService, CustomerService>();
             #endregion
 
 

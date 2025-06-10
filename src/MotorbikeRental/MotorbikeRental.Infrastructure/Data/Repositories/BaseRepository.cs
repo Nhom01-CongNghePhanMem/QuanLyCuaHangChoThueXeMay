@@ -1,4 +1,7 @@
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Interfaces.IRepositories;
 using MotorbikeRental.Infrastructure.Data.Contexts;
 
@@ -44,6 +47,29 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories
         {
             dbContext.Set<T>().Update(model);
             await dbContext.SaveChangesAsync();
+        }
+        public async Task<bool> IsExists<Tvalue>(string key, Tvalue value)
+        {
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(parameter, key);
+            var constant = Expression.Constant(value);
+            var equality = Expression.Equal(property, constant);
+            var lambda = Expression.Lambda<Func<T, bool>>(equality, parameter);
+            return await dbContext.Set<T>().AsNoTracking().AnyAsync(lambda);
+        }
+        public async Task<bool> IsExistsForUpdate<Tid>(Tid id, string key, string value, string idPropertyName = "Id")
+        {
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(parameter, key);
+            var constant = Expression.Constant(value);
+            var equality = Expression.Equal(property, constant);
+
+            var idProperty = Expression.Property(parameter, idPropertyName);
+            var idEquality = Expression.NotEqual(idProperty, Expression.Constant(id));
+
+            var combinedExpression = Expression.AndAlso(equality, idEquality);
+            var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
+            return await dbContext.Set<T>().AnyAsync(lambda);
         }
     }
 }

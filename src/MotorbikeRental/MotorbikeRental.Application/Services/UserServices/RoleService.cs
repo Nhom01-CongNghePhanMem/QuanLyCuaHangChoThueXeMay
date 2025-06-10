@@ -1,8 +1,8 @@
 using AutoMapper;
-using MotorbikeRental.Domain.DTOs.User;
+using MotorbikeRental.Application.DTOs.User;
+using MotorbikeRental.Application.Interface.IServices.IUserServices;
 using MotorbikeRental.Domain.Entities.User;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories;
-using MotorbikeRental.Domain.Interfaces.IServices.IUserServices;
 
 namespace MotorbikeRental.Application.Services.UserServices
 {

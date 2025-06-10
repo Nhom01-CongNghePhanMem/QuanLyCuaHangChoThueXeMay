@@ -171,3 +171,4 @@ D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\obj\D
 D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\obj\Debug\net8.0\MotorbikeRental.Tests.pdb
 D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\obj\Debug\net8.0\MotorbikeRental.Tests.genruntimeconfig.cache
 D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\obj\Debug\net8.0\ref\MotorbikeRental.Tests.dll
+D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll

@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using MotorbikeRental.Domain.Entities.Contract;
+using MotorbikeRental.Domain.Enums.CustomerEnum;
 
-namespace MotorbikeRental.Domain.DTOs.Customers;
+namespace MotorbikeRental.Application.DTOs.Customers;
 
 public class CustomerDto
 {
@@ -10,6 +11,8 @@ public class CustomerDto
     [Required(ErrorMessage = "Full name is required")]
     [MaxLength(30, ErrorMessage = "Full name cannot exceed 30 characters")]
     public string FullName { get; set; } //Tên khách hàng
+    [Required]
+    public Gender Gender { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "Rental count must be a non-negative number")]
     public int RentalCount { get; set; } // Số lần thuê
@@ -31,5 +34,4 @@ public class CustomerDto
     [Required(ErrorMessage = "Create date is required")]
     public DateTime CreateAt { get; set; } //Ngày tạo 
 
-    public virtual ICollection<RentalContract> RentalContracts { get; set; }
 }
