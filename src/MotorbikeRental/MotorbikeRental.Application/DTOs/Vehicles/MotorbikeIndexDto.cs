@@ -9,5 +9,6 @@ namespace MotorbikeRental.Application.DTOs.Vehicles
         public IEnumerable<string> Brands { get; set; }
         public IEnumerable<MotorbikeStatus> motorbikeStatuses { get; set; } = Enum.GetValues<MotorbikeStatus>();
         public PaginatedDataDto<MotorbikeListDto> PaginatedDataViewModel { get; set; }
+        public MotorbikeFilterDto CurrentFilter { get; set; }
     }
 }

@@ -24,14 +24,18 @@ namespace MotorbikeRental.Application.Services.CustomerServices
             return mapper.Map<CustomerDto>(await customerRepository.GetByIdWithIncludes((await customerRepository.Create(mapper.Map<Customer>(customerDto))).CustomerId));
         }
 
-        public Task<bool> DeleteCustomer(int id)
+        public async Task<bool> DeleteCustomer(int id)
         {
-            throw new NotImplementedException();
+            Customer customer = await customerRepository.GetById(id);
+            if (customer == null)
+                throw new Exception("Customer not found");
+            await customerRepository.Delete(customer);
+            return true;
         }
 
-        public Task<CustomerDto> GetCustomerById(int id)
+        public async Task<CustomerDto> GetCustomerById(int id)
         {
-            throw new NotImplementedException();
+            return mapper.Map<CustomerDto>(await customerRepository.GetByIdWithIncludes(id));
         }
     }
 }

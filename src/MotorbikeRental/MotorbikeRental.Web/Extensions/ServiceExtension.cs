@@ -1,11 +1,14 @@
+using MotorbikeRental.Application.Interface.IExternalServices.Storage;
 using MotorbikeRental.Application.Interface.IServices.ICustomerServices;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
 using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
+using MotorbikeRental.Application.Interface.IValidators.ICustomerValidators;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
 using MotorbikeRental.Application.Mappers;
 using MotorbikeRental.Application.Services.CustomerServices;
 using MotorbikeRental.Application.Services.UserServices;
 using MotorbikeRental.Application.Services.VehicleServices;
+using MotorbikeRental.Application.Validators.CustomerValidators;
 using MotorbikeRental.Application.Validators.VehicleValidators;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IContractRepositories;
 using MotorbikeRental.Domain.Interfaces.IRepositories.ICustomerRepositories;
@@ -19,6 +22,7 @@ using MotorbikeRental.Infrastructure.Data.Repositories.IncidentRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.PricingRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.VehicleRepositories;
+using MotorbikeRental.Infrastructure.ExternalServices.StorageService;
 
 namespace MotorbikeRental.Web.Extensions
 {
@@ -57,14 +61,21 @@ namespace MotorbikeRental.Web.Extensions
             services.AddScoped<ICustomerService, CustomerService>();
             #endregion
 
+            #region RegisterExternalService
+            services.AddScoped<IFileService, FileService>();
+            #endregion
+
 
             #region RegisterAutoMapper
             services.AddAutoMapper(typeof(MappingProfile));
             #endregion
 
             #region RegisterValidator
+            //VehicleValidator
             services.AddScoped<IMotorbikeValidator, MotorbikeValidator>();
             services.AddScoped<ICategoryValidator, CategoryValidator>();
+            //CustomerValidator
+            services.AddScoped<ICustomerValidator, CustomerValidator>();
             #endregion
             return services;
         }

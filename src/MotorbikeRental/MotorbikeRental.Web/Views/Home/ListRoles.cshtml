@@ -1,0 +1,96 @@
+@using MotorbikeRental.Application.DTOs.User
+@model IEnumerable<RoleDto>
+@{
+    Layout = null; // Không dùng layout chung, nếu bạn có _Layout.cshtml thì để lại Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Danh sách vai trò</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer {
+            background-color: #f2f2f2;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e0e0e0;
+        }
+
+        .no-data {
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>QUẢN LÝ VAI TRÒ</h1>
+    </header>
+
+    <main>
+        <h2>Danh sách vai trò trong hệ thống</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên vai trò</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int stt = 1;
+                    foreach (var role in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@role.RoleName</td>
+                            <td>@role.Description</td>
+                        </tr>
+                        stt++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="no-data">Không có vai trò nào.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Hệ thống quản lý</p>
+    </footer>
+</body>
+</html>

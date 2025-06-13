@@ -49,19 +49,20 @@ namespace MotorbikeRental.Application.Services.VehicleServices
 
         public async Task<MotorbikeIndexDto> GetMotorbikesByFilter(MotorbikeFilterDto motorbikeFilterDto)
         {
-                var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto.CategoryId, motorbikeFilterDto.Brand, motorbikeFilterDto.Status, motorbikeFilterDto.PageNumber, motorbikeFilterDto.PageSize);
-                List<Motorbike> motorbikes = data.ToList();
-                List<MotorbikeListDto> motorbikeListDto = new List<MotorbikeListDto>();
-                for (int i = 0; i < motorbikes.Count; i++)
-                {
-                    motorbikeListDto.Add(mapper.Map<MotorbikeListDto>(motorbikes[i]));
-                }
-                return new MotorbikeIndexDto()
-                {
-                    Brands = await motorbikeRepository.GetDistinctBrands(),
-                    CategoryViewModels = mapper.Map<IEnumerable<CategoryDto>>(await categoryRepository.GetCategoriesNoTracking()),
-                    PaginatedDataViewModel = new PaginatedDataDto<MotorbikeListDto>(motorbikeListDto, total)
-                };
+            var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto.CategoryId, motorbikeFilterDto.Brand, motorbikeFilterDto.Status, motorbikeFilterDto.PageNumber, motorbikeFilterDto.PageSize);
+            List<Motorbike> motorbikes = data.ToList();
+            List<MotorbikeListDto> motorbikeListDto = new List<MotorbikeListDto>();
+            for (int i = 0; i < motorbikes.Count; i++)
+            {
+                motorbikeListDto.Add(mapper.Map<MotorbikeListDto>(motorbikes[i]));
+            }
+            return new MotorbikeIndexDto()
+            {
+                Brands = await motorbikeRepository.GetDistinctBrands(),
+                CategoryViewModels = mapper.Map<IEnumerable<CategoryDto>>(await categoryRepository.GetCategoriesNoTracking()),
+                PaginatedDataViewModel = new PaginatedDataDto<MotorbikeListDto>(motorbikeListDto, total),
+                CurrentFilter = motorbikeFilterDto
+            };
         }
 
         public async Task<MotorbikeDto> GetMotorbikeById(int id)
@@ -72,14 +73,19 @@ namespace MotorbikeRental.Application.Services.VehicleServices
         public async Task<MotorbikeDto> UpdateMotorbike(MotorbikeDto motorbikeDto, IFormFile? formFile)
         {
             await motorbikeValidator.ValidateForUpdate(motorbikeDto);
-            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(motorbikeDto.MotorbikeId);
+            Motorbike motorbike = await motorbikeRepository.GetById(motorbikeDto.MotorbikeId);
             if (motorbike == null)
                 throw new Exception("Motorbike not found");
             motorbike.PriceList.DailyRate = motorbikeDto.DailyRate;
             motorbike.PriceList.HourlyRate = motorbikeDto.HourlyRate;
             if (formFile != null)
-                motorbike.ImageUrl = await fileService.SaveImage(formFile, "motorbikes");
-            await motorbikeRepository.Update(motorbike);
+            {
+                if (motorbike.ImageUrl != null)
+                    if (!fileService.DeleteFile(motorbike.ImageUrl)) throw new Exception("Loi");
+                motorbike.ImageUrl = await fileService.SaveImage(formFile, "Motorbike");
+            }
+            motorbikeDto.ImageUrl = motorbike.ImageUrl;
+            await motorbikeRepository.Update(mapper.Map(motorbikeDto, motorbike));
             return mapper.Map<MotorbikeDto>(motorbike);
         }
     }

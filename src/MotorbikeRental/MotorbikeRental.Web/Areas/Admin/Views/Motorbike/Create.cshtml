@@ -1,0 +1,236 @@
+﻿@using MotorbikeRental.Application.DTOs.Vehicles
+@using MotorbikeRental.Domain.Enums.VehicleEnum
+@model MotorbikeRental.Application.DTOs.Vehicles.MotorbikeDto
+@{
+    ViewData["Title"] = "Create New Motorbike";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-plus-circle me-2"></i>@ViewData["Title"]</h2>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Back to List
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Motorbike Information</h5>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Create", "Motorbike", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "novalidate", @class = "needs-validation" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+                        <div class="row">
+                            <!-- Basic Information -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3">Basic Information</h6>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.MotorbikeName, "Motorbike Name", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.MotorbikeName, new { @class = "form-control", placeholder = "Enter motorbike name" })
+                                    @Html.ValidationMessageFor(m => m.MotorbikeName, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.CategoryId, "Category", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.DropDownListFor(m => m.CategoryId, 
+                                        new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"), 
+                                        "Select Category", 
+                                        new { @class = "form-select" })
+                                    @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.Brand, "Brand", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.Brand, new { @class = "form-control", placeholder = "Enter brand name" })
+                                    @Html.ValidationMessageFor(m => m.Brand, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            @Html.LabelFor(m => m.Year, "Year", new { @class = "form-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Year, new { @class = "form-control", type = "number", min = "1990", max = "2030" })
+                                            @Html.ValidationMessageFor(m => m.Year, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            @Html.LabelFor(m => m.Color, "Color", new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.Color, new { @class = "form-control", placeholder = "Enter color" })
+                                            @Html.ValidationMessageFor(m => m.Color, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.EngineCapacity, "Engine Capacity (cc)", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.EngineCapacity, new { @class = "form-control", type = "number", min = "50", max = "2000", placeholder = "Enter engine capacity" })
+                                    @Html.ValidationMessageFor(m => m.EngineCapacity, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.Mileage, "Mileage (km)", new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Mileage, new { @class = "form-control", type = "number", step = "0.1", min = "0", placeholder = "Enter mileage" })
+                                    @Html.ValidationMessageFor(m => m.Mileage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <!-- Technical & Legal Information -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3">Technical & Legal Information</h6>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.LicensePlate, "License Plate", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.LicensePlate, new { @class = "form-control", placeholder = "Enter license plate" })
+                                    @Html.ValidationMessageFor(m => m.LicensePlate, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.ChassisNumber, "Chassis Number", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.ChassisNumber, new { @class = "form-control", placeholder = "Enter chassis number" })
+                                    @Html.ValidationMessageFor(m => m.ChassisNumber, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.EngineNumber, "Engine Number", new { @class = "form-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.EngineNumber, new { @class = "form-control", placeholder = "Enter engine number" })
+                                    @Html.ValidationMessageFor(m => m.EngineNumber, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            @Html.LabelFor(m => m.HourlyRate, "Hourly Rate ($)", new { @class = "form-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.HourlyRate, new { @class = "form-control", type = "number", step = "0.01", min = "0.01" })
+                                            @Html.ValidationMessageFor(m => m.HourlyRate, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            @Html.LabelFor(m => m.DailyRate, "Daily Rate ($)", new { @class = "form-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.DailyRate, new { @class = "form-control", type = "number", step = "0.01", min = "0.01" })
+                                            @Html.ValidationMessageFor(m => m.DailyRate, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            @Html.LabelFor(m => m.MotorbikeConditionStatus, "Condition Status", new { @class = "form-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.DropDownListFor(m => m.MotorbikeConditionStatus, 
+                                                Html.GetEnumSelectList<MotorbikeConditionStatus>(), 
+                                                "Select Condition", 
+                                                new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(m => m.MotorbikeConditionStatus, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            @Html.LabelFor(m => m.Status, "Availability Status", new { @class = "form-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.DropDownListFor(m => m.Status, 
+                                                Html.GetEnumSelectList<MotorbikeStatus>(), 
+                                                "Select Status", 
+                                                new { @class = "form-select" })
+                                            @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Motorbike Image</label>
+                                    <input type="file" name="formFile" id="formFile" class="form-control" accept="image/*" />
+                                    <div class="form-text">Upload an image file (JPG, PNG, etc.)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.Description, "Description", new { @class = "form-label" })
+                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "4", placeholder = "Enter description (optional)" })
+                                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i>Create Motorbike
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-secondary">
+                                        <i class="fas fa-undo me-1"></i>Reset Form
+                                    </button>
+                                    <a href="@Url.Action("Index")" class="btn btn-outline-danger">
+                                        <i class="fas fa-times me-1"></i>Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Preview image when selected
+        document.getElementById('formFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Create preview if doesn't exist
+                    let preview = document.getElementById('imagePreview');
+                    if (!preview) {
+                        preview = document.createElement('img');
+                        preview.id = 'imagePreview';
+                        preview.className = 'img-thumbnail mt-2';
+                        preview.style.maxWidth = '200px';
+                        preview.style.maxHeight = '200px';
+                        document.getElementById('formFile').parentNode.appendChild(preview);
+                    }
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Auto-calculate daily rate based on hourly rate
+        document.getElementById('HourlyRate').addEventListener('input', function() {
+            const hourlyRate = parseFloat(this.value);
+            if (hourlyRate && hourlyRate > 0) {
+                const dailyRate = hourlyRate * 8; // 8 hours per day
+                document.getElementById('DailyRate').value = dailyRate.toFixed(2);
+            }
+        });
+    </script>
+}

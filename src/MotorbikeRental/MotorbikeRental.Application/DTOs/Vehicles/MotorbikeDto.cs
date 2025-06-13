@@ -13,7 +13,7 @@ namespace MotorbikeRental.Application.DTOs.Vehicles
         [Range(1, int.MaxValue, ErrorMessage = "Invalid category ID")]
         public int CategoryId { get; set; } //FK tới Category table
         [MaxLength(20, ErrorMessage = "Category name cannot exceed 20 characters")]
-        public string CategoryName { get; set; }
+        public string? CategoryName { get; set; }
         [Required(ErrorMessage = "Hourly rate is required")]
         [Range(0.01, 9999999, ErrorMessage = "Hourly rate must be greater than 0")]
         public decimal HourlyRate { get; set; }//Thuê theo giờ

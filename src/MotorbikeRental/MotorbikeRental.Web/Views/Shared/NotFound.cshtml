@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Không tìm thấy trang</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            overflow: hidden;
+        }
+
+        .error-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Logo/Brand */
+        .brand {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .brand i {
+            font-size: 1.5rem;
+            color: #ffd700;
+        }
+
+        /* 404 Number với motorcycle design */
+        .error-404 {
+            font-size: 8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            line-height: 1;
+        }
+
+        /* Motorcycle icon integrated với số 0 */
+        .error-404::after {
+            content: '\f21c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            color: #ffd700;
+            opacity: 0.8;
+        }
+
+        .error-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 1.5rem 0 1rem 0;
+            color: #ffd700;
+        }
+
+        .error-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .error-description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 2.5rem;
+            color: #e8e8e8;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn-custom {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn-primary-custom {
+            background: #ffd700;
+            color: #1e3c72;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary-custom:hover {
+            background: #ffed4e;
+            color: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            text-decoration: none;
+        }
+
+        .btn-secondary-custom {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Quick Links - Motorcycle Rental Related */
+        .quick-links {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .quick-links h4 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .quick-link:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .quick-link i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+        }
+
+        .contact-info div {
+            margin-bottom: 0.25rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <!-- Brand/Logo -->
+        <div class="brand">
+            <i class="fas fa-motorcycle"></i>
+            MotoRental Pro
+        </div>
+
+        <!-- Main 404 Content -->
+        <h1 class="error-404">404</h1>
+        
+        <h2 class="error-title">Trang không tìm thấy</h2>
+        
+        <p class="error-subtitle">
+            Trang bạn đang tìm kiếm không tồn tại trong hệ thống quản lý cho thuê xe máy
+        </p>
+
+        <p class="error-description">
+            Có thể link đã thay đổi hoặc bạn nhập sai địa chỉ
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="@Url.Action("Index", "Home")" class="btn-custom btn-primary-custom">
+                <i class="fas fa-home"></i>
+                Trang chủ
+            </a>
+            
+            <button onclick="history.back()" class="btn-custom btn-secondary-custom">
+                <i class="fas fa-arrow-left"></i>
+                Quay lại
+            </button>
+        </div>
+        
+        <!-- Quick Links related to Motorcycle Rental -->
+        <div class="quick-links">
+            <h4><i class="fas fa-bolt"></i> Truy cập nhanh</h4>
+            <div class="quick-links-grid">
+                <a href="@Url.Action("Index", "Home")" class="quick-link">
+                    <i class="fas fa-motorcycle"></i>
+                    Xe máy
+                </a>
+                <a href="@Url.Action("Login", "Auth")" class="quick-link">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </a>
+                <a href="@Url.Action("Index", "Home")" class="quick-link">
+                    <i class="fas fa-users"></i>
+                    Khách hàng
+                </a>
+                <a href="@Url.Action("Index", "Home")" class="quick-link">
+                    <i class="fas fa-file-contract"></i>
+                    Hợp đồng
+                </a>
+                <a href="@Url.Action("Index", "Home")" class="quick-link">
+                    <i class="fas fa-chart-bar"></i>
+                    Báo cáo
+                </a>
+                <a href="@Url.Action("Index", "Home")" class="quick-link">
+                    <i class="fas fa-cog"></i>
+                    Cài đặt
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <div><strong>Hỗ trợ 24/7</strong></div>
+            <div><i class="fas fa-phone"></i> 1900-1234</div>
+            <div><i class="fas fa-envelope"></i> support@motorental.vn</div>
+        </div>
+    </div>
+
+    <script>
+        // Simple keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'h' || e.key === 'H') {
+                if (!e.ctrlKey && !e.metaKey) {
+                    window.location.href = '@Url.Action("Index", "Home")';
+                }
+            }
+            if (e.key === 'Backspace') {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    history.back();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

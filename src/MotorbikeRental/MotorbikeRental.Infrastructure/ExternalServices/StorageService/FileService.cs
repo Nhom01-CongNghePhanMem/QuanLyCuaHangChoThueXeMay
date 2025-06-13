@@ -49,7 +49,12 @@ namespace MotorbikeRental.Infrastructure.ExternalServices.StorageService
         }
         public bool DeleteFile(string filePath)
         {
-            string fullPath = Path.Combine(baseDirectory, filePath);
+            string relativePath = filePath.TrimStart('/', '\\');
+            if (relativePath.StartsWith("uploads", StringComparison.OrdinalIgnoreCase))
+            {
+                relativePath = relativePath.Substring("uploads".Length).TrimStart('/', '\\');
+            }
+            string fullPath = Path.Combine(baseDirectory, relativePath);
             if (File.Exists(fullPath))
             {
                 try
