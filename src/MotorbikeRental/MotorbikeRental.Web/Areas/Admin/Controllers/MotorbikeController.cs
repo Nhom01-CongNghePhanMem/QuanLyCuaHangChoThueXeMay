@@ -140,5 +140,20 @@ namespace MotorbikeRental.Web.Areas.Admin.Controllers
                 return View(motorbikeDto);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await motorbikeService.DeleteMotorbike(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ErrorMessages.SystemError);
+                ViewBag.Error = ErrorMessages.SystemError;
+                return View("Error");
+            }
+        }
     }
 }

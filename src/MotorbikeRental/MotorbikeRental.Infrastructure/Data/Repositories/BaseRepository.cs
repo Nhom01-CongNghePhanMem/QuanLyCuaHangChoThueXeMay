@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Interfaces.IRepositories;
 using MotorbikeRental.Infrastructure.Data.Contexts;
 
@@ -69,7 +67,7 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories
 
             var combinedExpression = Expression.AndAlso(equality, idEquality);
             var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
-            return await dbContext.Set<T>().AnyAsync(lambda);
+            return await dbContext.Set<T>().AsNoTracking().AnyAsync(lambda);
         }
     }
 }
