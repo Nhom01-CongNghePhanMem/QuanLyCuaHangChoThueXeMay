@@ -351,3 +351,6 @@ D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\D
 D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\.msCoverageSourceRootsMapping_MotorbikeRental.Tests
+D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
+D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\tests\MotorbikeRental.Tests\bin\Debug\net8.0\Moq.dll
