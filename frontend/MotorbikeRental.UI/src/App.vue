@@ -1,31 +1,33 @@
 <script setup>
-import { RouterView } from 'vue-router'
 </script>
 
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/admin/motorbikes">Test API</router-link>
     </nav>
     <RouterView />
   </div>
 </template>
-
-<style scoped>
-nav {
-  padding: 30px;
-  text-align: center;
+<style>
+/* Global reset - loại bỏ margin/padding của browser */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-  margin: 0 10px;
+#app {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  min-height: 100vh;
 }
 
-nav a.router-link-exact-active {
-  color: #42b883;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
