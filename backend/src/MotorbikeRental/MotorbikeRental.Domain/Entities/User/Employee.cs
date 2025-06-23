@@ -29,11 +29,7 @@ namespace MotorbikeRental.Domain.Entities.User
         [Required(ErrorMessage = "Address is required")]
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "Credential Id is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Invalid CredentialId")]
-        public int CredentialId { get; set; }
         public virtual UserCredentials UserCredentials { get; set; }
-
         [Url(ErrorMessage = "Invalid URL format")]
         [StringLength(500, ErrorMessage = "Avatar URL cannot exceed 500 characters")]
         public string? Avatar { get; set; }

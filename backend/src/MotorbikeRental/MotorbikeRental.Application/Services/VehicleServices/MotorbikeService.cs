@@ -73,9 +73,7 @@ namespace MotorbikeRental.Application.Services.VehicleServices
         public async Task<MotorbikeDto> UpdateMotorbike(MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken = default)
         {
             await motorbikeValidator.ValidateForUpdate(motorbikeUpdateDto, cancellationToken);
-            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(motorbikeUpdateDto.MotorbikeId, cancellationToken);
-            if (motorbike == null)
-                throw new Exception("Motorbike not found");
+            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(motorbikeUpdateDto.MotorbikeId, cancellationToken) ?? throw new Exception("Motorbike not found"); 
             motorbike.PriceList.DailyRate = motorbikeUpdateDto.DailyRate;
             motorbike.PriceList.HourlyRate = motorbikeUpdateDto.HourlyRate;
             if (motorbikeUpdateDto.FormFile != null)

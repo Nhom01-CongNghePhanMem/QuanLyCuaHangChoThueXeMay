@@ -9,6 +9,6 @@ namespace MotorbikeRental.Domain.Interfaces.IRepositories
         Task Delete(T model, CancellationToken cancellationToken = default);
         Task SaveChangeAsync(CancellationToken cancellationToken = default);
         Task<bool> IsExists<Tvalue>(string key, Tvalue value, CancellationToken cancellationToken = default);
-        Task<bool> IsExistsForUpdate<Tid>(Tid id, string tableName, string key, string value, CancellationToken cancellationToken = default);
+        Task<bool> IsExistsForUpdate<Tid>(Tid id, string key, string value, string idPropertyName = "Id", CancellationToken cancellationToken = default);
     }
 }

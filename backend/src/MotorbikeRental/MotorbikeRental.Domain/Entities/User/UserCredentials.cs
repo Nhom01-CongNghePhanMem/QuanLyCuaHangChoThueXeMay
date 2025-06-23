@@ -13,8 +13,6 @@ namespace MotorbikeRental.Domain.Entities.User
         public string Username { get; set; }            // Tên đăng nhập
         [Required(ErrorMessage = "Password hash is required")]
         public string PasswordHash { get; set; }        // Mật khẩu đã mã hóa
-        [Required(ErrorMessage = "Salt is required")]
-        public string Salt { get; set; }                // Chuỗi salt
         public DateTime? LastLogin { get; set; }     //Thời gian đăng nhập gần nhất
         public virtual Employee Employee { get; set; }
     }

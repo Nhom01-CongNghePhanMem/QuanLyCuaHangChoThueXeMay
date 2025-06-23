@@ -3,12 +3,14 @@ using MotorbikeRental.Application.Interface.IServices.ICustomerServices;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
 using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
 using MotorbikeRental.Application.Interface.IValidators.ICustomerValidators;
+using MotorbikeRental.Application.Interface.IValidators.IUserValidators;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
 using MotorbikeRental.Application.Mappers;
 using MotorbikeRental.Application.Services.CustomerServices;
 using MotorbikeRental.Application.Services.UserServices;
 using MotorbikeRental.Application.Services.VehicleServices;
 using MotorbikeRental.Application.Validators.CustomerValidators;
+using MotorbikeRental.Application.Validators.UserValidators;
 using MotorbikeRental.Application.Validators.VehicleValidators;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IContractRepositories;
 using MotorbikeRental.Domain.Interfaces.IRepositories.ICustomerRepositories;
@@ -87,6 +89,8 @@ namespace MotorbikeRental.Web.Extensions
             services.AddScoped<ICategoryValidator, CategoryValidator>();
             //CustomerValidator
             services.AddScoped<ICustomerValidator, CustomerValidator>();
+            //EmployeeValidator
+            services.AddScoped<IEmployeeValidator, EmployeeValidator>();
             return services;
         }
     }
