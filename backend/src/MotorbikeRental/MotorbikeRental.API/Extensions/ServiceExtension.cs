@@ -77,7 +77,7 @@ namespace MotorbikeRental.Web.Extensions
         }
         private static IServiceCollection RegisterAutoMapper(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(RoleProfile).Assembly);
             return services;
         }
         private static IServiceCollection RegisterValidator(IServiceCollection services)

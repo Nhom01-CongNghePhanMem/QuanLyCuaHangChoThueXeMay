@@ -1,27 +1,18 @@
-using AutoMapper;
-using MotorbikeRental.Application.DTOs.Customers;
-using MotorbikeRental.Application.DTOs.User;
+﻿using AutoMapper;
 using MotorbikeRental.Application.DTOs.Vehicles;
-using MotorbikeRental.Domain.Entities.Customers;
-using MotorbikeRental.Domain.Entities.User;
 using MotorbikeRental.Domain.Entities.Vehicles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MotorbikeRental.Application.Mappers
 {
-    public class MappingProfile : Profile
+    public class MotorbikeProfile : Profile
     {
-        public MappingProfile()
+        public MotorbikeProfile()
         {
-            #region MapRole
-            CreateMap<Roles, RoleDto>();
-            #endregion
-
-            #region MapCategory
-            CreateMap<Category, CategoryDto>();
-            CreateMap<CategoryDto, Category>();
-            #endregion
-
-            #region MapMotorbike
             CreateMap<Motorbike, MotorbikeDto>()
                 .ForMember(dest => dest.CategoryName,
                 opt => opt.MapFrom(src => src.Category.CategoryName))
@@ -37,14 +28,8 @@ namespace MotorbikeRental.Application.Mappers
                 opt => opt.MapFrom(src => src.PriceList.HourlyRate))
                 .ForMember(dest => dest.DailyRate,
                 opt => opt.MapFrom(src => src.PriceList.DailyRate));
-            #endregion
-
-            #region MapCustomer
-            CreateMap<Customer, CustomerDto>()
-                .ForMember(dest => dest.RentalCount,
-                opt => opt.MapFrom(src => src.RentalContracts.Count));
-            CreateMap<CustomerDto, Customer>();
-            #endregion
+            CreateMap<MotorbikeCreateDto, Motorbike>();
+            CreateMap<MotorbikeUpdateDto, Motorbike>();
         }
     }
 }

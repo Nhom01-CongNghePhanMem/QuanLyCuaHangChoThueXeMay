@@ -59,12 +59,18 @@ namespace MotorbikeRental.API.Controllers
                 if (result != null)
                     memoryCache.Set($"Motorbike_{id}", result, TimeSpan.FromMinutes(10));
             }
-            return Ok(result);
+            var responseDto = new ResponseDto<MotorbikeDto>
+            {
+                Success = true,
+                Message = "Motorbike retrieved successfully",
+                Data = result
+            };
+            return Ok(responseDto);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateMotorbike([FromForm] MotorbikeDto motorbikeDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateMotorbike([FromForm] MotorbikeCreateDto motorbikeCreateDto, CancellationToken cancellationToken)
         {
-            var result = await motorbikeService.CreateMotorbike(motorbikeDto, cancellationToken);
+            var result = await motorbikeService.CreateMotorbike(motorbikeCreateDto, cancellationToken);
             var response = new ResponseDto<MotorbikeDto>
             {
                 Success = true,
@@ -73,10 +79,20 @@ namespace MotorbikeRental.API.Controllers
             };
             return CreatedAtAction(nameof(GetMotorbikeById), new { id = result.MotorbikeId }, response);
         }
-        [HttpPut]
-        public async Task<IActionResult> EditMotorbike([FromForm] MotorbikeDto motorbikeDto, CancellationToken cancellationToken)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditMotorbike(int id, [FromForm] MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken)
         {
-            var result = await motorbikeService.UpdateMotorbike(motorbikeDto, cancellationToken);
+            if(id != motorbikeUpdateDto.MotorbikeId)
+            {
+                var errorResponse = new ResponseDto
+                {
+                    Success = false,
+                    Message = "Id in URL and body must match"
+                };
+                return BadRequest(errorResponse);
+            }
+            var result = await motorbikeService.UpdateMotorbike(motorbikeUpdateDto, cancellationToken);
+            memoryCache.Remove($"Motorbike_{id}");
             var response = new ResponseDto<MotorbikeDto>
             {
                 Success = true,
@@ -85,7 +101,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMotorbike(int id, CancellationToken cancellationToken)
         {
             await motorbikeService.DeleteMotorbike(id, cancellationToken);

@@ -9,6 +9,7 @@ namespace MotorbikeRental.Domain.Entities.User
         [Range(1, int.MaxValue, ErrorMessage = "Invalid EmployeeId")]
         public int EmployeeId { get; set; }             // Foreign Key → Employee
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 20 characters")]
+        [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }            // Tên đăng nhập
         [Required(ErrorMessage = "Password hash is required")]
         public string PasswordHash { get; set; }        // Mật khẩu đã mã hóa

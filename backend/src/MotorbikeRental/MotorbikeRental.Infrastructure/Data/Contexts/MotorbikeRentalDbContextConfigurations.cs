@@ -44,7 +44,7 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.ToTable("Employee");
-                entity.HasKey(employcee => employcee.UserId);
+                entity.HasKey(e => e.UserId);
                 entity.Property(e => e.UserId)
                     .ValueGeneratedOnAdd();
                 entity.Property(e => e.Status)

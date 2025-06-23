@@ -13,6 +13,8 @@ namespace MotorbikeRental.Application.DTOs.Vehicles
 
         [MaxLength(50, ErrorMessage = "Brand name cannot exceed 50 characters")]
         public string? Brand { get; set; }
+        [MaxLength(50, ErrorMessage = "Cannot exceed 50 characters")]
+        public string? Search {  get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Page number must be greater than 0")]
         public int PageNumber { get; set; } = 1;

@@ -1,10 +1,10 @@
 import apiClient from '../config/axios.js'
 export const motorbikeService = {
   async getAll(query) {
-    try{
-        const response = await apiClient.get('/Motorbike', { params: query })
-        return response.data
-    }catch(error) {
+    try {
+      const response = await apiClient.get('/Motorbike', { params: query })
+      return response.data
+    } catch (error) {
       console.log(error)
       throw error
     }
@@ -21,33 +21,55 @@ export const motorbikeService = {
   async getById(id) {
     try {
       const response = await apiClient.get('/Motorbike/' + id)
-      return response.data
+      const d = response.data.data
+      // Chỉ lấy các trường cần thiết
+      return {
+        motorbikeId: d.motorbikeId,
+        motorbikeName: d.motorbikeName,
+        categoryName: d.categoryName,
+        hourlyRate: d.hourlyRate,
+        dailyRate: d.dailyRate,
+        licensePlate: d.licensePlate,
+        brand: d.brand,
+        year: d.year,
+        color: d.color,
+        engineCapacity: d.engineCapacity,
+        chassisNumber: d.chassisNumber,
+        engineNumber: d.engineNumber,
+        description: d.description,
+        motorbikeConditionStatus: d.motorbikeConditionStatus,
+        imageUrl: d.imageUrl,
+        mileage: d.mileage,
+        status: d.status,
+      }
     } catch (error) {
       console.log(error)
-      throw log
+      throw error
     }
   },
   async createMotorbike(form) {
     const formData = new FormData()
-    formData.append('motorbikeId', 0)
-    formData.append('motorbikeName', form.motorbikeName)
-    formData.append('categoryId', form.categoryId)
-    formData.append('hourlyRate', form.hourlyRate)
-    formData.append('dailyRate', form.dailyRate)
-    formData.append('licensePlate', form.licensePlate)
-    formData.append('brand', form.brand)
-    formData.append('year', form.year)
-    formData.append('color', form.color)
-    formData.append('engineCapacity', form.engineCapacity)
-    formData.append('chassisNumber', form.chassisNumber)
-    formData.append('engineNumber', form.engineNumber)
-    formData.append('description', form.description)
-    formData.append('motorbikeConditionStatus', form.motorbikeConditionStatus)
-    formData.append('imageUrl', form.imageUrl)
-    formData.append('mileage', form.mileage)
-    formData.append('status', form.status)
-    if (form.formFile) {
-      formData.append('formFile', form.formFile)
+    formData.append('MotorbikeName', form.MotorbikeName)
+    formData.append('CategoryId', form.CategoryId)
+    formData.append('HourlyRate', form.HourlyRate)
+    formData.append('DailyRate', form.DailyRate)
+    formData.append('LicensePlate', form.LicensePlate)
+    formData.append('Brand', form.Brand)
+    formData.append('Year', form.Year)
+    formData.append('Color', form.Color)
+    formData.append('EngineCapacity', form.EngineCapacity)
+    formData.append('ChassisNumber', form.ChassisNumber)
+    formData.append('EngineNumber', form.EngineNumber)
+    formData.append('Description', form.Description)
+    formData.append('MotorbikeConditionStatus', form.MotorbikeConditionStatus)
+    formData.append('Mileage', form.Mileage)
+    formData.append('Status', form.Status)
+    if (form.FormFile) {
+      formData.append('FormFile', form.FormFile)
+    }
+    // Log để debug
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1])
     }
     try {
       const response = await apiClient.post('/Motorbike', formData, {
@@ -63,21 +85,24 @@ export const motorbikeService = {
   },
   async updateMotorbike(form) {
     const formData = new FormData()
-    formData.append('motorbikeName', form.motorbikeName)
-    formData.append('categoryId', form.categoryId)
-    formData.append('hourlyRate', form.hourlyRate)
-    formData.append('dailyRate', form.dailyRate)
-    formData.append('licensePlate', form.licensePlate)
-    formData.append('brand', form.brand)
-    formData.append('year', form.year)
-    formData.append('color', form.color)
-    formData.append('engineCapacity', form.engineCapacity)
-    formData.append('chassisNumber', form.chassisNumber)
-    formData.append('engineNumber', form.engineNumber)
-    formData.append('description', form.description)
-    formData.append('motorbikeConditionStatus', form.motorbikeConditionStatus)
+    formData.append('MotorbikeId', form.motorbikeId)
+    formData.append('MotorbikeName', form.motorbikeName)
+    formData.append('CategoryId', Number(form.categoryId))
+    formData.append('HourlyRate', form.hourlyRate)
+    formData.append('DailyRate', form.dailyRate)
+    formData.append('LicensePlate', form.licensePlate)
+    formData.append('Brand', form.brand)
+    formData.append('Year', form.year)
+    formData.append('Color', form.color)
+    formData.append('EngineCapacity', form.engineCapacity)
+    formData.append('ChassisNumber', form.chassisNumber)
+    formData.append('EngineNumber', form.engineNumber)
+    formData.append('Description', form.description)
+    formData.append('Status', Number(form.status))
+    formData.append('MotorbikeConditionStatus', Number(form.motorbikeConditionStatus))
+    formData.append('Mileage', form.mileage)
     if (form.formFile) {
-      formData.append('formFile', form.formFile)
+      formData.append('FormFile', form.formFile)
     }
     try {
       const response = await apiClient.put('/Motorbike/' + form.motorbikeId, formData, {

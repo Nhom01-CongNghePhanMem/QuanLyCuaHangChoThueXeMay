@@ -5,8 +5,8 @@ namespace MotorbikeRental.Application.Interface.IValidators.IVehicleValidators
 {
     public interface IMotorbikeValidator
     {
-        Task<bool> ValidateForCreate(MotorbikeDto motorbikeViewModel, CancellationToken cancellationToken = default);
+        Task<bool> ValidateForCreate(MotorbikeCreateDto motorbikeCreateDto, CancellationToken cancellationToken = default);
         bool ValidateForDelete(Motorbike motorbike);
-        Task<bool> ValidateForUpdate(MotorbikeDto motorbikeDto, CancellationToken cancellationToken = default);
+        Task<bool> ValidateForUpdate(MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken = default);
     }
 }

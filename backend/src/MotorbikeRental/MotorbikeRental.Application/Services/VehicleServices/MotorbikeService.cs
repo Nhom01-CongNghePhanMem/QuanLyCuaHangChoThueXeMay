@@ -29,14 +29,14 @@ namespace MotorbikeRental.Application.Services.VehicleServices
             this.fileService = fileService;
         }
 
-        public async Task<MotorbikeDto> CreateMotorbike(MotorbikeDto motorbikeDto, CancellationToken cancellationToken = default)
+        public async Task<MotorbikeDto> CreateMotorbike(MotorbikeCreateDto motorbikeCreateDto, CancellationToken cancellationToken = default)
         {
-            await motorbikeValidator.ValidateForCreate(motorbikeDto, cancellationToken);
-            Motorbike motorbike = mapper.Map<Motorbike>(motorbikeDto);
-            motorbike.PriceList = new PriceList { HourlyRate = motorbikeDto.HourlyRate, DailyRate = motorbikeDto.DailyRate };
-            if (motorbikeDto.formFile != null)
+            await motorbikeValidator.ValidateForCreate(motorbikeCreateDto, cancellationToken);
+            Motorbike motorbike = mapper.Map<Motorbike>(motorbikeCreateDto);
+            motorbike.PriceList = new PriceList { HourlyRate = motorbikeCreateDto.HourlyRate, DailyRate = motorbikeCreateDto.DailyRate };
+            if (motorbikeCreateDto.FormFile != null)
             {
-                motorbike.ImageUrl = await fileService.SaveImage(motorbikeDto.formFile, "Motorbike", cancellationToken);
+                motorbike.ImageUrl = await fileService.SaveImage(motorbikeCreateDto.FormFile, "Motorbike", cancellationToken);
             }
             return mapper.Map<MotorbikeDto>(await motorbikeRepository.Create(motorbike));
         }
@@ -48,13 +48,14 @@ namespace MotorbikeRental.Application.Services.VehicleServices
                 throw new NotFoundException("MotorBike not found");
             motorbikeValidator.ValidateForDelete(motorbike);
             await motorbikeRepository.Delete(motorbike, cancellationToken);
-            fileService.DeleteFile(motorbike.ImageUrl);
+            if(motorbike.ImageUrl != null) 
+                fileService.DeleteFile(motorbike.ImageUrl);
             return true;
         }
 
         public async Task<PaginatedDataDto<MotorbikeListDto>> GetMotorbikesByFilter(MotorbikeFilterDto motorbikeFilterDto, CancellationToken cancellationToken = default)
         {
-            var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto.CategoryId, motorbikeFilterDto.Brand, motorbikeFilterDto.Status, motorbikeFilterDto.PageNumber, motorbikeFilterDto.PageSize, cancellationToken);
+            var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto.CategoryId, motorbikeFilterDto.Brand,motorbikeFilterDto.Search, motorbikeFilterDto.Status, motorbikeFilterDto.PageNumber, motorbikeFilterDto.PageSize, cancellationToken);
             List<Motorbike> motorbikes = data.ToList();
             List<MotorbikeListDto> motorbikeListDto = new List<MotorbikeListDto>();
             for (int i = 0; i < motorbikes.Count; i++)
@@ -69,22 +70,21 @@ namespace MotorbikeRental.Application.Services.VehicleServices
             return mapper.Map<MotorbikeDto>(await motorbikeRepository.GetByIdWithIncludes(id, cancellationToken));
         }
 
-        public async Task<MotorbikeDto> UpdateMotorbike(MotorbikeDto motorbikeDto, CancellationToken cancellationToken = default)
+        public async Task<MotorbikeDto> UpdateMotorbike(MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken = default)
         {
-            await motorbikeValidator.ValidateForUpdate(motorbikeDto, cancellationToken);
-            Motorbike motorbike = await motorbikeRepository.GetById(motorbikeDto.MotorbikeId, cancellationToken);
+            await motorbikeValidator.ValidateForUpdate(motorbikeUpdateDto, cancellationToken);
+            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(motorbikeUpdateDto.MotorbikeId, cancellationToken);
             if (motorbike == null)
                 throw new Exception("Motorbike not found");
-            motorbike.PriceList.DailyRate = motorbikeDto.DailyRate;
-            motorbike.PriceList.HourlyRate = motorbikeDto.HourlyRate;
-            if (motorbikeDto.formFile != null)
+            motorbike.PriceList.DailyRate = motorbikeUpdateDto.DailyRate;
+            motorbike.PriceList.HourlyRate = motorbikeUpdateDto.HourlyRate;
+            if (motorbikeUpdateDto.FormFile != null)
             {
                 if (motorbike.ImageUrl != null)
                     if (!fileService.DeleteFile(motorbike.ImageUrl)) throw new Exception("Loi");
-                motorbike.ImageUrl = await fileService.SaveImage(motorbikeDto.formFile, "Motorbike", cancellationToken);
+                motorbike.ImageUrl = await fileService.SaveImage(motorbikeUpdateDto.FormFile, "Motorbike", cancellationToken);
             }
-            motorbikeDto.ImageUrl = motorbike.ImageUrl;
-            await motorbikeRepository.Update(mapper.Map(motorbikeDto, motorbike), cancellationToken);
+            await motorbikeRepository.Update(mapper.Map(motorbikeUpdateDto, motorbike), cancellationToken);
             return mapper.Map<MotorbikeDto>(motorbike);
         }
         public async Task<MotorbikeIndexDto> GetMotorbikeFilterOptions(CancellationToken cancellationToken = default)

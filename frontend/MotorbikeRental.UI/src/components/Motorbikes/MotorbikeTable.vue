@@ -1,70 +1,112 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, watch, computed, nextTick } from 'vue'
+import { getFullPath } from '@/utils/UrlUtils'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
-  motorbikes: {
-    type: Array,
-    required: true,
-  },
-  categories: {
-    type: Array,
-    required: true,
-  },
-  brands: {
-    type: Array,
-    required: true,
-  },
-  motorbikeStatuses: {
-    type: Array,
-    required: true,
-  },
-  totalMotorbikes: {
-    type: Number,
-    required: true,
-  },
-});
+  motorbikes: { type: Array, required: true },
+  categories: { type: Array, required: true },
+  brands: { type: Array, required: true },
+  motorbikeStatuses: { type: Array, required: true },
+  totalMotorbikes: { type: Number, required: true },
+  query: { type: Object, required: true },
+})
+
+const emit = defineEmits(['updateQuery'])
+const router = useRouter()
 
 // Filter states
 const selectedCategory = ref('')
 const selectedBrand = ref('')
 const selectedStatus = ref('')
 const searchQuery = ref('')
+const currentPage = ref(1)
+const pageSize = 12
 
-// Computed filtered motorbikes
-const filteredMotorbikes = computed(() => {
-  return props.motorbikes.filter(motorbike => {
-    const matchesCategory = !selectedCategory.value || motorbike.categoryId === selectedCategory.value
-    const matchesBrand = !selectedBrand.value || motorbike.brand === selectedBrand.value
-    const matchesStatus = selectedStatus.value === '' || motorbike.status === selectedStatus.value
-    const matchesSearch = !searchQuery.value || 
-      motorbike.motorbikeName.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    return matchesCategory && matchesBrand && matchesStatus && matchesSearch
-  })
-})
+// Flag để chặn emit khi đang đồng bộ từ props hoặc clear filter
+let isSyncing = false
 
-function getFullPath(path) {
-  const rawBaseUrl = import.meta.env.VITE_API_URL;
-  const baseUrl = rawBaseUrl.replace(/\/$/, "");
-  const cleanPath = path.startsWith("/") ? path : "/" + path;
-  return baseUrl + cleanPath;
+// Đồng bộ filter local với props.query
+watch(
+  () => props.query,
+  (newQuery) => {
+    isSyncing = true
+    selectedCategory.value = newQuery.CategoryId || ''
+    selectedBrand.value = newQuery.Brand || ''
+    selectedStatus.value = newQuery.Status || ''
+    searchQuery.value = newQuery.Search || ''
+    currentPage.value = newQuery.PageNumber || 1
+    nextTick(() => {
+      isSyncing = false
+    })
+  },
+  { immediate: true },
+)
+
+// Emit filter lên cha khi filter local thực sự khác với props.query
+const normalize = (v) => (v === null || v === undefined ? '' : String(v))
+watch(
+  [selectedCategory, selectedBrand, selectedStatus, searchQuery],
+  () => {
+    if (isSyncing) return
+    if (
+      normalize(selectedCategory.value) !== normalize(props.query.CategoryId) ||
+      normalize(selectedBrand.value) !== normalize(props.query.Brand) ||
+      normalize(selectedStatus.value) !== normalize(props.query.Status) ||
+      normalize(searchQuery.value) !== normalize(props.query.Search)
+    ) {
+      emit('updateQuery', {
+        CategoryId: selectedCategory.value || '',
+        Status: selectedStatus.value || '',
+        Brand: selectedBrand.value || '',
+        PageNumber: 1,
+        Search: searchQuery.value || '',
+      })
+    }
+  },
+  { immediate: false },
+)
+
+const totalPages = computed(() => Math.ceil(props.totalMotorbikes / pageSize))
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
+    emit('updateQuery', {
+      CategoryId: selectedCategory.value || '',
+      Status: selectedStatus.value || '',
+      Brand: selectedBrand.value || '',
+      PageNumber: page,
+      Search: searchQuery.value || '',
+    })
+  }
 }
 
 function clearFilters() {
+  isSyncing = true
   selectedCategory.value = ''
   selectedBrand.value = ''
   selectedStatus.value = ''
   searchQuery.value = ''
+  currentPage.value = 1
+  nextTick(() => {
+    isSyncing = false
+    emit('updateQuery', {
+      CategoryId: '',
+      Status: '',
+      Brand: '',
+      PageNumber: 1,
+      Search: '',
+    })
+  })
 }
 
 function formatPrice(price) {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: 'VND'
+    currency: 'VND',
   }).format(price)
 }
 
-// Map status number to text and color
 function getStatusInfo(statusCode) {
   const statusMap = {
     0: { text: 'Có sẵn', class: 'status-available' },
@@ -72,9 +114,8 @@ function getStatusInfo(statusCode) {
     2: { text: 'Bảo trì', class: 'status-maintenance' },
     3: { text: 'Không hoạt động', class: 'status-inactive' },
     4: { text: 'Đã hư', class: 'status-broken' },
-    5: { text: 'Chờ xử lý', class: 'status-pending' }
+    5: { text: 'Chờ xử lý', class: 'status-pending' },
   }
-  
   return statusMap[statusCode] || { text: 'Không xác định', class: 'status-unknown' }
 }
 
@@ -85,18 +126,28 @@ function getStatusText(statusCode) {
 function getStatusClass(statusCode) {
   return getStatusInfo(statusCode).class
 }
-</script>
 
+function goToCreateMotorbike() {
+  router.push('/admin/motorbike/create')
+}
+function onImgError(event) {
+  if (!event.target.src.endsWith('/placeholder-bike.jpg')) {
+    event.target.src = '/placeholder-bike.jpg'
+  }
+}
+function goToDetail(id) {
+  router.push(`/admin/motorbike/detail/${id}`)
+}
+</script>
 <template>
   <div class="motorbike-page">
     <!-- Page Header -->
     <div class="page-header">
       <div class="page-title">
         <h1>🏍️ Danh sách xe máy</h1>
-        <p class="page-subtitle">Tổng cộng {{ filteredMotorbikes.length }} / {{ totalMotorbikes }} xe</p>
+        <p class="page-subtitle">Tổng cộng {{ totalMotorbikes }} xe</p>
       </div>
-      
-      <div class="page-actions">
+      <div @click="goToCreateMotorbike" class="page-actions">
         <button class="btn btn-primary">
           <i class="btn-icon">➕</i>
           Thêm xe mới
@@ -109,7 +160,6 @@ function getStatusClass(statusCode) {
       <div class="card-header">
         <h3 class="card-title">🔍 Bộ lọc tìm kiếm</h3>
       </div>
-      
       <div class="card-body">
         <div class="filters-grid">
           <!-- Search Input -->
@@ -117,15 +167,14 @@ function getStatusClass(statusCode) {
             <label class="form-label">Tìm kiếm</label>
             <div class="input-wrapper">
               <i class="input-icon">🔍</i>
-              <input 
-                v-model="searchQuery" 
-                type="text" 
+              <input
+                v-model="searchQuery"
+                type="text"
                 class="form-input"
                 placeholder="Nhập tên xe..."
-              >
+              />
             </div>
           </div>
-
           <!-- Category Filter -->
           <div class="form-group">
             <label class="form-label">Loại xe</label>
@@ -136,7 +185,6 @@ function getStatusClass(statusCode) {
               </option>
             </select>
           </div>
-
           <!-- Brand Filter -->
           <div class="form-group">
             <label class="form-label">Thương hiệu</label>
@@ -147,7 +195,6 @@ function getStatusClass(statusCode) {
               </option>
             </select>
           </div>
-
           <!-- Status Filter -->
           <div class="form-group">
             <label class="form-label">Trạng thái</label>
@@ -158,7 +205,6 @@ function getStatusClass(statusCode) {
               </option>
             </select>
           </div>
-
           <!-- Clear Button -->
           <div class="form-group">
             <label class="form-label">&nbsp;</label>
@@ -174,7 +220,7 @@ function getStatusClass(statusCode) {
     <!-- Results Section -->
     <div class="results-section">
       <!-- No Results -->
-      <div v-if="filteredMotorbikes.length === 0" class="empty-state">
+      <div v-if="motorbikes.length === 0" class="empty-state">
         <div class="empty-icon">🔍</div>
         <h3 class="empty-title">Không tìm thấy xe nào</h3>
         <p class="empty-text">Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm</p>
@@ -182,26 +228,24 @@ function getStatusClass(statusCode) {
 
       <!-- Motorbikes Grid -->
       <div v-else class="motorbikes-grid">
-        <div v-for="motorbike in filteredMotorbikes" :key="motorbike.motorbikeId" class="motorbike-card">
+        <div v-for="motorbike in motorbikes" :key="motorbike.motorbikeId" class="motorbike-card">
           <!-- Card Image -->
           <div class="card-image">
-            <img 
-              :src="getFullPath(motorbike.imageUrl)" 
+            <img
+              :src="motorbike.imageUrl ? getFullPath(motorbike.imageUrl) : '/placeholder-bike.jpg'"
               :alt="motorbike.motorbikeName"
-              @error="$event.target.src = '/placeholder-bike.jpg'"
+              @error="onImgError"
             />
             <div class="status-badge" :class="getStatusClass(motorbike.status)">
               {{ getStatusText(motorbike.status) }}
             </div>
           </div>
-          
           <!-- Card Content -->
           <div class="card-content">
             <div class="card-header">
               <h3 class="bike-name">{{ motorbike.motorbikeName }}</h3>
               <span class="bike-id">#{{ motorbike.motorbikeId }}</span>
             </div>
-            
             <div class="bike-info">
               <div class="info-row">
                 <span class="info-label">Loại:</span>
@@ -212,7 +256,6 @@ function getStatusClass(statusCode) {
                 <span class="info-value">{{ motorbike.brand }}</span>
               </div>
             </div>
-
             <div class="pricing-section">
               <div class="price-item">
                 <span class="price-label">Giá theo giờ</span>
@@ -223,19 +266,50 @@ function getStatusClass(statusCode) {
                 <span class="price-value">{{ formatPrice(motorbike.dailyRate) }}</span>
               </div>
             </div>
-
             <div class="card-actions">
               <button class="btn btn-primary btn-sm" :disabled="motorbike.status !== 0">
                 <i class="btn-icon">🏍️</i>
                 {{ motorbike.status === 0 ? 'Thuê ngay' : 'Không khả dụng' }}
               </button>
-              <button class="btn btn-outline btn-sm">
+              <button class="btn btn-outline btn-sm" @click="goToDetail(motorbike.motorbikeId)">
                 <i class="btn-icon">👁️</i>
                 Chi tiết
               </button>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Pagination -->
+      <div
+        v-if="totalPages > 1"
+        class="pagination"
+        style="margin: 2rem 0; display: flex; justify-content: center; gap: 0.5rem"
+      >
+        <button
+          class="btn btn-outline"
+          @click="goToPage(currentPage - 1)"
+          :disabled="currentPage === 1"
+        >
+          Trước
+        </button>
+        <button
+          v-for="page in totalPages"
+          :key="page"
+          class="btn"
+          :class="page === currentPage ? 'btn-primary' : 'btn-outline'"
+          @click="goToPage(page)"
+          :disabled="page === currentPage"
+        >
+          {{ page }}
+        </button>
+        <button
+          class="btn btn-outline"
+          @click="goToPage(currentPage + 1)"
+          :disabled="currentPage === totalPages"
+        >
+          Sau
+        </button>
       </div>
     </div>
   </div>
@@ -617,7 +691,7 @@ function getStatusClass(statusCode) {
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1rem;
   }
-  
+
   .filters-grid .form-group:last-child {
     grid-column: 1 / -1;
     justify-self: start;
@@ -631,28 +705,28 @@ function getStatusClass(statusCode) {
     gap: 1rem;
     padding: 1.5rem;
   }
-  
+
   .filters-card {
     margin: 0 1rem 1.5rem 1rem;
   }
-  
+
   .card-body {
     padding: 1rem;
   }
-  
+
   .filters-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .results-section {
     margin: 0 1rem;
   }
-  
+
   .motorbikes-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .card-actions {
     flex-direction: column;
   }

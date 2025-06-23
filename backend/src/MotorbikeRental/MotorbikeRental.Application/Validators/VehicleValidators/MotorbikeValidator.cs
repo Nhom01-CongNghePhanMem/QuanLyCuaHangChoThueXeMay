@@ -16,15 +16,15 @@ namespace MotorbikeRental.Application.Validators.VehicleValidators
             this.motorbikeRepository = motorbikeRepository;
             this.categoryRepository = categoryRepository;
         }
-        public async Task<bool> ValidateForCreate(MotorbikeDto motorbikeDto, CancellationToken cancellationToken = default)
+        public async Task<bool> ValidateForCreate(MotorbikeCreateDto motorbikeCreateDto, CancellationToken cancellationToken = default)
         {
-            if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeDto.CategoryId, cancellationToken))
+            if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeCreateDto.CategoryId, cancellationToken))
                 throw new ValidatorException("Category not found");
-            if (await motorbikeRepository.IsExists(nameof(Motorbike.LicensePlate), motorbikeDto.LicensePlate, cancellationToken))
+            if (await motorbikeRepository.IsExists(nameof(Motorbike.LicensePlate), motorbikeCreateDto.LicensePlate, cancellationToken))
                 throw new ValidatorException("License plate number already exists.");
-            if (await motorbikeRepository.IsExists(nameof(Motorbike.ChassisNumber), motorbikeDto.ChassisNumber, cancellationToken))
+            if (await motorbikeRepository.IsExists(nameof(Motorbike.ChassisNumber), motorbikeCreateDto.ChassisNumber, cancellationToken))
                 throw new ValidatorException("Chassis number already exists.");
-            if (await motorbikeRepository.IsExists(nameof(Motorbike.EngineNumber), motorbikeDto.EngineNumber, cancellationToken))
+            if (await motorbikeRepository.IsExists(nameof(Motorbike.EngineNumber), motorbikeCreateDto.EngineNumber, cancellationToken))
                 throw new ValidatorException("Engine number already exists");
             return true;
         }
@@ -36,19 +36,19 @@ namespace MotorbikeRental.Application.Validators.VehicleValidators
             return true;
         }
 
-        public async Task<bool> ValidateForUpdate(MotorbikeDto motorbikeDto, CancellationToken cancellationToken = default)
+        public async Task<bool> ValidateForUpdate(MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken = default)
         {
-            if (!await motorbikeRepository.IsExists(nameof(Motorbike.MotorbikeId), motorbikeDto.MotorbikeId, cancellationToken))
+            if (!await motorbikeRepository.IsExists(nameof(Motorbike.MotorbikeId), motorbikeUpdateDto.MotorbikeId, cancellationToken))
                 throw new ValidatorException("MotorBike not found");
-            if (motorbikeDto.Status == MotorbikeStatus.Rented)
+            if (motorbikeUpdateDto.Status == MotorbikeStatus.Rented)
                 throw new ValidatorException("This motorbike is currently rented and cannot be edited.");
-            if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeDto.CategoryId, cancellationToken))
+            if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeUpdateDto.CategoryId, cancellationToken))
                 throw new ValidatorException("Category not found");
-            if (await motorbikeRepository.IsExistsForUpdate(motorbikeDto.MotorbikeId, nameof(Motorbike.LicensePlate), motorbikeDto.LicensePlate, nameof(Motorbike.MotorbikeId), cancellationToken))
+            if (await motorbikeRepository.IsExistsForUpdate(motorbikeUpdateDto.MotorbikeId, nameof(Motorbike.LicensePlate), motorbikeUpdateDto.LicensePlate, nameof(Motorbike.MotorbikeId), cancellationToken))
                 throw new ValidatorException("License plate number already exists.");
-            if (await motorbikeRepository.IsExistsForUpdate(motorbikeDto.MotorbikeId, nameof(Motorbike.ChassisNumber), motorbikeDto.ChassisNumber, nameof(Motorbike.MotorbikeId), cancellationToken))
+            if (await motorbikeRepository.IsExistsForUpdate(motorbikeUpdateDto.MotorbikeId, nameof(Motorbike.ChassisNumber), motorbikeUpdateDto.ChassisNumber, nameof(Motorbike.MotorbikeId), cancellationToken))
                 throw new ValidatorException("Chassis number already exists.");
-            if (await motorbikeRepository.IsExistsForUpdate(motorbikeDto.MotorbikeId, nameof(Motorbike.EngineNumber), motorbikeDto.EngineNumber, nameof(Motorbike.MotorbikeId), cancellationToken))
+            if (await motorbikeRepository.IsExistsForUpdate(motorbikeUpdateDto.MotorbikeId, nameof(Motorbike.EngineNumber), motorbikeUpdateDto.EngineNumber, nameof(Motorbike.MotorbikeId), cancellationToken))
                 throw new ValidatorException("Engine number already exists");
             return true;
         }
