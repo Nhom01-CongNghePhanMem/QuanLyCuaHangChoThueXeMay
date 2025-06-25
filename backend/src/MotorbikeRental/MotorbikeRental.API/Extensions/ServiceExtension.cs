@@ -43,6 +43,8 @@ namespace MotorbikeRental.Web.Extensions
         {
             //UserServices
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IUserCredentialsService, UserCredentialsService>();
             //VehicleServices
             services.AddScoped<IMotorbikeService, MotorbikeService>();
             services.AddScoped<ICategoryService, CategoryService>();
@@ -92,6 +94,7 @@ namespace MotorbikeRental.Web.Extensions
             services.AddScoped<ICustomerValidator, CustomerValidator>();
             //EmployeeValidator
             services.AddScoped<IEmployeeValidator, EmployeeValidator>();
+            services.AddScoped<IUserCredentialsValidator, UserCredentialsValidator>();
             return services;
         }
     }

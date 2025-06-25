@@ -9,6 +9,7 @@ namespace MotorbikeRental.Application.Interface.IValidators.IUserValidators
 {
     public interface IUserCredentialsValidator
     {
-        Task<bool> ValidatorForCreate(EmployeeCreateDto employeeCreateDto, CancellationToken cancellationToken = default); 
+        Task<IdentityResult> ValidatorForCreate(EmployeeCreateDto employeeCreateDto, CancellationToken cancellationToken = default);
+        Task<IdentityResult> ValidatorForUpdate(EmployeeUpdateDto employeeUpdateDto, CancellationToken cancellationToken = default);
     }
 }

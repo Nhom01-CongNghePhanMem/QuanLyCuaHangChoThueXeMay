@@ -1,11 +1,11 @@
-namespace MotorbikeRental.Tests
+namespace MotorbikeRental.UnitTest
 {
     public class UnitTest1
     {
         [Fact]
         public void Test1()
         {
-            
+
         }
     }
 }
