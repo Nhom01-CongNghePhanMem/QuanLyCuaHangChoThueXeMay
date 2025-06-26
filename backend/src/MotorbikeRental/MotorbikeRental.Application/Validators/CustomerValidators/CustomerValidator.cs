@@ -20,25 +20,31 @@ namespace MotorbikeRental.Application.Validators.CustomerValidators
 
         public async Task<bool> ValidateForCreate(CustomerDto customerDto, CancellationToken cancellationToken = default)
         {
+            List<string> errors = new List<string>();
             if (await customerRepository.IsExists(nameof(Customer.IdNumber), customerDto.IdNumber, cancellationToken))
-                throw new ValidatorException("Id number already exists.");
+                errors.Add("Id number already exists");
             if (await customerRepository.IsExists(nameof(Customer.PhoneNumber), customerDto.PhoneNumber, cancellationToken))
-                throw new ValidatorException("Phone number already exists.");
+                errors.Add("Phone number already exists");
             if (await customerRepository.IsExists(nameof(Customer.Email), customerDto.Email, cancellationToken))
-                throw new ValidatorException("Email already exists.");
+                errors.Add("Email already exists");
+            if (errors.Any())
+                throw new ValidatorException(string.Join("; ", errors));
             return true;
         }
 
         public async Task<bool> ValidateForUpdate(CustomerDto customerDto, CancellationToken cancellationToken = default)
         {
+            List<string> errors = new List<string>();
             if (!await customerRepository.IsExists(nameof(Customer.CustomerId), customerDto.CustomerId, cancellationToken))
-                throw new ValidatorException("Customer not found");
+                throw new NotFoundException("Customer not found");
             if (await customerRepository.IsExistsForUpdate(customerDto.CustomerId, nameof(Customer.IdNumber), customerDto.IdNumber, nameof(Customer.CustomerId), cancellationToken))
-                throw new ValidatorException("Id number already exists.");
+                errors.Add("Id number already exists");
             if (await customerRepository.IsExistsForUpdate(customerDto.CustomerId, nameof(Customer.PhoneNumber), customerDto.PhoneNumber, nameof(Customer.CustomerId), cancellationToken))
-                throw new ValidatorException("Phone number already exists.");
+                errors.Add("Phone number already exists");
             if (await customerRepository.IsExistsForUpdate(customerDto.CustomerId, nameof(Customer.Email), customerDto.Email, nameof(Customer.CustomerId), cancellationToken))
-                throw new ValidatorException("Email already exists.");
+                errors.Add("Email already exists");
+            if (errors.Any())
+                throw new ValidatorException(string.Join("; ", errors));
             return true;
         }
     }

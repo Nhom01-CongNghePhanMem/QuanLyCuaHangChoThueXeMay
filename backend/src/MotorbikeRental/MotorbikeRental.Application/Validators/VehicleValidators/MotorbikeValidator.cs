@@ -4,6 +4,7 @@ using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Enums.VehicleEnum;
 using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace MotorbikeRental.Application.Validators.VehicleValidators
 {
@@ -18,14 +19,17 @@ namespace MotorbikeRental.Application.Validators.VehicleValidators
         }
         public async Task<bool> ValidateForCreate(MotorbikeCreateDto motorbikeCreateDto, CancellationToken cancellationToken = default)
         {
+            List<string> errors = new List<string>();
             if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeCreateDto.CategoryId, cancellationToken))
-                throw new ValidatorException("Category not found");
+                errors.Add("Category not found");
             if (await motorbikeRepository.IsExists(nameof(Motorbike.LicensePlate), motorbikeCreateDto.LicensePlate, cancellationToken))
-                throw new ValidatorException("License plate number already exists.");
+                errors.Add("License plate number already exists");
             if (await motorbikeRepository.IsExists(nameof(Motorbike.ChassisNumber), motorbikeCreateDto.ChassisNumber, cancellationToken))
-                throw new ValidatorException("Chassis number already exists.");
+                errors.Add("Chassis number already exists");
             if (await motorbikeRepository.IsExists(nameof(Motorbike.EngineNumber), motorbikeCreateDto.EngineNumber, cancellationToken))
-                throw new ValidatorException("Engine number already exists");
+                errors.Add("Engine number already exists");
+            if (errors.Any())
+                throw new ValidatorException(string.Join("; ", errors));
             return true;
         }
 
@@ -38,18 +42,21 @@ namespace MotorbikeRental.Application.Validators.VehicleValidators
 
         public async Task<bool> ValidateForUpdate(MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken = default)
         {
+            List<string> errors = new List<string>();
             if (!await motorbikeRepository.IsExists(nameof(Motorbike.MotorbikeId), motorbikeUpdateDto.MotorbikeId, cancellationToken))
-                throw new ValidatorException("MotorBike not found");
+                throw new NotFoundException("MotorBike not found");
             if (motorbikeUpdateDto.Status == MotorbikeStatus.Rented)
-                throw new ValidatorException("This motorbike is currently rented and cannot be edited.");
+                throw new BusinessRuleException("This motorbike is currently rented and cannot be edited.");
             if (!await categoryRepository.IsExists(nameof(Category.CategoryId), motorbikeUpdateDto.CategoryId, cancellationToken))
-                throw new ValidatorException("Category not found");
+                throw new NotFoundException("Category not found");
             if (await motorbikeRepository.IsExistsForUpdate(motorbikeUpdateDto.MotorbikeId, nameof(Motorbike.LicensePlate), motorbikeUpdateDto.LicensePlate, nameof(Motorbike.MotorbikeId), cancellationToken))
-                throw new ValidatorException("License plate number already exists.");
+                errors.Add("License plate number already exists");
             if (await motorbikeRepository.IsExistsForUpdate(motorbikeUpdateDto.MotorbikeId, nameof(Motorbike.ChassisNumber), motorbikeUpdateDto.ChassisNumber, nameof(Motorbike.MotorbikeId), cancellationToken))
-                throw new ValidatorException("Chassis number already exists.");
+                errors.Add("Chassis number already exists");
             if (await motorbikeRepository.IsExistsForUpdate(motorbikeUpdateDto.MotorbikeId, nameof(Motorbike.EngineNumber), motorbikeUpdateDto.EngineNumber, nameof(Motorbike.MotorbikeId), cancellationToken))
-                throw new ValidatorException("Engine number already exists");
+                errors.Add("Engine number already exists");
+            if (errors.Any())
+                throw new ValidatorException(string.Join("; ", errors));
             return true;
         }
     }

@@ -35,9 +35,7 @@ namespace MotorbikeRental.Application.Services.VehicleServices
             Motorbike motorbike = mapper.Map<Motorbike>(motorbikeCreateDto);
             motorbike.PriceList = new PriceList { HourlyRate = motorbikeCreateDto.HourlyRate, DailyRate = motorbikeCreateDto.DailyRate };
             if (motorbikeCreateDto.FormFile != null)
-            {
-                motorbike.ImageUrl = await fileService.SaveImage(motorbikeCreateDto.FormFile, "Motorbike", cancellationToken);
-            }
+                motorbike.ImageUrl = await fileService.SaveImage(motorbikeCreateDto.FormFile, "Motorbike", cancellationToken);  
             return mapper.Map<MotorbikeDto>(await motorbikeRepository.Create(motorbike));
         }
 

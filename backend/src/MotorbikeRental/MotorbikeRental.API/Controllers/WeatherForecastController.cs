@@ -25,11 +25,10 @@ namespace MotorbikeRental.API.Controllers
             var employeeCreateDto = new EmployeeCreateDto
             {
                 FullName = "Nguyễn Văn A",
-                UserName = "nguyenvana",
                 Password = "SecurePass123!",
                 DateOfBirth = new DateTime(1999, 5, 20),
-                PhoneNumber = "0912345678",
-                Email = "nguyenvana@example.com",
+                PhoneNumber = "0922245612",
+                Email = "nguyenvana11231@example.com",
                 Address = "123 Đường ABC, Quận 1, TP.HCM",
                 StartDate = DateTime.Today,
                 Salary = 15000000,

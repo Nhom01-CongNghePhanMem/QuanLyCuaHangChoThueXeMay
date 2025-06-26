@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 
 namespace MotorbikeRental.Domain.Entities.User
 {
@@ -8,6 +7,7 @@ namespace MotorbikeRental.Domain.Entities.User
         public int? RoleId { get; set; } //FK Table Roles
         public virtual Roles Roles { get; set; }
         public DateTime? LastLogin { get; set; }     //Thời gian đăng nhập gần nhất
+        public int? EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }

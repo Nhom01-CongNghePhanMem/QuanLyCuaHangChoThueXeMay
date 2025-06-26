@@ -50,9 +50,7 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                 entity.Property(e => e.Status)
                     .HasConversion<string>();
                 entity.HasOne(e => e.UserCredentials)
-                    .WithOne(e => e.Employee)
-                    .HasForeignKey<Employee>(e => e.UserCredentialId)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .WithOne(e => e.Employee);
                 entity.HasMany(e => e.MaintenanceRecords)
                     .WithOne(e => e.Employee);
             });
@@ -249,7 +247,9 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasOne(e => e.Employee)
-                    .WithOne(e => e.UserCredentials);
+                    .WithOne(e => e.UserCredentials)
+                    .HasForeignKey<UserCredentials>(e => e.EmployeeId)
+                    .OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne(e => e.Roles)
                     .WithMany(e => e.UserCredentials)
                     .HasForeignKey(e => e.RoleId)

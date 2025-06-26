@@ -6,7 +6,7 @@ using MotorbikeRental.Domain.Enums.UserEnum;
 
 namespace MotorbikeRental.Domain.Entities.User
 {
-    public class Employee 
+    public class Employee
     {
         public int EmployeeId { get; set; }
 
@@ -19,8 +19,7 @@ namespace MotorbikeRental.Domain.Entities.User
         [Required]
         [StringLength(200)]
         public string Address { get; set; }
-        public int? UserCredentialId { get; set; }
-        public virtual UserCredentials UserCredentials { get; set; }
+
         [Url]
         [StringLength(500)]
         public string? Avatar { get; set; }
@@ -33,6 +32,7 @@ namespace MotorbikeRental.Domain.Entities.User
         [Required]
         public EmployeeStatus Status { get; set; }
 
+        public virtual UserCredentials UserCredentials { get; set; }
         public virtual ICollection<MaintenanceRecord>? MaintenanceRecords { get; set; }
         public virtual ICollection<RentalContract> RentalContracts { get; set; }
         public virtual ICollection<Incident> Incidents { get; set; }
