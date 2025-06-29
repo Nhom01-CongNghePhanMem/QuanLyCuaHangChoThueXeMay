@@ -30,7 +30,7 @@ namespace MotorbikeRental.API.Controllers
             var result = await authService.Login(loginDto, cancellationToken);
             if (result == null)
             {
-                return BadRequest(new ResponseDto
+                return Unauthorized(new ResponseDto
                 {
                     Success = false,
                     Message = "Invalid username or password"
