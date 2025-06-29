@@ -17,12 +17,10 @@ namespace MotorbikeRental.API.Controllers
     {
         private readonly IAuthService authService;
         private readonly IJwtTokenService jwtTokenService;
-        private readonly RoleManager<Roles> roleManager;
-        public AuthController(IAuthService authService, IJwtTokenService jwtTokenService, RoleManager<Roles> roleManager)
+        public AuthController(IAuthService authService, IJwtTokenService jwtTokenService)
         {
             this.authService = authService;
             this.jwtTokenService = jwtTokenService;
-            this.roleManager = roleManager;
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken = default)

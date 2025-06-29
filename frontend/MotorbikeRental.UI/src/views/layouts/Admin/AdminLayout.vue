@@ -28,7 +28,7 @@ const isActive = (path) => {
 const logout = () => {
   if (confirm('Bạn có chắc muốn đăng xuất?')) {
     localStorage.removeItem('token')
-    router.push('/login')
+    router.push({ name: 'Login' })
   }
 }
 </script>
@@ -74,7 +74,7 @@ const logout = () => {
               <span class="nav-text">Dashboard</span>
             </router-link>
 
-            <router-link to="/admin/motorbikes" class="nav-item" :class="{ active: isActive('/admin/motorbikes') }">
+            <router-link to="/Admin/Index" class="nav-item" :class="{ active: isActive('/admin/motorbikes') }">
               <i class="nav-icon">🏍️</i>
               <span class="nav-text">Quản lý xe máy</span>
             </router-link>

@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.DTOs.User;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "Manager")]
     public class EmployeeController : ControllerBase
     {
         private readonly IMemoryCache memoryCache;

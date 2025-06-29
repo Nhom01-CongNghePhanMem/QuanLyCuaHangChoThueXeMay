@@ -56,11 +56,11 @@ namespace MotorbikeRental.Application.Services.UserServices
         public async Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellation = default)
         {
             Employee employee = await employeeRepository.GetByIdWithIncludes(employeeId, cancellation);
-            if(employee == null)
+            if (employee == null)
                 throw new NotFoundException($"Employee with id {employeeId} not found");
-            if(employee.Avatar != null)
+            if (employee.Avatar != null)
                 fileService.DeleteFile(employee.Avatar);
-            if(employee.UserCredentials != null)
+            if (employee.UserCredentials != null)
             {
                 IdentityResult result = await userManager.DeleteAsync(employee.UserCredentials);
                 if (!result.Succeeded)
