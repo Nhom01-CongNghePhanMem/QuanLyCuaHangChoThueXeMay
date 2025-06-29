@@ -1,4 +1,5 @@
 using MotorbikeRental.Application.Interface.IExternalServices.Storage;
+using MotorbikeRental.Application.Interface.IServices.IAuthServices;
 using MotorbikeRental.Application.Interface.IServices.ICustomerServices;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
 using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
@@ -6,6 +7,7 @@ using MotorbikeRental.Application.Interface.IValidators.ICustomerValidators;
 using MotorbikeRental.Application.Interface.IValidators.IUserValidators;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
 using MotorbikeRental.Application.Mappers;
+using MotorbikeRental.Application.Services.AuthServices;
 using MotorbikeRental.Application.Services.CustomerServices;
 using MotorbikeRental.Application.Services.UserServices;
 using MotorbikeRental.Application.Services.VehicleServices;
@@ -50,6 +52,9 @@ namespace MotorbikeRental.Web.Extensions
             services.AddScoped<ICategoryService, CategoryService>();
             //CustomerServices
             services.AddScoped<ICustomerService, CustomerService>();
+            //AuthServices
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
             return services;
         }
         private static IServiceCollection RegisterRepositories(IServiceCollection services)

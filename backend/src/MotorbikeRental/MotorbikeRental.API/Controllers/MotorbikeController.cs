@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Application.DTOs.Responses;
@@ -10,6 +12,7 @@ namespace MotorbikeRental.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MotorbikeController : ControllerBase
     {
         private readonly IMotorbikeService motorbikeService;
@@ -20,10 +23,10 @@ namespace MotorbikeRental.API.Controllers
             this.motorbikeService = motorbikeService;
             this.memoryCache = memoryCache;
         }
+        [Authorize(Roles = "Manager")]
         [HttpGet]
-        public async Task<IActionResult> GetMotorbikeByFilter([FromQuery] MotorbikeFilterDto? filterDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetMotorbikeByFilter([FromQuery] MotorbikeFilterDto? filterDto, CancellationToken cancellationToken = default)
         {
-            filterDto = filterDto.Normalize();
             var result = await motorbikeService.GetMotorbikesByFilter(filterDto, cancellationToken);
             var responseDto = new ResponseDto<PaginatedDataDto<MotorbikeListDto>>
             {
@@ -105,6 +108,7 @@ namespace MotorbikeRental.API.Controllers
         public async Task<IActionResult> DeleteMotorbike(int id, CancellationToken cancellationToken)
         {
             await motorbikeService.DeleteMotorbike(id, cancellationToken);
+            memoryCache.Remove($"Motorbike_{id}");
             return Ok(new ResponseDto
             {
                 Success = true,

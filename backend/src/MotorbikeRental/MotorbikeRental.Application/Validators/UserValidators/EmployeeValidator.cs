@@ -19,14 +19,16 @@ namespace MotorbikeRental.Application.Validators.UserValidators
             this.roleRepository = roleRepository;
             this.userCredentials = userCredentials;
         }
-        public async Task<bool> ValidatorForCreate(EmployeeCreateDto employeeCreateDto, CancellationToken cancellationToken = default)
+        public bool ValidatorForCreate(EmployeeCreateDto employeeCreateDto, CancellationToken cancellation = default)
         {
+            if (employeeCreateDto.DateOfBirth > DateTime.UtcNow) throw new ValidatorException("Date of birth cannot be in the future");
             return true;
         }
-
-        public async Task<bool> ValidatorForUpdate(EmployeeUpdateDto employeeUpdateDto, CancellationToken cancellationToken = default)
+        public bool ValidatorForUpdate(EmployeeUpdateDto employeeUpdateDto, CancellationToken cancellation = default)
         {
-            
+            if (employeeUpdateDto.DateOfBirth > DateTime.UtcNow) throw new ValidatorException("Date of birth cannot be in the future");
+            if (employeeUpdateDto.EmployeeId <= 0) throw new ValidatorException("Employee ID must be greater than zero");
+            if (employeeUpdateDto.Salary < 0) throw new ValidatorException("Salary cannot be negative");
             return true;
         }
     }

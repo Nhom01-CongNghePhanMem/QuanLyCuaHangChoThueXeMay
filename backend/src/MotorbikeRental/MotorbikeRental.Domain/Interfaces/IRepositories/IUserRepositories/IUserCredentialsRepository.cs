@@ -10,6 +10,8 @@ namespace MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories
     public interface IUserCredentialsRepository : IBaseRepository<UserCredentials>
     {
         Task<bool> IsExistsForUpdate<Tvalue, Tid>(string key, Tvalue value, string entity, string idPropertyName, Tid id, CancellationToken cancellationToken = default);
-        Task<UserCredentials> GetByIdWithIncludes(int id, CancellationToken cancellationToken = default);       
+        Task<UserCredentials> GetByIdWithIncludes(int id, CancellationToken cancellationToken = default);
+        Task<UserCredentials> GetByEmployeeId(int employeeId, CancellationToken cancellationToken = default);
+        Task<UserCredentials?> GetByUserNameInCludes(string userName, CancellationToken cancellationToken = default);
     }
 }

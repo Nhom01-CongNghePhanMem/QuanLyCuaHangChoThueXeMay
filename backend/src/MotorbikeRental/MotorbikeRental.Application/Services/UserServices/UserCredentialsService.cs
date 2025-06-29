@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using MotorbikeRental.Application.DTOs.AuthenticDto;
 using MotorbikeRental.Application.DTOs.User;
 using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Application.Interface.IExternalServices.Storage;
@@ -28,49 +29,67 @@ namespace MotorbikeRental.Application.Services.UserServices
             this.roleManager = roleManager;
             this.userCredentialsRepository = userCredentialsRepository;
         }
-        public async Task<EmployeeDto> CreateUserCredentials(EmployeeCreateDto employeeCreateDto, CancellationToken cancellationToken = default)
+        public async Task<bool> CreateUserCredentials(UserCredentialsCreateDto userCredentialsCreateDto, CancellationToken cancellationToken = default)
         {
-            Roles? roles = await roleManager.FindByIdAsync(employeeCreateDto.RoleId.ToString());
+            await userCredentialsValidator.ValidatorForCreate(userCredentialsCreateDto, cancellationToken);
+            Roles? roles = await roleManager.FindByIdAsync(userCredentialsCreateDto.RoleId.ToString());
             if (roles == null)
-                throw new NotFoundException($"Role with id {employeeCreateDto.RoleId} not found");
-            if (employeeCreateDto.UserName == null)
-                employeeCreateDto.UserName = employeeCreateDto.Email;
-            await userCredentialsValidator.ValidatorForCreate(employeeCreateDto, cancellationToken);
-            UserCredentials userCredentials = mapper.Map<UserCredentials>(employeeCreateDto);
-            userCredentials.Employee = mapper.Map<Employee>(employeeCreateDto);
-            IdentityResult identityResult = await userManager.CreateAsync(userCredentials, employeeCreateDto.Password);
-            if (identityResult.Succeeded)
-            {
-                if (employeeCreateDto.FormFile != null)
-                    await fileService.SaveImage(employeeCreateDto.FormFile, "Employee", cancellationToken);
-                await userManager.AddToRoleAsync(userCredentials, roles.Name);
-            }
-            else
-            {
-                throw new ValidatorException(string.Join("; ", identityResult.Errors.Select(e => e.Description)));
-            }
-            return mapper.Map<EmployeeDto>(userCredentials);
+                throw new NotFoundException($"Role with id {userCredentialsCreateDto.RoleId} not found");
+            UserCredentials userCredentials = mapper.Map<UserCredentials>(userCredentialsCreateDto);
+            if (userCredentialsCreateDto.UserName == null)
+                userCredentials.UserName = userCredentialsCreateDto.Email;
+            IdentityResult identityResult = await userManager.CreateAsync(userCredentials, userCredentialsCreateDto.Password);
+            if (!identityResult.Succeeded)
+                throw new ValidatorException(string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            await userManager.AddToRoleAsync(userCredentials, roles.Name);
+            return true;
         }
-        public async Task<EmployeeDto> UpdateUserCredentials(EmployeeUpdateDto employeeUpdateDto, CancellationToken cancellationToken = default)
+        public async Task<bool> ResetEmail(ResetEmailDto resetEmail, CancellationToken cancellationToken = default)
         {
-            UserCredentials? userCredentials = await userCredentialsRepository.GetByIdWithIncludes(employeeUpdateDto.EmployeeId);
-            if (userCredentials == null) 
-                throw new NotFoundException($"Employee with id {employeeUpdateDto.EmployeeId} not found");
-            Roles? roles = await roleManager.FindByIdAsync(employeeUpdateDto.RoleId.ToString());
-            if (roles == null)
-                throw new NotFoundException($"Role with id {employeeUpdateDto.RoleId} not found");
-            await userCredentialsValidator.ValidatorForUpdate(employeeUpdateDto, cancellationToken);
-            if (userCredentials.Employee.Avatar != null)
-            {
-                if (!fileService.DeleteFile(userCredentials.Employee.Avatar))
-                    throw new Exception("System is experiencing issues. Please try again later");
-            }
-            mapper.Map(employeeUpdateDto, userCredentials.Employee);
-            mapper.Map(employeeUpdateDto, userCredentials);
-            if(employeeUpdateDto.Password != null)
-            {
-            }
-            return null;
+            UserCredentials userCredentials = await userCredentialsRepository.GetByEmployeeId(resetEmail.EmployeeId, cancellationToken);
+            if (userCredentials == null)
+                throw new NotFoundException($"UserCredentials with id {resetEmail.EmployeeId} not found");
+            if (userCredentials.Email == resetEmail.Email)
+                throw new ValidatorException("New email cannot be the same as the current email");
+            if (userCredentials.Email == userCredentials.UserName)
+                await userManager.SetUserNameAsync(userCredentials, resetEmail.Email);
+            IdentityResult identityResult = await userManager.SetEmailAsync(userCredentials, resetEmail.Email);
+            if (!identityResult.Succeeded)
+                throw new ValidatorException(string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            return true;
+        }
+        public async Task<bool> ResetPhoneNumber(ResetPhoneNumberDto resetPhoneNumber, CancellationToken cancellationToken = default)
+        {
+            UserCredentials userCredentials = userCredentialsRepository.GetByEmployeeId(resetPhoneNumber.EmployeeId, cancellationToken).Result;
+            if (userCredentials == null)
+                throw new NotFoundException($"UserCredentials with id {resetPhoneNumber.EmployeeId} not found");
+            if (userCredentials.PhoneNumber == resetPhoneNumber.PhoneNumber)
+                throw new ValidatorException("New phone number cannot be the same as the current phone number");
+            await userManager.SetPhoneNumberAsync(userCredentials, resetPhoneNumber.PhoneNumber);
+            return true;
+        }
+        public async Task<bool> ResetUserName(ResetUserNameDto resetUserName, CancellationToken cancellationToken = default)
+        {
+            UserCredentials userCredentials = await userCredentialsRepository.GetByEmployeeId(resetUserName.EmployeeId, cancellationToken);
+            if (userCredentials == null)
+                throw new NotFoundException($"UserCredentials with id {resetUserName.EmployeeId} not found");
+            if (userCredentials.UserName == resetUserName.UserName)
+                throw new ValidatorException("New username cannot be the same as the current username");
+            IdentityResult identityResult = await userManager.SetUserNameAsync(userCredentials, resetUserName.UserName);
+            if (!identityResult.Succeeded)
+                throw new ValidatorException(string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            return true;
+        }
+        public async Task<bool> ResetPasswordByAdmin(ResetPasswordDto resetPassword, CancellationToken cancellationToken = default)
+        {
+            UserCredentials userCredentials = await userCredentialsRepository.GetByEmployeeId(resetPassword.EmployeeId, cancellationToken);
+            if (userCredentials == null)
+                throw new NotFoundException($"UserCredentials with id {resetPassword.EmployeeId} not found");
+            string token = await userManager.GeneratePasswordResetTokenAsync(userCredentials);
+            IdentityResult identityResult = await userManager.ResetPasswordAsync(userCredentials,token, resetPassword.Password);
+            if (!identityResult.Succeeded)
+                throw new ValidatorException(string.Join(", ", identityResult.Errors.Select(e => e.Description)));
+            return true;
         }
     }
 }
