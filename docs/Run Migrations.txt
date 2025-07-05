@@ -1,4 +1,0 @@
-dotnet ef migrations add InitialCreate --project "D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\src\MotorbikeRental\MotorbikeRental.Infrastructure\MotorbikeRental.Infrastructure.csproj" --startup-project "D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\src\MotorbikeRental\MotorbikeRental.Web\MotorbikeRental.Web.csproj"
-
-
-dotnet ef database update --project "D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\src\MotorbikeRental\MotorbikeRental.Infrastructure\MotorbikeRental.Infrastructure.csproj" --startup-project "D:\C Sharp\Đồ án\QuanLyCuaHangChoThueXeMay\src\MotorbikeRental\MotorbikeRental.Web\MotorbikeRental.Web.csproj"
