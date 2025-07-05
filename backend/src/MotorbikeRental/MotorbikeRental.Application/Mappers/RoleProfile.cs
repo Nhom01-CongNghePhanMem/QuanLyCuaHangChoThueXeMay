@@ -13,7 +13,9 @@ namespace MotorbikeRental.Application.Mappers
     {
         public RoleProfile()
         {
-            CreateMap<Roles, RoleDto>();
+            CreateMap<Roles, RoleDto>()
+                .ForMember(dest => dest.RoleName,
+                opt => opt.MapFrom(src => src.Name));
         }
     }
 }

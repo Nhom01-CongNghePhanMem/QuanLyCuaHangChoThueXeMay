@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
+import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +34,27 @@ const router = createRouter({
           path: 'motorbike/edit/:id',
           name: 'AdminMotorbikeEdit',
           component: () => import('@/views/Admin/Motorbike/EditMotorbike.vue'),
+        },
+        {
+          path: 'employees',
+          name: 'AdminEmployeeList',
+          component: () => import('@/views/Admin/Employee/AdminEmployeeList.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        },
+        {
+          path: 'employees/create',
+          name: 'AdminEmployeeCreate',
+          component: () => import('@/views/Admin/Employee/AdminEmployeeCreate.vue'),
+        },
+        {
+          path : 'employees/edit/:id',
+          name: 'AdminEmployeeEdit',
+          component: () => import('@/views/Admin/Employee/AdminEmployeeEdit.vue'),
+        },
+        {
+          path: 'employees/create-user/:id',
+          name: 'AdminEmployeeCreateUser',
+          component: () => import('@/views/Admin/Employee/AdminEmployeeCreateUser.vue'),
         },
       ],
     },

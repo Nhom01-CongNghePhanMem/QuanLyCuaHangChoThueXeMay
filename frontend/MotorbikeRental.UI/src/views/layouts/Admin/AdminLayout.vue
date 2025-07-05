@@ -1,7 +1,11 @@
 <!-- src/layouts/AdminLayout.vue - Version đẹp hơn -->
- <script setup>
-import { computed } from 'vue'
+<script setup>
+import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { employeeService } from '../../../api/services/employeeService'
+import defaultAvatar from '@/assets/image.png'
+import { jwtDecode } from 'jwt-decode'
+import { getFullPath } from '@/utils/UrlUtils'
 
 const router = useRouter()
 const route = useRoute()
@@ -13,23 +17,45 @@ const currentPageName = computed(() => {
     '/admin/employees': 'Quản lý nhân viên',
     '/admin/customers': 'Quản lý khách hàng',
     '/admin/reports': 'Báo cáo thống kê',
-    '/admin/rentals': 'Lịch sử thuê xe'
+    '/admin/rentals': 'Lịch sử thuê xe',
   }
   return names[route.path] || 'Admin'
 })
+const token = localStorage.getItem('token')
 
-const isActive = (path) => {
-  if (path === '/admin') {
-    return route.path === '/admin'
-  }
-  return route.path.startsWith(path)
+let userId = null
+if (token) {
+  const decodedToken = jwtDecode(token)
+  console.log('Decoded token:', decodedToken) // Thêm dòng này
+  userId = decodedToken.sub
+  console.log('User ID:', userId) // Phải ra số cụ thể (vd: 3)
 }
+const employee = ref(null)
+onMounted(async () => {
+  console.log('onMounted is running') // 👈 kiểm tra dòng này
+
+  if (userId) {
+    try {
+      const response = await employeeService.getEmployeeById(userId)
+      console.log('Employee fetched:', response.data)
+      employee.value = response.data
+    } catch (error) {
+      console.error('Error fetching employee:', error)
+    }
+  } else {
+    console.warn('No userId, skip fetching')
+  }
+})
 
 const logout = () => {
   if (confirm('Bạn có chắc muốn đăng xuất?')) {
     localStorage.removeItem('token')
     router.push({ name: 'Login' })
   }
+}
+
+const isActive = (path) => {
+  return route.path === path
 }
 </script>
 
@@ -44,15 +70,21 @@ const logout = () => {
           <span class="logo-badge">Admin</span>
         </div>
       </div>
-      
+
       <div class="header-right">
         <div class="user-menu">
           <div class="user-avatar">
-            <i class="avatar-icon">👨‍💼</i>
+            <img
+              v-if="employee && employee.avatar"
+              :src="getFullPath(employee.avatar)"
+              alt="Avatar"
+              class="avatar-img"
+            />
+            <img v-else :src="defaultAvatar" alt="Default Avatar" class="avatar-img" />
           </div>
-          <div class="user-info">
-            <span class="user-name">Admin User</span>
-            <span class="user-role">Administrator</span>
+          <div class="user-info" v-if="employee">
+            <span class="user-name">{{ employee.fullName }}</span>
+            <span class="user-role">{{ employee.roleName }}</span>
           </div>
           <button @click="logout" class="logout-btn">
             <i class="logout-icon">🚪</i>
@@ -68,23 +100,35 @@ const logout = () => {
         <nav class="sidebar-nav">
           <div class="nav-section">
             <div class="nav-section-title">MENU CHÍNH</div>
-            
+
             <router-link to="/admin" class="nav-item" :class="{ active: isActive('/admin') }">
               <i class="nav-icon">📊</i>
               <span class="nav-text">Dashboard</span>
             </router-link>
 
-            <router-link to="/Admin/Index" class="nav-item" :class="{ active: isActive('/admin/motorbikes') }">
+            <router-link
+              to="/Admin/Index"
+              class="nav-item"
+              :class="{ active: isActive('/admin/motorbikes') }"
+            >
               <i class="nav-icon">🏍️</i>
               <span class="nav-text">Quản lý xe máy</span>
             </router-link>
 
-            <router-link to="/admin/employees" class="nav-item" :class="{ active: isActive('/admin/employees') }">
+            <router-link
+              to="/admin/employees"
+              class="nav-item"
+              :class="{ active: isActive('/admin/employee') }"
+            >
               <i class="nav-icon">👥</i>
               <span class="nav-text">Quản lý nhân viên</span>
             </router-link>
 
-            <router-link to="/admin/customers" class="nav-item" :class="{ active: isActive('/admin/customers') }">
+            <router-link
+              to="/admin/customers"
+              class="nav-item"
+              :class="{ active: isActive('/admin/customers') }"
+            >
               <i class="nav-icon">👤</i>
               <span class="nav-text">Quản lý khách hàng</span>
             </router-link>
@@ -92,13 +136,21 @@ const logout = () => {
 
           <div class="nav-section">
             <div class="nav-section-title">BÁO CÁO</div>
-            
-            <router-link to="/admin/reports" class="nav-item" :class="{ active: isActive('/admin/reports') }">
+
+            <router-link
+              to="/admin/reports"
+              class="nav-item"
+              :class="{ active: isActive('/admin/reports') }"
+            >
               <i class="nav-icon">📈</i>
               <span class="nav-text">Báo cáo thống kê</span>
             </router-link>
 
-            <router-link to="/admin/rentals" class="nav-item" :class="{ active: isActive('/admin/rentals') }">
+            <router-link
+              to="/admin/rentals"
+              class="nav-item"
+              :class="{ active: isActive('/admin/rentals') }"
+            >
               <i class="nav-icon">📋</i>
               <span class="nav-text">Lịch sử thuê xe</span>
             </router-link>
@@ -125,8 +177,6 @@ const logout = () => {
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 * {
@@ -190,37 +240,59 @@ const logout = () => {
 .user-menu {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .user-avatar {
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  overflow: hidden;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 8px #0002;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: box-shadow 0.2s;
 }
 
-.avatar-icon {
-  font-size: 1.25rem;
+.user-avatar:hover {
+  box-shadow: 0 4px 16px #6366f155;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .user-info {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: 0.1rem;
+  min-width: 120px;
 }
 
 .user-name {
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 0 1px 2px #0002;
 }
 
 .user-role {
+  font-size: 0.85rem;
+  color: #e0e7ff;
+  font-weight: 500;
+}
+
+.user-email, .user-phone {
   font-size: 0.75rem;
-  opacity: 0.8;
+  color: #c7d2fe;
+  opacity: 0.9;
+  line-height: 1.1;
 }
 
 .logout-btn {
@@ -235,12 +307,13 @@ const logout = () => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
 }
 
 .logout-btn:hover {
-  background: rgba(192, 57, 43, 0.9);
-  transform: translateY(-1px);
+  background: #c0392b;
+  transform: translateY(-1px) scale(1.05);
 }
 
 /* Body */
@@ -367,15 +440,15 @@ const logout = () => {
   .admin-header {
     padding: 0 1rem;
   }
-  
+
   .user-info {
     display: none;
   }
-  
+
   .admin-sidebar {
     width: 200px;
   }
-  
+
   .content-area {
     padding: 1rem;
   }

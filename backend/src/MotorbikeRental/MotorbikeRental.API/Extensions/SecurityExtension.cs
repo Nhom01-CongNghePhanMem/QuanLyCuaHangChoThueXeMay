@@ -27,7 +27,7 @@ namespace MotorbikeRental.API.Extensions
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 }).AddJwtBearer(jwt =>
                 {
-                    var key = Encoding.UTF8.GetBytes(configuration["AppSettings:JwtConfig:Secret"]);
+                    byte[] key = Encoding.UTF8.GetBytes(configuration["AppSettings:JwtConfig:Secret"]);
                     jwt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,

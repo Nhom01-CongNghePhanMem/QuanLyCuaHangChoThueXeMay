@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Domain.Entities.User;
@@ -41,9 +40,9 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
                 .Include(u => u.Roles)
                 .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException("UserCredentials not found");
         }
-        public async Task<UserCredentials> GetByEmployeeId(int employeeId, CancellationToken cancellationToken = default)
+        public async Task<UserCredentials> GetByEmployeeIdAsTracking(int employeeId, CancellationToken cancellationToken = default)
         {
-            return await dbContext.UserCredentials.AsNoTracking()
+            return await dbContext.UserCredentials
                 .Where(u => u.EmployeeId == employeeId)
                 .Include(u => u.Employee)
                 .Include(u => u.Roles)

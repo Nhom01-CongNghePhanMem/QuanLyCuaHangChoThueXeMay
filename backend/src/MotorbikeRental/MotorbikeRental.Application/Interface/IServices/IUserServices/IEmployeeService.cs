@@ -15,5 +15,6 @@ namespace MotorbikeRental.Application.Interface.IServices.IUserServices
         Task<EmployeeDto> UpdateEmployee(EmployeeUpdateDto employeeUpdateDto, CancellationToken cancellation = default);
         Task<bool> DeleteEmployee(int employeeId, CancellationToken cancellation = default);
         Task<PaginatedDataDto<EmployeeListDto>> GetEmployeeByFilter(EmployeeFilterDto filter, CancellationToken cancellation = default);
+        Task<bool> DeleteAvatar(int employeeId, CancellationToken cancellation = default);
     }
 }

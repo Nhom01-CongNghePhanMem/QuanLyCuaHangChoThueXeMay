@@ -117,7 +117,7 @@ function getStatusInfo(statusCode) {
     5: { text: 'Chờ xử lý', class: 'status-pending' },
   }
   return statusMap[statusCode] || { text: 'Không xác định', class: 'status-unknown' }
-}
+} 
 
 function getStatusText(statusCode) {
   return getStatusInfo(statusCode).text

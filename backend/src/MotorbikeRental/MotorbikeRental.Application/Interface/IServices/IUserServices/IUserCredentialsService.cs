@@ -6,6 +6,7 @@ namespace MotorbikeRental.Application.Interface.IServices.IUserServices
     public interface IUserCredentialsService
     {
         Task<bool> CreateUserCredentials(UserCredentialsCreateDto userCredentialsCreateDto, CancellationToken cancellationToken = default);
+        Task<bool> UpdateUserCredentialsByAdmin(UserCredentialsUpdateDto userCredentialUpdateDto, CancellationToken cancellationToken = default);
         Task<bool> ResetEmail(ResetEmailDto resetEmail, CancellationToken cancellationToken = default);
         Task<bool> ResetUserName(ResetUserNameDto resetUserName, CancellationToken cancellationToken = default);
         Task<bool> ResetPasswordByAdmin(ResetPasswordDto resetPassword, CancellationToken cancellationToken = default);

@@ -10,5 +10,6 @@ namespace MotorbikeRental.Application.Interface.IValidators.IUserValidators
     public interface IUserCredentialsValidator
     {
         Task<bool> ValidatorForCreate(UserCredentialsCreateDto userCredentialsCreateDto, CancellationToken cancellationToken = default);
+        Task<bool> ValidatorForUpdate(UserCredentialsUpdateDto userCredentialsUpdateDto, CancellationToken cancellationToken = default);
     }
 }

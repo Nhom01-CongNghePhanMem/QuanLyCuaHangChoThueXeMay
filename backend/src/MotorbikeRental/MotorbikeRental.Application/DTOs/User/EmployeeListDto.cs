@@ -15,5 +15,6 @@ namespace MotorbikeRental.Application.DTOs.User
         public string Salary { get; set; }
         public string RoleName { get; set; }
         public EmployeeStatus Status { get; set; }
+        public DateTime? LastLogin { get; set; }
     }
 }

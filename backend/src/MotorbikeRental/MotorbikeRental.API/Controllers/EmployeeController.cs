@@ -6,21 +6,23 @@ using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.DTOs.User;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
+using System.Threading.Tasks;
 
 namespace MotorbikeRental.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Roles = "Manager")]
     public class EmployeeController : ControllerBase
     {
         private readonly IMemoryCache memoryCache;
         private readonly IEmployeeService employeeService;
-        public EmployeeController(IMemoryCache memoryCache, IEmployeeService employeeService)
+        private readonly IRoleService roleService;
+        public EmployeeController(IMemoryCache memoryCache, IEmployeeService employeeService, IRoleService roleService)
         {
             this.memoryCache = memoryCache;
             this.employeeService = employeeService;
+            this.roleService = roleService;
         }
         [HttpGet]
         public async Task<IActionResult> GetEmployeeByFilter([FromQuery] EmployeeFilterDto? employeeFilterDto, CancellationToken cancellationToken = default)
@@ -38,14 +40,14 @@ namespace MotorbikeRental.API.Controllers
         public async Task<IActionResult> GetEmployeeById(int id, CancellationToken cancellationToken = default)
         {
             var result = new EmployeeDto();
-            if(memoryCache.TryGetValue($"Employee_{id}", out EmployeeDto employeeDto))
+            if (memoryCache.TryGetValue($"Employee_{id}", out EmployeeDto employeeDto))
             {
                 result = employeeDto;
             }
             else
             {
                 result = await employeeService.GetEmployeeById(id, cancellationToken);
-                if(result != null) 
+                if (result != null)
                     memoryCache.Set($"Employee_{id}", result, TimeSpan.FromMinutes(10));
             }
             var response = new ResponseDto<EmployeeDto>
@@ -56,6 +58,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromForm] EmployeeCreateDto employeeCreateDto, CancellationToken cancellationToken = default)
         {
@@ -68,10 +71,11 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
+        [Authorize(Roles = "Manager")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditEmployee(int id, [FromForm] EmployeeUpdateDto employeeUpdateDto, CancellationToken cancellationToken = default)
         {
-            if(employeeUpdateDto.EmployeeId != id)
+            if (employeeUpdateDto.EmployeeId != id)
             {
                 var errorResponse = new ResponseDto
                 {
@@ -90,7 +94,8 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteEmployee(int id, CancellationToken cancellationToken = default)
         {
             await employeeService.DeleteEmployee(id, cancellationToken);
@@ -99,6 +104,32 @@ namespace MotorbikeRental.API.Controllers
             {
                 Success = true,
                 Message = "Employee delete successfully"
+            };
+            return Ok(response);
+        }
+        [HttpGet("GetRoles")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> GetAllRole(CancellationToken cancellationToken)
+        {
+            var result = await roleService.GetAllRoles(cancellationToken);
+            var response = new ResponseDto<IEnumerable<RoleDto>>
+            {
+                Success = true,
+                Message = "Roles retrieved successfully",
+                Data = result
+            };
+            return Ok(response);
+        }
+        [HttpDelete("{id}/DeleteAvatar")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteAvatar(int id, CancellationToken cancellation = default)
+        {
+            var result = await employeeService.DeleteAvatar(id, cancellation);
+            memoryCache.Remove($"Employee_{id}");
+            var response = new ResponseDto
+            {
+                Success = true,
+                Message = "Avatar deleted successfully"
             };
             return Ok(response);
         }

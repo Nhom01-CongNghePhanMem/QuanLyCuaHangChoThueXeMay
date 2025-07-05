@@ -17,6 +17,7 @@ namespace MotorbikeRental.Application.Mappers
                 opt => opt.MapFrom(src => src.Employee.EmployeeId))
                 .ForMember(dest => dest.FullName,
                 opt => opt.MapFrom(src => src.Employee.FullName));
+            CreateMap<UserCredentialsUpdateDto, UserCredentials>();
         }
     }
 }

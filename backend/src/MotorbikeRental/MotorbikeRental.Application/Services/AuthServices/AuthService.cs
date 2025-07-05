@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using MotorbikeRental.Application.DTOs.AuthenticDto;
+using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Application.Interface.IServices.IAuthServices;
 using MotorbikeRental.Domain.Entities.User;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories;
@@ -21,9 +22,15 @@ namespace MotorbikeRental.Application.Services.AuthServices
         public async Task<UserCredentialsDto> Login(LoginDto loginDto, CancellationToken cancellationToken = default)
         {
             UserCredentials? userCredentials = await userCredentialsRepository.GetByUserNameInCludes(loginDto.UserName, cancellationToken);
+            if(userCredentials?.Employee.Status != 0)
+                throw new Exception($"Employee with id {userCredentials.EmployeeId} is not active");
             if (userCredentials != null && await userManager.CheckPasswordAsync(userCredentials, loginDto.Password))
+            {
+                userCredentials.LastLogin = DateTime.UtcNow;
+                await userCredentialsRepository.Update(userCredentials, cancellationToken);
                 return mapper.Map<UserCredentialsDto>(userCredentials);
-            return null;
+            }
+            return null;    
         }   
     }
 }

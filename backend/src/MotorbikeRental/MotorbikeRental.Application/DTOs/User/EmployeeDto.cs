@@ -19,9 +19,7 @@ namespace MotorbikeRental.Application.DTOs.User
         public string? Avatar { get; set; }
         public string? RoleName { get; set; } = "Account not created yet";
         public DateTime StartDate { get; set; }
-
         public decimal? Salary { get; set; }
         public EmployeeStatus Status { get; set; }
-
     }
 }

@@ -18,15 +18,18 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
                 .Where(e => e.EmployeeId == id)
                 .Include(e => e.UserCredentials)
                 .ThenInclude(u => u.Roles)
-                .FirstOrDefaultAsync() ?? throw new NotFoundException($"Employee with id{id} not found");
+                .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException($"Employee with id{id} not found");
         }
-        public async Task<(IEnumerable<Employee>, int totalCount)> GetFilterData(string? search, int pageNumber, int pageSize, int? RoleId, EmployeeStatus? status, CancellationToken cancellation = default)
+        public async Task<(IEnumerable<Employee>, int totalCount)> GetFilterData(int? employeeId, string? search, int pageNumber, int pageSize, int? RoleId, EmployeeStatus? status, CancellationToken cancellation = default)
         {
             IQueryable<Employee> queryable = dbContext.Employees
+                .AsNoTracking()
                 .OrderByDescending(e => e.EmployeeId)
                 .Include(e => e.UserCredentials)
                 .ThenInclude(u => u.Roles)
                 .AsQueryable();
+            if(employeeId != null) 
+                queryable = queryable.Where(e => e.EmployeeId != employeeId);
             if (RoleId != null)
                 queryable = queryable.Where(e => e.UserCredentials.RoleId == RoleId);
             if(status != null)
@@ -37,7 +40,7 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
                 queryable = queryable.Where(e => e.FullName.Contains(lowerSearch) || e.UserCredentials.PhoneNumber.Contains(lowerSearch) || e.UserCredentials.Email.Contains(lowerSearch));
             }
             int totalCount = await queryable.CountAsync();
-            queryable = queryable.AsNoTracking().Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            queryable = queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return (await queryable.ToListAsync(), totalCount);
         }
     }
