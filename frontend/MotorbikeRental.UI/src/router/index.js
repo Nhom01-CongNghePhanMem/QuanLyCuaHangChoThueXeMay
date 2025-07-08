@@ -56,6 +56,17 @@ const router = createRouter({
           name: 'AdminEmployeeCreateUser',
           component: () => import('@/views/Admin/Employee/AdminEmployeeCreateUser.vue'),
         },
+        {
+          path: 'employees/edit-user/:id',
+          name: 'AdminEmployeeEditUser',
+          component: () => import('@/views/Admin/Employee/AdminEmployeeEditUser.vue'),
+        },
+        {
+          path: 'customers',
+          name: 'AdminCustomerList',
+          component: () => import('@/views/Admin/Customer/AdminCustomerList.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        }
       ],
     },
     {

@@ -11,14 +11,10 @@ namespace MotorbikeRental.Application.Validators.UserValidators
     public class UserCredentialsValidator : IUserCredentialsValidator
     {
         private readonly IUserCredentialsRepository userCredentialsRepository;
-        private readonly UserManager<UserCredentials> userManager;
-        private readonly RoleManager<Roles> roleManager;
         private readonly IEmployeeRepository employeeRepository;
-        public UserCredentialsValidator(IUserCredentialsRepository userCredentialsRepository, UserManager<UserCredentials> userManager, RoleManager<Roles> roleManager, IEmployeeRepository employeeRepository)
+        public UserCredentialsValidator(IUserCredentialsRepository userCredentialsRepository, IEmployeeRepository employeeRepository)
         {
             this.userCredentialsRepository = userCredentialsRepository;
-            this.userManager = userManager;
-            this.roleManager = roleManager;
             this.employeeRepository = employeeRepository;
         }
         public async Task<bool> ValidatorForCreate(UserCredentialsCreateDto userCredentialsCreateDto, CancellationToken cancellationToken = default)
@@ -49,6 +45,18 @@ namespace MotorbikeRental.Application.Validators.UserValidators
                 errors.Add($"PhoneNumber {userCredentialsUpdateDto.PhoneNumber} already exists for another employee");
             if(errors.Any())
                 throw new ValidatorException(string.Join("; ", errors));
+            return true;
+        }
+        public async Task<bool> ValidatorForDelete(int? id, UserCredentials userCredentials, CancellationToken cancellationToken = default)
+        {
+            if (id == null)
+                throw new NotFoundException("UserCredentials not found");
+            if(userCredentials == null)
+                throw new NotFoundException($"UserCredentials with id {id} not found");
+            if(userCredentials.EmployeeId == id)
+                throw new BusinessRuleException("You cannot delete yourself, please contact the administrator to delete your account.");
+            if(await userCredentialsRepository.CountUsersInRoleAsync(userCredentials.RoleId, cancellationToken) <= 1)
+                throw new BusinessRuleException("You cannot delete the last user in this role. Please contact the administrator to delete your account.");
             return true;
         }
     }

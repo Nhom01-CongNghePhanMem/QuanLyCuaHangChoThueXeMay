@@ -4,7 +4,7 @@ namespace MotorbikeRental.Application.Interface.IValidators.ICustomerValidators
 {
     public interface ICustomerValidator
     {
-        Task<bool> ValidateForCreate(CustomerDto customerDto, CancellationToken cancellationToken = default);
-        Task<bool> ValidateForUpdate(CustomerDto customerDto, CancellationToken cancellationToken = default);
+        Task<bool> ValidateForCreate(CustomerCreateDto customerCreateDto, CancellationToken cancellationToken = default);
+        Task<bool> ValidateForUpdate(CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken = default);
     }
 }

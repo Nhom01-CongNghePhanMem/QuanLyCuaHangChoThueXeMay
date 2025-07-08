@@ -1,3 +1,4 @@
+using MotorbikeRental.Application.Interface.IExternalServices.IMailServices;
 using MotorbikeRental.Application.Interface.IExternalServices.Storage;
 using MotorbikeRental.Application.Interface.IServices.IAuthServices;
 using MotorbikeRental.Application.Interface.IServices.ICustomerServices;
@@ -26,6 +27,7 @@ using MotorbikeRental.Infrastructure.Data.Repositories.IncidentRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.PricingRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories;
 using MotorbikeRental.Infrastructure.Data.Repositories.VehicleRepositories;
+using MotorbikeRental.Infrastructure.ExternalServices.MailService;
 using MotorbikeRental.Infrastructure.ExternalServices.StorageService;
 
 namespace MotorbikeRental.Web.Extensions
@@ -83,6 +85,7 @@ namespace MotorbikeRental.Web.Extensions
         private static IServiceCollection RegisterExternalService(IServiceCollection services)
         {
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IMailService, MailService>();
             return services;
         }
         private static IServiceCollection RegisterAutoMapper(IServiceCollection services)

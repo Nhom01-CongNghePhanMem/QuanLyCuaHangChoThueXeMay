@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Azure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -16,9 +17,11 @@ namespace MotorbikeRental.API.Controllers
     public class UserCredentialsController : ControllerBase
     {
         private readonly IUserCredentialsService userCredentialsService;
-        public UserCredentialsController(IUserCredentialsService userCredentialsService)
+        private readonly IMemoryCache memoryCache;
+        public UserCredentialsController(IUserCredentialsService userCredentialsService, IMemoryCache memoryCache)
         {
             this.userCredentialsService = userCredentialsService;
+            this.memoryCache = memoryCache;
         }
         [HttpPost("{id}/CreateUserCredentialByAdmin")]
         [Authorize(Roles = "Manager")]
@@ -36,6 +39,28 @@ namespace MotorbikeRental.API.Controllers
                 Success = true,
                 Message = "User credentials created successfully",
             };
+            return CreatedAtAction(nameof(GetUserCredentials), new { id }, response);
+        }
+        [HttpGet("{id}/GetUserCredentials")]
+        public async Task<IActionResult> GetUserCredentials(int id, CancellationToken cancellation = default)
+        {
+            var result = new UserCredentialsDto();
+            if (memoryCache.TryGetValue($"UserCredentials_{id}", out UserCredentialsDto userCredentials))
+            {
+                result = userCredentials;
+            }
+            else
+            {
+                result = await userCredentialsService.GetUserCredentialsByEmployeeId(id, cancellation);
+                if(result != null)
+                    memoryCache.Set($"UserCredentials_{id}", result, TimeSpan.FromMinutes(10));
+            }
+            var response = new ResponseDto<UserCredentialsDto>
+            {
+                Success = true,
+                Message = "User credentials retrieved successfully",
+                Data = result
+            };
             return Ok(response);
         }
         [HttpPut("{id}/UpdateUserCredentialByAdmin")]
@@ -49,6 +74,7 @@ namespace MotorbikeRental.API.Controllers
                     Message = "Employee ID in the request body does not match the ID in the URL."
                 });
             await userCredentialsService.UpdateUserCredentialsByAdmin(userCredentialsUpdateDto, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
             var response = new ResponseDto
             {
                 Success = true,
@@ -69,6 +95,7 @@ namespace MotorbikeRental.API.Controllers
                 });
             }
             var result = await userCredentialsService.ResetEmail(resetEmailDto, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
             var response = new ResponseDto
             {
                 Success = true,
@@ -89,6 +116,7 @@ namespace MotorbikeRental.API.Controllers
                 });
             }
             var result = await userCredentialsService.ResetPasswordByAdmin(resetPasswordDto, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
             var response = new ResponseDto
             {
                 Success = true,
@@ -109,6 +137,7 @@ namespace MotorbikeRental.API.Controllers
                 });
             }
             var result = await userCredentialsService.ResetPhoneNumber(resetPhoneNumberDto, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
             var response = new ResponseDto
             {
                 Success = true,
@@ -129,10 +158,45 @@ namespace MotorbikeRental.API.Controllers
                 });
             }
             var result = await userCredentialsService.ResetUserName(resetUserNameDto, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
             var response = new ResponseDto
             {
                 Success = true,
                 Message = "Username reset successfully",
+            };
+            return Ok(response);
+        }
+        [HttpPost("{id}/reset-role")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> ResetRole(int id, [FromBody] ResetRoleDto resetRoleDto, CancellationToken cancellationToken = default)
+        {
+            if(resetRoleDto.EmployeeId != id)
+            {
+                return BadRequest(new ResponseDto
+                {
+                    Success = false,
+                    Message = "Employee ID in the request body does not match the ID in the URL."
+                });
+            }
+            var result = await userCredentialsService.ResetRoleByAdmin(resetRoleDto, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
+            var response = new ResponseDto
+            {
+                Success = true,
+                Message = "Role reset successfully",
+            };
+            return Ok(response);
+        }
+        [HttpDelete("{id}/DeleteUserCredentialsByAdmin")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteUserCredentials(int id, CancellationToken cancellationToken = default)
+        {
+            await userCredentialsService.DeleteUserCredentialsByAdmin(id, cancellationToken);
+            memoryCache.Remove($"UserCredentials_{id}");
+            var response = new ResponseDto
+            {
+                Success = true,
+                Message = "User credentials deleted successfully",
             };
             return Ok(response);
         }

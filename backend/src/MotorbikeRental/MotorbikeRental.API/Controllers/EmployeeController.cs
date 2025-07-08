@@ -40,7 +40,7 @@ namespace MotorbikeRental.API.Controllers
         public async Task<IActionResult> GetEmployeeById(int id, CancellationToken cancellationToken = default)
         {
             var result = new EmployeeDto();
-            if (memoryCache.TryGetValue($"Employee_{id}", out EmployeeDto employeeDto))
+            if (memoryCache.TryGetValue($"Employee_{id}", out EmployeeDto? employeeDto))
             {
                 result = employeeDto;
             }
@@ -69,7 +69,7 @@ namespace MotorbikeRental.API.Controllers
                 Message = "Employee create successfully",
                 Data = result
             };
-            return Ok(response);
+            return CreatedAtAction(nameof(GetEmployeeById), new { id = result.EmployeeId }, response);
         }
         [Authorize(Roles = "Manager")]
         [HttpPut("{id}")]

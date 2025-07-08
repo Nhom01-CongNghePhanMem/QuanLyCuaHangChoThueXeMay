@@ -28,11 +28,11 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
                 .Include(e => e.UserCredentials)
                 .ThenInclude(u => u.Roles)
                 .AsQueryable();
-            if(employeeId != null) 
+            if (employeeId != null)
                 queryable = queryable.Where(e => e.EmployeeId != employeeId);
             if (RoleId != null)
                 queryable = queryable.Where(e => e.UserCredentials.RoleId == RoleId);
-            if(status != null)
+            if (status != null)
                 queryable = queryable.Where(e => e.Status == status);
             if (!string.IsNullOrWhiteSpace(search))
             {

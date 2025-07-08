@@ -11,7 +11,8 @@ namespace MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories
     {
         Task<bool> IsExistsForUpdate<Tvalue, Tid>(string key, Tvalue value, string entity, string idPropertyName, Tid id, CancellationToken cancellationToken = default);
         Task<UserCredentials> GetByIdWithIncludes(int id, CancellationToken cancellationToken = default);
-        Task<UserCredentials> GetByEmployeeIdAsTracking(int employeeId, CancellationToken cancellationToken = default);
+        Task<UserCredentials> GetByEmployeeId(int employeeId,bool isNoTracking, CancellationToken cancellationToken = default);
         Task<UserCredentials?> GetByUserNameInCludes(string userName, CancellationToken cancellationToken = default);
+        Task<int> CountUsersInRoleAsync(int? roleId, CancellationToken cancellationToken = default);
     }
 }

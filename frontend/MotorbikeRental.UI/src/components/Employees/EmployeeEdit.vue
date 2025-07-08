@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import defaultAvatar from '@/assets/image.png'
 import { employeeService } from '@/api/services/employeeService'
 import { getFullPath } from '@/utils/UrlUtils'
@@ -13,6 +13,8 @@ const props = defineProps({
 const emit = defineEmits(['update', 'create-account'])
 
 const router = useRouter()
+const route = useRoute();
+const employeeId = route.params.id;
 const form = ref({ ...props.employee })
 
 watch(
@@ -74,10 +76,10 @@ function onSubmit() {
 }
 
 function onCreateAccount() {
-  emit('create-account', form.value)
+  router.push('/admin/employees/create-user/' + employeeId)
 }
 function onEditAccount(){
-    
+  router.push('/admin/employees/edit-user/' + employeeId)
 }
 
 function onCancel() {

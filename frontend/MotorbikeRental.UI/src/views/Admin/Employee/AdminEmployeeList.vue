@@ -41,7 +41,7 @@ const updateQuery = async (newQuery) => {
 <template>
   <AdminLayout>
     <EmployeeTable
-      :employees="[...employees.values()] || []"
+      :employees="employees"
       :roles="roles"
       :totalCount="totalCount"
       :query="query"

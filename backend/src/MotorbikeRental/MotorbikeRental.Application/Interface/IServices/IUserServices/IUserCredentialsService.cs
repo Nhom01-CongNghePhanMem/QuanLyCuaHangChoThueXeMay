@@ -11,5 +11,8 @@ namespace MotorbikeRental.Application.Interface.IServices.IUserServices
         Task<bool> ResetUserName(ResetUserNameDto resetUserName, CancellationToken cancellationToken = default);
         Task<bool> ResetPasswordByAdmin(ResetPasswordDto resetPassword, CancellationToken cancellationToken = default);
         Task<bool> ResetPhoneNumber(ResetPhoneNumberDto resetPhoneNumber, CancellationToken cancellationToken = default);
+        Task<bool> ResetRoleByAdmin(ResetRoleDto resetRole, CancellationToken cancellationToken = default);
+        Task<bool> DeleteUserCredentialsByAdmin(int employeeId, CancellationToken cancellationToken = default);
+        Task<UserCredentialsDto> GetUserCredentialsByEmployeeId(int employeeId, CancellationToken cancellationToken = default);
     }
 }
