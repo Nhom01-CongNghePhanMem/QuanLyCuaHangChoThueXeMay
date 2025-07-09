@@ -70,7 +70,7 @@ const statusOptions = {
           <span class="breadcrumb-current">Thêm nhân viên mới</span>
         </div>
         <h1 class="page-title">
-          <i class="title-icon">👤</i>
+          <i class="title-icon"></i>
           Thêm nhân viên mới
         </h1>
         <p class="page-subtitle">Điền thông tin chi tiết để tạo nhân viên mới</p>
@@ -96,13 +96,13 @@ const statusOptions = {
                 class="avatar-img"
               />
               <div v-else class="avatar-placeholder">
-                <i class="avatar-icon">📷</i>
+                <i class="avatar-icon"></i>
                 <span>Chọn ảnh</span>
               </div>
             </div>
             <div class="avatar-controls">
               <button type="button" class="btn btn-upload" @click="triggerFileInput">
-                <i class="btn-icon">📁</i>
+                <i class="btn-icon"></i>
                 Chọn ảnh
               </button>
               <button 

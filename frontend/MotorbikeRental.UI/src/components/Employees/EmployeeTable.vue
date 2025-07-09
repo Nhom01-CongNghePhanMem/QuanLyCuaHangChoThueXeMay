@@ -128,7 +128,7 @@ function editEmployee(id) {
       <div class="header-content">
         <div class="header-info">
           <h1 class="page-title">
-            <i class="page-icon">👥</i>
+            <i class="page-icon"></i>
             Quản lý nhân viên
           </h1>
           <p class="page-subtitle">Tổng cộng {{ totalCount }} nhân viên</p>
@@ -145,7 +145,7 @@ function editEmployee(id) {
       <div class="filters-card">
         <div class="card-header">
           <h3 class="card-title">
-            <i class="card-icon">🔍</i>
+            <i class="card-icon"></i>
             Bộ lọc tìm kiếm
           </h3>
         </div>
@@ -228,7 +228,7 @@ function editEmployee(id) {
         <div class="card-body-employee">
           <div class="employee-detail">
             <div class="detail-item">
-              <i class="detail-icon">💰</i>
+              <i class="detail-icon"></i>
               <div class="detail-content">
                 <span class="detail-label">Lương</span>
                 <span class="detail-value">{{ formatSalary(emp.salary) }}</span>
@@ -236,7 +236,7 @@ function editEmployee(id) {
             </div>
 
             <div class="detail-item">
-              <i class="detail-icon">📊</i>
+              <i class="detail-icon"></i>
               <div class="detail-content">
                 <span class="detail-label">Trạng thái</span>
                 <span :class="statusBadgeClass[emp.status]">

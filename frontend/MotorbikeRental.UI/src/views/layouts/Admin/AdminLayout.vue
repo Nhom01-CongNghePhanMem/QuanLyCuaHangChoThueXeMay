@@ -1,4 +1,4 @@
-<!-- src/layouts/AdminLayout.vue - Version đẹp hơn -->
+<!-- src/layouts/AdminLayout.vue - Fixed sidebar overlap -->
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -12,7 +12,7 @@ const route = useRoute()
 
 const currentPageName = computed(() => {
   const names = {
-    '/admin': 'Dashboard',
+    '/admin/dashboard': 'Dashboard',
     '/admin/motorbikes': 'Quản lý xe máy',
     '/admin/employees': 'Quản lý nhân viên',
     '/admin/customers': 'Quản lý khách hàng',
@@ -26,13 +26,13 @@ const token = localStorage.getItem('token')
 let userId = null
 if (token) {
   const decodedToken = jwtDecode(token)
-  console.log('Decoded token:', decodedToken) // Thêm dòng này
+  console.log('Decoded token:', decodedToken)
   userId = decodedToken.sub
-  console.log('User ID:', userId) // Phải ra số cụ thể (vd: 3)
+  console.log('User ID:', userId)
 }
 const employee = ref(null)
 onMounted(async () => {
-  console.log('onMounted is running') // 👈 kiểm tra dòng này
+  console.log('onMounted is running')
 
   if (userId) {
     try {
@@ -65,8 +65,10 @@ const isActive = (path) => {
     <header class="admin-header">
       <div class="header-left">
         <div class="logo">
-          <i class="logo-icon">🏍️</i>
-          <span class="logo-text">MotorRental</span>
+          <i class="logo-icon"></i>
+          <span class="logo-text" >
+            <img src="@/assets/logo-37.png" style="width: 35px; height: auto;" alt="">
+            MotorRental</span>
           <span class="logo-badge">Admin</span>
         </div>
       </div>
@@ -87,7 +89,7 @@ const isActive = (path) => {
             <span class="user-role">{{ employee.roleName }}</span>
           </div>
           <button @click="logout" class="logout-btn">
-            <i class="logout-icon">🚪</i>
+            <i class="logout-icon"></i>
             Đăng xuất
           </button>
         </div>
@@ -101,17 +103,12 @@ const isActive = (path) => {
           <div class="nav-section">
             <div class="nav-section-title">MENU CHÍNH</div>
 
-            <router-link to="/admin" class="nav-item" :class="{ active: isActive('/admin') }">
-              <i class="nav-icon">📊</i>
-              <span class="nav-text">Dashboard</span>
-            </router-link>
-
             <router-link
               to="/Admin/Index"
               class="nav-item"
               :class="{ active: isActive('/admin/motorbikes') }"
             >
-              <i class="nav-icon">🏍️</i>
+              <i class="nav-icon"></i>
               <span class="nav-text">Quản lý xe máy</span>
             </router-link>
 
@@ -120,7 +117,7 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/employee') }"
             >
-              <i class="nav-icon">👥</i>
+              <i class="nav-icon"></i>
               <span class="nav-text">Quản lý nhân viên</span>
             </router-link>
 
@@ -129,7 +126,7 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/customers') }"
             >
-              <i class="nav-icon">👤</i>
+              <i class="nav-icon"></i>
               <span class="nav-text">Quản lý khách hàng</span>
             </router-link>
           </div>
@@ -142,7 +139,7 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/reports') }"
             >
-              <i class="nav-icon">📈</i>
+              <i class="nav-icon"></i>
               <span class="nav-text">Báo cáo thống kê</span>
             </router-link>
 
@@ -151,7 +148,7 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/rentals') }"
             >
-              <i class="nav-icon">📋</i>
+              <i class="nav-icon"></i>
               <span class="nav-text">Lịch sử thuê xe</span>
             </router-link>
           </div>
@@ -196,7 +193,7 @@ const isActive = (path) => {
 
 /* Header */
 .admin-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1c2030 0%, #764ba2 100%);
   color: white;
   padding: 0 2rem;
   height: 70px;
@@ -333,6 +330,12 @@ const isActive = (path) => {
   box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
   margin: 0;
   padding: 0;
+  position: fixed;
+  top: 70px; /* Đẩy xuống dưới header */
+  left: 0;
+  height: calc(100vh - 70px); /* Chiều cao bằng viewport trừ header */
+  z-index: 50;
+  overflow-y: auto; /* Cho phép scroll nếu nội dung dài */
 }
 
 .sidebar-nav {
@@ -357,7 +360,7 @@ const isActive = (path) => {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.875rem;
   padding: 0.875rem 1.5rem;
   color: #475569;
   text-decoration: none;
@@ -382,7 +385,6 @@ const isActive = (path) => {
 
 .nav-icon {
   font-size: 1.125rem;
-  width: 20px;
   text-align: center;
 }
 
@@ -393,6 +395,7 @@ const isActive = (path) => {
   flex-direction: column;
   margin: 0;
   padding: 0;
+  margin-left: 280px; /* Đẩy nội dung sang phải để tránh sidebar */
 }
 
 .breadcrumb-container {
@@ -434,6 +437,10 @@ const isActive = (path) => {
   .admin-sidebar {
     width: 240px;
   }
+  
+  .admin-content {
+    margin-left: 240px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -447,6 +454,10 @@ const isActive = (path) => {
 
   .admin-sidebar {
     width: 200px;
+  }
+  
+  .admin-content {
+    margin-left: 200px;
   }
 
   .content-area {

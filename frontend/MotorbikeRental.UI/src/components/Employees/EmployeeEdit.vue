@@ -103,14 +103,14 @@ function toDateInputString(dateStr) {
       <div class="header-content">
         <div class="breadcrumb">
           <span class="breadcrumb-item" @click="router.push('/admin/employees')">
-            <i class="icon">👥</i>
+            <i class="icon"></i>
             Quản lý nhân viên
           </span>
           <i class="breadcrumb-separator">❯</i>
           <span class="breadcrumb-current">Chỉnh sửa nhân viên</span>
         </div>
         <h1 class="page-title">
-          <i class="title-icon">✏️</i>
+          <i class="title-icon"></i>
           Chỉnh sửa thông tin nhân viên
         </h1>
         <p class="page-subtitle">Cập nhật thông tin chi tiết của nhân viên</p>
@@ -133,18 +133,18 @@ function toDateInputString(dateStr) {
                   class="avatar-img"
                 />
                 <div v-else class="avatar-placeholder">
-                  <i class="avatar-icon">📷</i>
+                  <i class="avatar-icon"></i>
                   <span>Chọn ảnh</span>
                 </div>
               </div>
               <div class="avatar-overlay" @click="triggerFileInput">
-                <i class="overlay-icon">📁</i>
+                <i class="overlay-icon"></i>
                 <span>Thay đổi</span>
               </div>
             </div>
             <div class="avatar-actions">
               <button type="button" class="btn btn-upload" @click="triggerFileInput">
-                <i class="btn-icon">📁</i>
+                <i class="btn-icon"></i>
                 Chọn ảnh mới
               </button>
               <button
@@ -173,13 +173,13 @@ function toDateInputString(dateStr) {
           <!-- Personal Info Section -->
           <div class="form-section">
             <h3 class="section-title">
-              <i class="section-icon">👤</i>
+              <i class="section-icon"></i>
               Thông tin cá nhân
             </h3>
             <div class="form-grid">
               <div class="form-group">
                 <label class="form-label">
-                  <i class="label-icon">📝</i>
+                  <i class="label-icon"></i>
                   Họ và tên
                   <span class="required">*</span>
                 </label>
@@ -194,7 +194,7 @@ function toDateInputString(dateStr) {
 
               <div class="form-group">
                 <label class="form-label">
-                  <i class="label-icon">🎂</i>
+                  <i class="label-icon"></i>
                   Ngày sinh
                   <span class="required">*</span>
                 </label>
@@ -203,7 +203,7 @@ function toDateInputString(dateStr) {
 
               <div class="form-group full-width">
                 <label class="form-label">
-                  <i class="label-icon">📍</i>
+                  <i class="label-icon"></i>
                   Địa chỉ
                   <span class="required">*</span>
                 </label>
@@ -221,13 +221,13 @@ function toDateInputString(dateStr) {
           <!-- Work Info Section -->
           <div class="form-section">
             <h3 class="section-title">
-              <i class="section-icon">💼</i>
+              <i class="section-icon"></i>
               Thông tin công việc
             </h3>
             <div class="form-grid">
               <div class="form-group">
                 <label class="form-label">
-                  <i class="label-icon">📅</i>
+                  <i class="label-icon"></i>
                   Ngày vào làm
                   <span class="required">*</span>
                 </label>
@@ -236,7 +236,7 @@ function toDateInputString(dateStr) {
 
               <div class="form-group">
                 <label class="form-label">
-                  <i class="label-icon">💰</i>
+                  <i class="label-icon"></i>
                   Lương (VNĐ)
                   <span class="required">*</span>
                 </label>
@@ -253,7 +253,7 @@ function toDateInputString(dateStr) {
 
               <div class="form-group">
                 <label class="form-label">
-                  <i class="label-icon">📊</i>
+                  <i class="label-icon"></i>
                   Trạng thái
                   <span class="required">*</span>
                 </label>
@@ -283,7 +283,7 @@ function toDateInputString(dateStr) {
               class="btn btn-account"
               @click="onCreateAccount"
             >
-              <i class="btn-icon">👤</i>
+              <i class="btn-icon"></i>
               Tạo tài khoản
             </button>
             
@@ -301,11 +301,11 @@ function toDateInputString(dateStr) {
           </div>
           <div class="action-right">
             <button type="button" class="btn btn-secondary" @click="onCancel">
-              <i class="btn-icon">❌</i>
+              <i class="btn-icon"></i>
               Hủy bỏ
             </button>
             <button type="submit" class="btn btn-primary">
-              <i class="btn-icon">💾</i>
+              <i class="btn-icon"></i>
               Lưu thay đổi
             </button>
           </div>

@@ -56,8 +56,8 @@ const conditionOptions = [
     <div class="form-container">
       <!-- Form Header -->
       <div class="form-header">
-        <div class="header-icon">🏍️</div>
-        <h2 class="form-title">Thêm xe máy mới</h2>
+        <div class="header-icon"></div>
+        <h2 class="form-title">THÊM XE MÁY MỚI</h2>
         <p class="form-subtitle">Điền thông tin chi tiết về xe máy</p>
       </div>
 
@@ -66,7 +66,7 @@ const conditionOptions = [
         <!-- Basic Information Section -->
         <div class="form-section">
           <div class="section-header">
-            <h3 class="section-title">📋 Thông tin cơ bản</h3>
+            <h3 class="section-title"> Thông tin cơ bản</h3>
           </div>
           <div class="form-grid">
             <div class="form-group">
@@ -141,7 +141,7 @@ const conditionOptions = [
         <!-- Technical Information Section -->
         <div class="form-section">
           <div class="section-header">
-            <h3 class="section-title">🔧 Thông tin kỹ thuật</h3>
+            <h3 class="section-title"> Thông tin kỹ thuật</h3>
           </div>
           <div class="form-grid">
             <div class="form-group">
@@ -217,7 +217,7 @@ const conditionOptions = [
         <!-- Pricing Section -->
         <div class="form-section">
           <div class="section-header">
-            <h3 class="section-title">💰 Thông tin giá thuê</h3>
+            <h3 class="section-title"> Thông tin giá thuê</h3>
           </div>
           <div class="form-grid pricing-grid">
             <div class="form-group">
@@ -255,7 +255,7 @@ const conditionOptions = [
         <!-- Description Section -->
         <div class="form-section">
           <div class="section-header">
-            <h3 class="section-title">📝 Mô tả & Hình ảnh</h3>
+            <h3 class="section-title"> Mô tả & Hình ảnh</h3>
           </div>
 
           <div class="form-group">
@@ -273,7 +273,7 @@ const conditionOptions = [
             <label class="form-label">Hình ảnh xe</label>
             <div class="image-upload-area">
               <div v-if="!previewImage" class="upload-placeholder">
-                <div class="upload-icon">📷</div>
+                <div class="upload-icon"></div>
                 <p class="upload-text">Chọn hình ảnh xe máy</p>
                 <input type="file" accept="image/*" @change="onFileChange" class="file-input" />
               </div>
@@ -288,10 +288,10 @@ const conditionOptions = [
 
         <!-- Form Actions -->
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary">↩️ Hủy bỏ</button>
+          <button type="button" class="btn btn-secondary"> Hủy bỏ</button>
           <button type="submit" class="btn btn-primary" :disabled="isLoading">
             <span v-if="isLoading" class="loading-spinner">⏳</span>
-            <span v-else>✅</span>
+            <span v-else></span>
             {{ isLoading ? 'Đang tạo...' : 'Tạo xe máy' }}
           </button>
         </div>

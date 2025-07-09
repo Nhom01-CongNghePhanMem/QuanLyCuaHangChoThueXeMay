@@ -27,7 +27,7 @@ const router = createRouter({
         },
         {
           path: 'motorbike/detail/:id',
-          name: 'AdminMotorbikeDetail',
+          name: 'AdminMotorbikeDetail', 
           component: () => import('@/views/Admin/Motorbike/DetailMotorbike.vue'),
         },
         {
@@ -56,6 +56,8 @@ const router = createRouter({
           name: 'AdminEmployeeCreateUser',
           component: () => import('@/views/Admin/Employee/AdminEmployeeCreateUser.vue'),
         },
+        
+
       ],
     },
     {

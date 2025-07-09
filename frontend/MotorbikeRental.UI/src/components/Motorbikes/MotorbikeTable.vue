@@ -144,12 +144,12 @@ function goToDetail(id) {
     <!-- Page Header -->
     <div class="page-header">
       <div class="page-title">
-        <h1>🏍️ Danh sách xe máy</h1>
+        <h1> Danh sách xe máy</h1>
         <p class="page-subtitle">Tổng cộng {{ totalMotorbikes }} xe</p>
       </div>
       <div @click="goToCreateMotorbike" class="page-actions">
         <button class="btn btn-primary">
-          <i class="btn-icon">➕</i>
+          <i class="btn-icon"></i>
           Thêm xe mới
         </button>
       </div>
@@ -158,7 +158,7 @@ function goToDetail(id) {
     <!-- Filters Card -->
     <div class="filters-card">
       <div class="card-header">
-        <h3 class="card-title">🔍 Bộ lọc tìm kiếm</h3>
+        <h3 class="card-title"> Bộ lọc tìm kiếm</h3>
       </div>
       <div class="card-body">
         <div class="filters-grid">
@@ -166,7 +166,7 @@ function goToDetail(id) {
           <div class="form-group">
             <label class="form-label">Tìm kiếm</label>
             <div class="input-wrapper">
-              <i class="input-icon">🔍</i>
+              <i class="input-icon"></i>
               <input
                 v-model="searchQuery"
                 type="text"
@@ -209,7 +209,7 @@ function goToDetail(id) {
           <div class="form-group">
             <label class="form-label">&nbsp;</label>
             <button @click="clearFilters" class="btn btn-outline">
-              <i class="btn-icon">❌</i>
+              <i class="btn-icon"></i>
               Xóa bộ lọc
             </button>
           </div>
@@ -221,7 +221,7 @@ function goToDetail(id) {
     <div class="results-section">
       <!-- No Results -->
       <div v-if="motorbikes.length === 0" class="empty-state">
-        <div class="empty-icon">🔍</div>
+        <div class="empty-icon"></div>
         <h3 class="empty-title">Không tìm thấy xe nào</h3>
         <p class="empty-text">Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm</p>
       </div>
@@ -268,11 +268,11 @@ function goToDetail(id) {
             </div>
             <div class="card-actions">
               <button class="btn btn-primary btn-sm" :disabled="motorbike.status !== 0">
-                <i class="btn-icon">🏍️</i>
+                <i class="btn-icon"></i>
                 {{ motorbike.status === 0 ? 'Thuê ngay' : 'Không khả dụng' }}
               </button>
               <button class="btn btn-outline btn-sm" @click="goToDetail(motorbike.motorbikeId)">
-                <i class="btn-icon">👁️</i>
+                <i class="btn-icon"></i>
                 Chi tiết
               </button>
             </div>
@@ -316,6 +316,7 @@ function goToDetail(id) {
 </template>
 
 <style scoped>
+
 .motorbike-page {
   background: #f8fafc;
   min-height: 100vh;
