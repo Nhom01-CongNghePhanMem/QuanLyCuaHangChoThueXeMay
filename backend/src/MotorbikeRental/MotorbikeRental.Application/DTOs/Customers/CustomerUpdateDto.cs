@@ -11,7 +11,7 @@ namespace MotorbikeRental.Application.DTOs.Customers
     public class CustomerUpdateDto
     {
         [Required(ErrorMessage = "Id is required")]
-        public int CustomerId { get; set; } //Id khách hàng 
+        public int CustomerId { get; set; } //Id khách hàng     
         [Required(ErrorMessage = "Full name is required"), MaxLength(30, ErrorMessage = "Full name cannot exceed 30 characters")]
         public string FullName { get; set; } //Tên khách hàng
         [Required(ErrorMessage = "Gender is required")]

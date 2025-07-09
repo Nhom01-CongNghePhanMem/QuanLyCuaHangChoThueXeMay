@@ -21,6 +21,7 @@ namespace MotorbikeRental.Application.Mappers
             CreateMap<Customer, CustomerListDto>()
                     .ForMember(dest => dest.RentalCount,
                     opt => opt.MapFrom(src => src.RentalContracts.Count));
+            CreateMap<CustomerUpdateDto, Customer>();
         }
     }
 }

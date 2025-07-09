@@ -1,5 +1,5 @@
 <script setup>
-import EmployeeCreateUser from '../../../components/Employees/EmployeeCreateUser.vue'
+import EmployeeCreateUser from '../../../components/Admin/Employees/EmployeeCreateUser.vue'
 import { employeeService } from '../../../api/services/employeeService'
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
 import { onMounted, ref } from 'vue'

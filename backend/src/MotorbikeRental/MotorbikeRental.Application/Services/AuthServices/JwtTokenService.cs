@@ -3,13 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using MotorbikeRental.Application.Common;
 using MotorbikeRental.Application.DTOs.AuthenticDto;
 using MotorbikeRental.Application.Interface.IServices.IAuthServices;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.Application.Services.AuthServices
 {

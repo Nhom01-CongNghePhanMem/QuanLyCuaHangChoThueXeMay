@@ -29,7 +29,7 @@ export const customerService = {
     },
     async updateCustomer(customersId, form){
         try{
-            const response = await apiClient.put('/Customer/' + customersId, form + '/UpdateCustomer');
+            const response = await apiClient.put('/Customer/' + customersId + '/UpdateCustomer', form);
             return response.data;
         } catch (error) {
             console.error('Error updating customer:', error);
@@ -38,7 +38,7 @@ export const customerService = {
     },
     async deleteCustomer(customerId){
         try{
-            await apiClient.delete('/Customer/' + customerId + 'DeleteCustomer')
+            await apiClient.delete('/Customer/' + customerId + '/DeleteCustomer')
         } catch (error) {
             console.error('Error deleting customer:', error);
             throw error;

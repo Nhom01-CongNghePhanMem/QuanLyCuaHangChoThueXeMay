@@ -2,7 +2,7 @@
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
 import { employeeService } from '@/api/services/employeeService'
 import { onMounted, reactive, ref } from 'vue'
-import EmployeeCreate from '../../../components/Employees/EmployeeCreate.vue'
+import EmployeeCreate from '../../../components/Admin/Employees/EmployeeCreate.vue'
 import { useRouter } from 'vue-router'
 
 const route = useRouter()

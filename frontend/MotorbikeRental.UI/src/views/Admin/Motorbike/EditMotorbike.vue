@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
-import EditMotorbikeCard from '@/components/Motorbikes/EditMotorbikeCard.vue';
+import EditMotorbikeCard from '@/components/Admin/Motorbikes/EditMotorbikeCard.vue';
 import { motorbikeService } from '@/api/services/motorbikeService';
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'

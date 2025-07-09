@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
-import EmployeeEditUser from '../../../components/Employees/EmployeeEditUser.vue'
+import EmployeeEditUser from '../../../components/Admin/Employees/EmployeeEditUser.vue'
 import { onMounted, ref } from 'vue'
 import { userCredentialsService } from '@/api/services/userCredentialsService'
 import { useRoute, useRouter } from 'vue-router'

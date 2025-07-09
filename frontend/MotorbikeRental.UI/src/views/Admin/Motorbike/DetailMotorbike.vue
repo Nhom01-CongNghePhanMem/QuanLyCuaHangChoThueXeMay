@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { motorbikeService } from '@/api/services/motorbikeService'
-import DetailMotorbikeCard from '@/components/Motorbikes/DetailMotorbikeCard.vue'
+import DetailMotorbikeCard from '@/components/Admin/Motorbikes/DetailMotorbikeCard.vue'
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
 import { nextTick } from 'vue'
 

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
-import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
 
 
 const router = createRouter({
@@ -66,6 +65,12 @@ const router = createRouter({
           name: 'AdminCustomerList',
           component: () => import('@/views/Admin/Customer/AdminCustomerList.vue'),
           meta: { requiresAuth: true, roles: ['Manager'] },
+        },
+        {
+          path: 'customer/detail/:id',
+          name: 'AdminCustomerDetail',
+          component: () => import('@/views/Admin/Customer/AdminCustomerDetail.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         }
       ],
     },
@@ -73,10 +78,15 @@ const router = createRouter({
       path: '/Receptionist',
       children: [
         {
-          path: 'index',
-          name: 'ReceptionistIndex',
-          component: () => import('@/views/layouts/Receptionist/ReceptionistLayout.vue'),
+          path: 'customers',
+          name: 'ReceptionistListCustomer',
+          component: () => import('@/views/Receptionist/Customer/ReceptionistListCustomer.vue'),
           meta: { requiresAuth: true, roles: ['Receptionist'] },
+        },
+        {
+          path: 'customer/create',
+          name: 'ReceptionistCreateCustomer',
+          component: () => import('@/views/Receptionist/Customer/ReceptionistCreateCustomer.vue')
         }
       ]
     },

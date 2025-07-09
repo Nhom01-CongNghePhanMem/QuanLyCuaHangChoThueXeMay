@@ -2,7 +2,7 @@
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
 import { ref, onMounted } from 'vue'
 import { motorbikeService } from '@/api/services/motorbikeService'
-import MotorbikeTable from '@/components/Motorbikes/MotorbikeTable.vue'
+import MotorbikeTable from '@/components/Admin/Motorbikes/MotorbikeTable.vue'
 
 
 const query = ref({

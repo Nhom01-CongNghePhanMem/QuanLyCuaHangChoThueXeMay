@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
-import CreateMotorbikeForm from '@/components/Motorbikes/CreateMotorbikeForm.vue' 
+import CreateMotorbikeForm from '@/components/Admin/Motorbikes/CreateMotorbikeForm.vue' 
 import { motorbikeService } from '@/api/services/motorbikeService';
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'

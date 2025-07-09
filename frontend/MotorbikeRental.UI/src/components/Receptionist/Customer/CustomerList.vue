@@ -1,6 +1,8 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const props = defineProps({
     customers: {
         type: Array,
@@ -89,6 +91,9 @@ function getGenderBadgeClass(gender) {
         default: return 'badge-other'
     }
 }
+function goToCreateCustomer() {
+    router.push('/receptionist/customer/create')
+}
 </script>
 
 <template>
@@ -96,6 +101,7 @@ function getGenderBadgeClass(gender) {
         <!-- Header -->
         <div class="page-header">
             <h1 class="page-title">Danh sách khách hàng</h1>
+            <button class="btn-create" @click="goToCreateCustomer()">Tạo khách hàng</button>
             <div class="header-stats">
                 <span class="stat-item">
                     Tổng: {{ totalCount }} khách hàng
@@ -268,6 +274,46 @@ function getGenderBadgeClass(gender) {
 </template>
 
 <style scoped>
+.btn-create {
+    padding: 6px 18px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    background: #fafafa;
+    color: #222;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: none;
+    font-weight: 400;
+    margin-left: auto;
+    margin-right: 0;
+    transition: background 0.2s;
+}
+.btn-create:hover {
+    background: #f3f4f6;
+}
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    gap: 12px;
+}
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+.header-stats {
+    margin-left: 16px;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
 .customer-table-container {
     background: #fff;
     border-radius: 12px;
@@ -282,7 +328,7 @@ function getGenderBadgeClass(gender) {
     align-items: center;
     padding: 24px 32px;
     border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
     color: white;
 }
 

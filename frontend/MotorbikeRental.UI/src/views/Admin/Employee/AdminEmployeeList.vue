@@ -4,7 +4,7 @@ import { employeeService } from '@/api/services/employeeService'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import EmployeeTable from '@/components/Employees/EmployeeTable.vue'
+import EmployeeTable from '@/components/Admin/Employees/EmployeeTable.vue'
 
 const query = ref({
   Search: '',

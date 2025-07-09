@@ -1,8 +1,9 @@
 <script setup>
-import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
-import { customerService } from '../../../api/services/customerService';
+import ReceptionistLayout from '@/views/layouts/Receptionist/ReceptionistLayout.vue'
+import { customerService } from '@/api/services/customerService';
 import { onMounted, ref } from 'vue'
-import CustomerList from '../../../components/Admin/Customers/CustomerTable.vue'
+import { useRouter } from 'vue-router'
+import CustomerList from '../../../components/Receptionist/Customer/CustomerList.vue';
 
 const customers = ref([]);
 const isLoading = ref(true);
@@ -41,13 +42,13 @@ const updateQuery = async (newQuery) => {
 }
 </script>
 <template>
-    <AdminLayout>
-        <CustomerList 
-        :customers="customers"
-        :isLoading="isLoading" 
-        :totalCount="totalCount"
-        :query="query"
-        @update-query="updateQuery"
-         />
-    </AdminLayout>
+    <ReceptionistLayout>
+        <CustomerList
+            :customers="customers"
+            :isLoading="isLoading"
+            :totalCount="totalCount"
+            :query="query"
+            @update-query="updateQuery"
+        />
+    </ReceptionistLayout>
 </template>
