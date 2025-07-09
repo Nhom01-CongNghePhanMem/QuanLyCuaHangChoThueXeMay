@@ -44,4 +44,12 @@ namespace MotorbikeRental.Application.DTOs.AuthenticDto
         [StringLength(50, ErrorMessage = "UserName cannot exceed 50 characters")]
         public string UserName { get; set; }
     }
+    public class ResetRoleDto
+    {
+        [Required(ErrorMessage = "EmployeeId is required")]
+        public int EmployeeId { get; set; }
+        [Required(ErrorMessage = "RoleId is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "RoleId must be a positive integer")]
+        public int RoleId { get; set; }
+    }
 }

@@ -1,6 +1,7 @@
 <script>
 import { login } from '@/api/services/authService'
 import { jwtDecode } from 'jwt-decode'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Login',
@@ -24,6 +25,9 @@ export default {
           // Token còn hạn, chuyển hướng theo role
           if (user.role === 'Manager') {
             this.$router.push({ name: 'AdminMotorbikeList' })
+          }
+          if (user.role === 'Receptionist') {
+            
           } else {
             this.$router.push({ name: 'Home' })
           }
@@ -50,7 +54,7 @@ export default {
         if (userInfo.role === 'Manager') {
           this.$router.push({ name: 'AdminMotorbikeList' })
         } else {
-          this.$router.push({ name: 'Home' })
+          this.$router.push({ name: 'ReceptionistIndex' })
         }
       } else {
         this.error = result.message || 'Đăng nhập thất bại'

@@ -80,13 +80,7 @@ namespace MotorbikeRental.Application.Services.UserServices
         {
             string? employeeId = http.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             (IEnumerable<Employee> data, int totalCount) = await employeeRepository.GetFilterData(employeeId == null ? null : int.Parse(employeeId), filter.Search, filter.PageNumber, filter.PageSize, filter.RoleId, filter.Status, cancellation);
-            List<Employee> employees = data.ToList();
-            List<EmployeeListDto> employeesList = new List<EmployeeListDto>();
-            for (int i = 0; i < employees.Count; i++)
-            {
-                employeesList.Add(mapper.Map<EmployeeListDto>(employees[i]));
-            }
-            return new PaginatedDataDto<EmployeeListDto>(employeesList, totalCount);
+            return new PaginatedDataDto<EmployeeListDto>(mapper.Map<IEnumerable<EmployeeListDto>>(data), totalCount);
         }
         public async Task<bool> DeleteAvatar(int employeeId, CancellationToken cancellation = default)
         {

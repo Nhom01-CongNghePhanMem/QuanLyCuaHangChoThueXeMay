@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Domain.Entities.User;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories;
 using MotorbikeRental.Infrastructure.Data.Contexts;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
 {
@@ -40,13 +36,14 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
                 .Include(u => u.Roles)
                 .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException("UserCredentials not found");
         }
-        public async Task<UserCredentials> GetByEmployeeIdAsTracking(int employeeId, CancellationToken cancellationToken = default)
+        public async Task<UserCredentials> GetByEmployeeId(int employeeId, bool isNoTracking, CancellationToken cancellationToken = default)
         {
-            return await dbContext.UserCredentials
-                .Where(u => u.EmployeeId == employeeId)
+            IQueryable<UserCredentials> queryable = dbContext.UserCredentials.Where(u => u.EmployeeId == employeeId)
                 .Include(u => u.Employee)
-                .Include(u => u.Roles)
-                .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException("UserCredentials not found for the given EmployeeId");
+                .Include(u => u.Roles);
+            if (!isNoTracking)
+                queryable = queryable.AsNoTracking();
+            return await queryable.FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException($"UserCredentials with employeeId {employeeId} not found");
         }
         public async Task<UserCredentials?> GetByUserNameInCludes(string userName, CancellationToken cancellationToken = default)
         {
@@ -55,6 +52,10 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
                 .Include(u => u.Employee)
                 .Include(u => u.Roles)
                 .FirstOrDefaultAsync(cancellationToken);
+        }
+        public async Task<int> CountUsersInRoleAsync(int? roleId, CancellationToken cancellationToken = default)
+        {
+            return await dbContext.UserCredentials.CountAsync(u => u.RoleId == roleId, cancellationToken);
         }
     }
 }

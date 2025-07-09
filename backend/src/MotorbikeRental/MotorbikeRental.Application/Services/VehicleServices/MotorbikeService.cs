@@ -54,13 +54,7 @@ namespace MotorbikeRental.Application.Services.VehicleServices
         public async Task<PaginatedDataDto<MotorbikeListDto>> GetMotorbikesByFilter(MotorbikeFilterDto motorbikeFilterDto, CancellationToken cancellationToken = default)
         {
             var (data, total) = await motorbikeRepository.GetFilterData(motorbikeFilterDto.CategoryId, motorbikeFilterDto.Brand,motorbikeFilterDto.Search, motorbikeFilterDto.Status, motorbikeFilterDto.PageNumber, motorbikeFilterDto.PageSize, cancellationToken);
-            List<Motorbike> motorbikes = data.ToList();
-            List<MotorbikeListDto> motorbikeListDto = new List<MotorbikeListDto>();
-            for (int i = 0; i < motorbikes.Count; i++)
-            {
-                motorbikeListDto.Add(mapper.Map<MotorbikeListDto>(motorbikes[i]));
-            }
-            return new PaginatedDataDto<MotorbikeListDto>(motorbikeListDto, total);
+            return new PaginatedDataDto<MotorbikeListDto>(mapper.Map<IEnumerable<MotorbikeListDto>>(data), total);
         }
 
         public async Task<MotorbikeDto> GetMotorbikeById(int id, CancellationToken cancellationToken = default)

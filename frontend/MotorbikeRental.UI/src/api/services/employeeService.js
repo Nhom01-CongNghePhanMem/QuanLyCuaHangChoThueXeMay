@@ -95,7 +95,7 @@ export const employeeService = {
   },
   async createUserCredential(employeeId, form) {
     try {
-      const response = await apiClient.post('/Employee/UserCredentials/' + employeeId + '/CreateUserCredentialByAdmin', form)  
+      const response = await apiClient.post('/UserCredentials/' + employeeId + '/CreateUserCredentialByAdmin', form)  
       return response.data
     } catch (error) {
       console.log(error)

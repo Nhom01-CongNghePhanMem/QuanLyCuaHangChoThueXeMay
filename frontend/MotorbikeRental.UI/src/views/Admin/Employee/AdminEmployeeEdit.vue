@@ -35,6 +35,16 @@ async function updateEmployee(form) {
 function createAccount(form) {
   alert('Tạo tài khoản cho nhân viên: ' + form.fullName)
 }
+const deleteEmployee = async () => {
+  try{
+  await employeeService.deleteEmployee(route.params.id)
+  alert('Xóa nhân viên thành công!')
+  router.push('/admin/employees')
+  } catch (error) {
+    console.error('Error deleting employee:', error)
+    alert('Xóa nhân viên thất bại!')
+  }
+}
 </script>
 
 <template>
@@ -45,6 +55,7 @@ function createAccount(form) {
         :employee="employee"
         @update="updateEmployee"
         @create-account="createAccount"
+        @delete-employee="deleteEmployee"
       />
     </div>
     <div v-else>

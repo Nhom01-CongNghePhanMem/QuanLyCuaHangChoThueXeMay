@@ -3,6 +3,7 @@ import AdminLayout from '@/views/layouts/Admin/AdminLayout.vue'
 import { employeeService } from '@/api/services/employeeService'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import EmployeeTable from '@/components/Employees/EmployeeTable.vue'
 
 const query = ref({
@@ -36,16 +37,18 @@ const updateQuery = async (newQuery) => {
     console.error('Error updating query:', error)
   }
 }
+
 </script>
 
 <template>
   <AdminLayout>
     <EmployeeTable
-      :employees="[...employees.values()] || []"
+      :employees="employees"
       :roles="roles"
       :totalCount="totalCount"
       :query="query"
       @update-query="updateQuery"
+      @delete-employee="deleteEmployee"
     />
   </AdminLayout>
 </template>
