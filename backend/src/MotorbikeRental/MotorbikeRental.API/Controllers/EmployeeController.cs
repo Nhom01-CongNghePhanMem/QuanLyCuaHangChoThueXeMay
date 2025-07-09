@@ -6,7 +6,6 @@ using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.DTOs.User;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.API.Controllers
 {

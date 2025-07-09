@@ -10,7 +10,7 @@ const fileInputRef = ref(null)
 const props = defineProps({
   employee: { type: Object, required: true },
 })
-const emit = defineEmits(['update', 'create-account'])
+const emit = defineEmits(['update', 'create-account','delete-employee'])
 
 const router = useRouter()
 const route = useRoute();
@@ -95,6 +95,11 @@ const statusOptions = {
 function toDateInputString(dateStr) {
   if (!dateStr) return ''
   return dateStr.split('T')[0]
+}
+function onDeleteEmployee() {
+  if (confirm('Bạn có chắc chắn muốn xóa nhân viên này không? Hành động này không thể hoàn tác!')) {
+    emit('delete-employee')
+  }
 }
 </script>
 
@@ -299,7 +304,14 @@ function toDateInputString(dateStr) {
               <i class="btn-icon">⚙️</i>
               Chỉnh sửa tài khoản
             </button>
-            
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="onDeleteEmployee"
+            >
+              <i class="btn-icon">🗑️</i>
+              Xóa nhân viên
+            </button>
           </div>
           <div class="action-right">
             <button type="button" class="btn btn-secondary" @click="onCancel">
@@ -688,6 +700,28 @@ function toDateInputString(dateStr) {
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
 }
+.btn-edit-account {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  margin-right: 1rem;
+}
+
+.btn-edit-account:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.4);
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -734,6 +768,17 @@ function toDateInputString(dateStr) {
 
   .section-title {
     font-size: 1.125rem;
+  }
+}
+@media (max-width: 768px) {
+  .action-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-edit-account {
+    margin-right: 0;
   }
 }
 </style>

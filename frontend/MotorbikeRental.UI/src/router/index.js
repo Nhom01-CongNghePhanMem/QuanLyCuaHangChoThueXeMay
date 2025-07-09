@@ -70,6 +70,17 @@ const router = createRouter({
       ],
     },
     {
+      path: '/Receptionist',
+      children: [
+        {
+          path: 'index',
+          name: 'ReceptionistIndex',
+          component: () => import('@/views/layouts/Receptionist/ReceptionistLayout.vue'),
+          meta: { requiresAuth: true, roles: ['Receptionist'] },
+        }
+      ]
+    },
+    {
       path: '/forbidden',
       name: 'Forbidden',
       component: () => import('@/views/Forbidden.vue'),
@@ -83,27 +94,34 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
-  if (to.name !== 'Login' && !token) {
-    next({ name: 'Login' })
-    return
-  }
-  const requiredRoles = to.matched.find((r) => r.meta && r.meta.roles)?.meta?.roles
-  if (requiredRoles && token) {
+  const token = localStorage.getItem('token');
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiredRoles = to.matched.flatMap(record => record.meta?.roles || []);
+  
+  let user = null;
+  if (token) {
     try {
-      const user = jwtDecode(token) 
-      if (requiredRoles.includes(user.role)) {
-        next()
-      } else {
-        next({ name: 'Forbidden' })
-      }
+      user = jwtDecode(token);
     } catch {
-      localStorage.removeItem('token')
-      next({ name: 'Login' })
+      localStorage.removeItem('token');
+      return next({ name: 'Login' });
     }
-  } else {
-    next()
   }
-})
+
+  if (requiresAuth && !token) {
+    return next({ name: 'Login' });
+  }
+
+  if (requiredRoles.length > 0) {
+    if (user && requiredRoles.includes(user.role)) {
+      return next();
+    } else {
+      return next({ name: 'Forbidden' });
+    }
+  }
+
+  next();
+});
+
 
 export default router
