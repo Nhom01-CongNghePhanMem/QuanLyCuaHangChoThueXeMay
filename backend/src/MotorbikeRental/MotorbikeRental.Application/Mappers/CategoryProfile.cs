@@ -15,6 +15,8 @@ namespace MotorbikeRental.Application.Mappers
         {
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<CategoryCreateDto, Category>();
+            CreateMap<CategoryUpdateDto, Category>();
         }
     }
 }

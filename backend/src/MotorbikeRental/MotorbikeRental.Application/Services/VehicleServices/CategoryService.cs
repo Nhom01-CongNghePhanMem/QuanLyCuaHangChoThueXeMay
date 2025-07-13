@@ -5,6 +5,7 @@ using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
 using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
+using System.Threading.Tasks;
 
 namespace MotorbikeRental.Application.Services.VehicleServices
 {
@@ -19,40 +20,34 @@ namespace MotorbikeRental.Application.Services.VehicleServices
             this.categoryRepository = categoryRepository;
             this.categoryValidator = categoryValidator;
         }
-        public async Task<Category> CreateCategory(CategoryDto categoryDto, CancellationToken cancellationToken = default)
-        {
-            await categoryValidator.ValidateForCreate(categoryDto, cancellationToken);
-            Category category = mapper.Map<Category>(categoryDto);
-            await categoryRepository.Create(category, cancellationToken);
-            return category;
-        }
         public async Task<IEnumerable<CategoryDto>> GetAllCategories(CancellationToken cancellationToken = default)
         {
             IEnumerable<Category> categories = await categoryRepository.GetAll(cancellationToken);
             return mapper.Map<IEnumerable<CategoryDto>>(categories);
         }
-        public async Task<bool> DeleteCategory(int id, CancellationToken cancellationToken = default)
+        public async Task<CategoryDto> CreateCategory(CategoryCreateDto categoryCreateDto, CancellationToken cancellationToken = default)
         {
-            if (id < 0)
-                throw new ValidatorException("Invalid category ID");
-            await categoryValidator.ValidateForDelete(id, cancellationToken);
-            await categoryRepository.Delete(await categoryRepository.GetById(id, cancellationToken), cancellationToken);
-            return true;
-        }
-        public async Task<CategoryDto> UpdateCategory(CategoryDto categoryDto, CancellationToken cancellationToken = default)
-        {
-            await categoryValidator.ValidateForUpdate(categoryDto, cancellationToken);
-            Category category = mapper.Map<Category>(categoryDto);
-            await categoryRepository.Update(category, cancellationToken);
-            return categoryDto;
+            await categoryValidator.ValidateForCreate(categoryCreateDto, cancellationToken);
+            Category category = mapper.Map<Category>(categoryCreateDto);
+            return mapper.Map<CategoryDto>(await categoryRepository.Create(category, cancellationToken));
         }
         public async Task<CategoryDto> GetCategoryById(int id, CancellationToken cancellationToken = default)
         {
-            if (id < 0)
-                throw new ValidatorException("Invalid category ID");
-            await categoryValidator.ValidateForGet(id, cancellationToken);
-            Category category = await categoryRepository.GetById(id, cancellationToken);
+            return mapper.Map<CategoryDto>(await categoryRepository.GetCategoryById(id, cancellationToken) ?? throw new NotFoundException($"Category with id {id} not found"));
+        }
+        public async Task<CategoryDto> UpdateCategory(CategoryUpdateDto categoryUpdateDto, CancellationToken cancellationToken = default)
+        {
+            await categoryValidator.ValidateForUpdate(categoryUpdateDto, cancellationToken);
+            Category category = mapper.Map<Category>(categoryUpdateDto);
+            await categoryRepository.Update(category, cancellationToken);
             return mapper.Map<CategoryDto>(category);
+        }
+        public async Task<bool> DeleteCategory(int id, CancellationToken cancellationToken = default)
+        {
+            Category? category = await categoryRepository.GetById(id, cancellationToken) ?? throw new NotFoundException($"Category with id {id} not found");
+            await categoryValidator.ValidateForDelete(category, cancellationToken);
+            await categoryRepository.Delete(category, cancellationToken);
+            return true;
         }
     }
 }

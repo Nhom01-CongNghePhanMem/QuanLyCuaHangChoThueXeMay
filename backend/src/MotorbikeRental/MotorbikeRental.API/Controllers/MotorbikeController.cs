@@ -23,7 +23,6 @@ namespace MotorbikeRental.API.Controllers
             this.motorbikeService = motorbikeService;
             this.memoryCache = memoryCache;
         }
-        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<IActionResult> GetMotorbikeByFilter([FromQuery] MotorbikeFilterDto? filterDto, CancellationToken cancellationToken = default)
         {
@@ -52,7 +51,7 @@ namespace MotorbikeRental.API.Controllers
         public async Task<IActionResult> GetMotorbikeById(int id, CancellationToken cancellationToken)
         {
             var result = new MotorbikeDto();
-            if (memoryCache.TryGetValue($"Motorbike_{id}", out MotorbikeDto cacheMotorbike))
+            if (memoryCache.TryGetValue($"Motorbike_{id}", out MotorbikeDto? cacheMotorbike))
             {
                 result = cacheMotorbike;
             }
@@ -71,6 +70,7 @@ namespace MotorbikeRental.API.Controllers
             return Ok(responseDto);
         }
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateMotorbike([FromForm] MotorbikeCreateDto motorbikeCreateDto, CancellationToken cancellationToken)
         {
             var result = await motorbikeService.CreateMotorbike(motorbikeCreateDto, cancellationToken);
@@ -83,6 +83,7 @@ namespace MotorbikeRental.API.Controllers
             return CreatedAtAction(nameof(GetMotorbikeById), new { id = result.MotorbikeId }, response);
         }
         [HttpPut("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> EditMotorbike(int id, [FromForm] MotorbikeUpdateDto motorbikeUpdateDto, CancellationToken cancellationToken)
         {
             if(id != motorbikeUpdateDto.MotorbikeId)
@@ -105,6 +106,7 @@ namespace MotorbikeRental.API.Controllers
             return Ok(response);
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteMotorbike(int id, CancellationToken cancellationToken)
         {
             await motorbikeService.DeleteMotorbike(id, cancellationToken);

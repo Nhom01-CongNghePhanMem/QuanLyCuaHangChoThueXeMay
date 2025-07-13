@@ -22,6 +22,7 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
         public DbSet<Motorbike> Motorbikes { get; set; }
         public DbSet<MaintenanceRecord> MaintenanceRecords { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<Discount_Category> Discount_Categories { get; set; }
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<Incident> Incidents { get; set; }
         public DbSet<Customer> Customers { get; set; }

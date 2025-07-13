@@ -18,6 +18,7 @@ const currentPageName = computed(() => {
     '/admin/customers': 'Quản lý khách hàng',
     '/admin/reports': 'Báo cáo thống kê',
     '/admin/rentals': 'Lịch sử thuê xe',
+    '/admin/discounts': 'Quản lý giảm giá',
   }
   return names[route.path] || 'Admin'
 })
@@ -109,16 +110,33 @@ const isActive = (path) => {
             <router-link
               to="/Admin/Index"
               class="nav-item"
-              :class="{ active: isActive('/admin/motorbikes') }"
+              :class="{ active: isActive('/Admin/Index') }"
             >
               <i class="nav-icon">🏍️</i>
               <span class="nav-text">Quản lý xe máy</span>
+            </router-link>
+            <router-link
+              to="/admin/categories"
+              class="nav-item"
+              :class="{ active: isActive('/admin/categories') }"
+            >
+              <i class="nav-icon">🛵</i>
+              <span class="nav-text">Quản lý loại xe</span>
+            </router-link>
+
+            <router-link
+              to="/admin/discounts"
+              class="nav-item"
+              :class="{ active: isActive('/admin/discounts') }"
+            >
+              <i class="nav-icon">🏷️</i>
+              <span class="nav-text">Quản lý giảm giá</span>
             </router-link>
 
             <router-link
               to="/admin/employees"
               class="nav-item"
-              :class="{ active: isActive('/admin/employee') }"
+              :class="{ active: isActive('/admin/employees') }"
             >
               <i class="nav-icon">👥</i>
               <span class="nav-text">Quản lý nhân viên</span>
@@ -288,7 +306,8 @@ const isActive = (path) => {
   font-weight: 500;
 }
 
-.user-email, .user-phone {
+.user-email,
+.user-phone {
   font-size: 0.75rem;
   color: #c7d2fe;
   opacity: 0.9;

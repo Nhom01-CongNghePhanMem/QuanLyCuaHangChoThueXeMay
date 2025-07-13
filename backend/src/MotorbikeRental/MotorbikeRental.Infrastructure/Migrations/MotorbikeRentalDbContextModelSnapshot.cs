@@ -372,9 +372,6 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscountId"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -403,10 +400,22 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.HasKey("DiscountId");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
-
                     b.ToTable("Discount", (string)null);
+                });
+
+            modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.Discount_Category", b =>
+                {
+                    b.Property<int>("DiscountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DiscountId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Discount_Category", (string)null);
                 });
 
             modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.PriceList", b =>
@@ -603,6 +612,9 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal>("DepositAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("CategoryId");
 
@@ -863,15 +875,23 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("Incident");
                 });
 
-            modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.Discount", b =>
+            modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.Discount_Category", b =>
                 {
                     b.HasOne("MotorbikeRental.Domain.Entities.Vehicles.Category", "Category")
-                        .WithOne("Discount")
-                        .HasForeignKey("MotorbikeRental.Domain.Entities.Pricing.Discount", "CategoryId")
+                        .WithMany("Discounts")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("MotorbikeRental.Domain.Entities.Pricing.Discount", "Discount")
+                        .WithMany("Categories")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.PriceList", b =>
@@ -951,6 +971,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Navigation("Images");
                 });
 
+            modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.Discount", b =>
+                {
+                    b.Navigation("Categories");
+                });
+
             modelBuilder.Entity("MotorbikeRental.Domain.Entities.User.Employee", b =>
                 {
                     b.Navigation("Incidents");
@@ -970,8 +995,7 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
             modelBuilder.Entity("MotorbikeRental.Domain.Entities.Vehicles.Category", b =>
                 {
-                    b.Navigation("Discount")
-                        .IsRequired();
+                    b.Navigation("Discounts");
 
                     b.Navigation("Motorbikes");
                 });

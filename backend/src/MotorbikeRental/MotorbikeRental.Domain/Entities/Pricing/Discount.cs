@@ -19,11 +19,6 @@ namespace MotorbikeRental.Domain.Entities.Pricing
         public int Value { get; set; } //Giảm theo %
 
         [Required]
-        [Range(1, int.MaxValue)]
-        public int CategoryId { get; set; } //FK Loại xe
-        public virtual Category Category { get; set; }
-
-        [Required]
         public DateTime StartDate { get; set; } // Ngày bắt đầu
 
         public DateTime? EndDate { get; set; } // Ngày kết thúc (null = không giới hạn)
@@ -33,5 +28,6 @@ namespace MotorbikeRental.Domain.Entities.Pricing
 
         [Required]
         public DateTime CreatedAt { get; set; } //Ngày tạo
+        public virtual ICollection<Discount_Category> Categories { get; set; }
     }
 }

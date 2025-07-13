@@ -23,16 +23,19 @@ const router = createRouter({
           path: 'motorbike/create',
           name: 'AdminMotorbikeCreate',
           component: () => import('@/views/Admin/Motorbike/CreateMotorbike.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path: 'motorbike/detail/:id',
           name: 'AdminMotorbikeDetail',
           component: () => import('@/views/Admin/Motorbike/DetailMotorbike.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path: 'motorbike/edit/:id',
           name: 'AdminMotorbikeEdit',
           component: () => import('@/views/Admin/Motorbike/EditMotorbike.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path: 'employees',
@@ -44,21 +47,25 @@ const router = createRouter({
           path: 'employees/create',
           name: 'AdminEmployeeCreate',
           component: () => import('@/views/Admin/Employee/AdminEmployeeCreate.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path : 'employees/edit/:id',
           name: 'AdminEmployeeEdit',
           component: () => import('@/views/Admin/Employee/AdminEmployeeEdit.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path: 'employees/create-user/:id',
           name: 'AdminEmployeeCreateUser',
           component: () => import('@/views/Admin/Employee/AdminEmployeeCreateUser.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path: 'employees/edit-user/:id',
           name: 'AdminEmployeeEditUser',
           component: () => import('@/views/Admin/Employee/AdminEmployeeEditUser.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
         },
         {
           path: 'customers',
@@ -71,7 +78,31 @@ const router = createRouter({
           name: 'AdminCustomerDetail',
           component: () => import('@/views/Admin/Customer/AdminCustomerDetail.vue'),
           meta: { requiresAuth: true, roles: ['Manager'] },
-        }
+        },
+        {
+          path: 'categories',
+          name: 'AdminCategoryList',
+          component: () => import('@/views/Admin/Motorbike/AdminCategoryList.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        },
+        {
+          path: 'category/create',
+          name: 'AdminCategoryCreate',
+          component: () => import('@/views/Admin/Motorbike/AdminCategoryCreate.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        },
+        {
+          path: 'category/:id',
+          name: 'AdminCategoryDetail',
+          component: () => import('@/views/Admin/Motorbike/AdminCategoryDetail.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        },
+        {
+          path: 'discounts',
+          name: 'AdminDiscountList',
+          component: () => import('@/views/Admin/Discount/AdminDiscountList.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        },
       ],
     },
     {
@@ -87,7 +118,19 @@ const router = createRouter({
           path: 'customer/create',
           name: 'ReceptionistCreateCustomer',
           component: () => import('@/views/Receptionist/Customer/ReceptionistCreateCustomer.vue')
-        }
+        },
+        {
+          path: 'motorbikes',
+          name: 'ReceptionistMotorbikeList',
+          component: () => import('@/views/Receptionist/Motorbikes/ReceptionistMotorbikeList.vue'),
+          meta: { requiresAuth: true, roles: ['Receptionist'] },
+        },
+        {
+          path: 'motorbike/detail/:id',
+          name: 'ReceptionistMotorbikeDetail',
+          component: () => import('@/views/Receptionist/Motorbikes/DetailMotorbike.vue'),
+          meta: { requiresAuth: true, roles: ['Receptionist'] },
+        },
       ]
     },
     {

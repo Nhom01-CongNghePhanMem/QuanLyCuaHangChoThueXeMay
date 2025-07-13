@@ -45,7 +45,7 @@ namespace MotorbikeRental.API.Controllers
         public async Task<IActionResult> GetUserCredentials(int id, CancellationToken cancellation = default)
         {
             var result = new UserCredentialsDto();
-            if (memoryCache.TryGetValue($"UserCredentials_{id}", out UserCredentialsDto userCredentials))
+            if (memoryCache.TryGetValue($"UserCredentials_{id}", out UserCredentialsDto? userCredentials))
             {
                 result = userCredentials;
             }

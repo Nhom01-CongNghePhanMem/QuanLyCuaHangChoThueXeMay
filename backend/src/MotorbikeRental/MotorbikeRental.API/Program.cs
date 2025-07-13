@@ -5,6 +5,7 @@ using MotorbikeRental.Application.Common;
 using MotorbikeRental.Infrastructure.Data.Contexts;
 using MotorbikeRental.Web.Extensions;
 using MotorbikeRental.Web.Middlewares;
+using MotorbikeRental.Infrastructure.BackgroundJobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<MotorbikeRentalDbContext>(options =>
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddMemoryCache();
+builder.Services.AddHostedService<DiscountCleanupService>();
 ServiceExtension.Services(builder.Services);
 SecurityExtension.RegisterSecurityService(builder.Services, builder.Configuration);
 

@@ -25,6 +25,7 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
             ConfigurationPayment(modelBuilder);
             ConfigurationPriceList(modelBuilder);
             ConfigurationUserCredentials(modelBuilder);
+            ConfigurationDiscount_Category(modelBuilder);
         }
 
         public static void ConfigurationRoles(ModelBuilder modelBuilder)
@@ -64,6 +65,8 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                 entity.HasKey(e => e.CategoryId);
                 entity.Property(e => e.CategoryId).ValueGeneratedOnAdd();
                 entity.HasMany(e => e.Motorbikes)
+                    .WithOne(e => e.Category);
+                entity.HasMany(e => e.Discounts)
                     .WithOne(e => e.Category);
             });
         }
@@ -156,12 +159,27 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                 entity.ToTable("Discount");
                 entity.Property(e => e.DiscountId).ValueGeneratedOnAdd();
                 entity.HasKey(e => e.DiscountId);
-                entity.HasOne(e => e.Category)
-                    .WithOne(e => e.Discount)
-                    .HasForeignKey<Discount>(e => e.CategoryId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(e => e.Categories)
+                    .WithOne(e => e.Discount);
                 entity.Property(e => e.StartDate)
                     .HasDefaultValueSql("GETDATE()");
+            });
+            
+        }
+        public static void ConfigurationDiscount_Category(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Discount_Category>(entity =>
+            {
+                entity.ToTable("Discount_Category");
+                entity.HasKey(e => new { e.DiscountId, e.CategoryId });
+                entity.HasOne(e => e.Category)
+                    .WithMany(e => e.Discounts)
+                    .HasForeignKey(e => e.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.Discount)
+                    .WithMany(e => e.Categories)
+                    .HasForeignKey(e => e.DiscountId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
         public static void ConfigurationIncident(ModelBuilder modelBuilder)

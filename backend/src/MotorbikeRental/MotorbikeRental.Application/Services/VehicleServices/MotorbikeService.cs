@@ -71,11 +71,14 @@ namespace MotorbikeRental.Application.Services.VehicleServices
             if (motorbikeUpdateDto.FormFile != null)
             {
                 if (motorbike.ImageUrl != null)
-                    if (!fileService.DeleteFile(motorbike.ImageUrl)) throw new Exception("Loi");
+                    if (!fileService.DeleteFile(motorbike.ImageUrl)) throw new Exception("Failed to delete file");
                 motorbike.ImageUrl = await fileService.SaveImage(motorbikeUpdateDto.FormFile, "Motorbike", cancellationToken);
             }
+            motorbike.Category = null;
             await motorbikeRepository.Update(mapper.Map(motorbikeUpdateDto, motorbike), cancellationToken);
-            return mapper.Map<MotorbikeDto>(motorbike);
+            MotorbikeDto result = mapper.Map<MotorbikeDto>(motorbike);
+            result.CategoryName = await categoryRepository.GetCategoryNameById(motorbike.CategoryId, cancellationToken) ?? throw new NotFoundException("Category not found");
+            return result;
         }
         public async Task<MotorbikeIndexDto> GetMotorbikeFilterOptions(CancellationToken cancellationToken = default)
         {

@@ -29,7 +29,9 @@ namespace MotorbikeRental.Application.Mappers
                 .ForMember(dest => dest.DailyRate,
                 opt => opt.MapFrom(src => src.PriceList.DailyRate));
             CreateMap<MotorbikeCreateDto, Motorbike>();
-            CreateMap<MotorbikeUpdateDto, Motorbike>();
+            CreateMap<MotorbikeUpdateDto, Motorbike>()
+                .ForMember(dest => dest.Category,
+                opt => opt.Ignore());
         }
     }
 }

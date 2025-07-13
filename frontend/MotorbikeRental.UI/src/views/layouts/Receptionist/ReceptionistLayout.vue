@@ -120,6 +120,15 @@ const isActive = (path) => {
             </router-link>
 
             <router-link
+              to="/Receptionist/motorbikes"
+              class="nav-item"
+              :class="{ active: isActive('/Receptionist/motorbikes') }"
+            >
+              <i class="nav-icon">🏍️</i>
+              <span class="nav-text">Quản lý xe máy</span>
+            </router-link>
+
+            <router-link
               to="/receptionist/customers"
               class="nav-item"
               :class="{ active: isActive('/receptionist/customers') }"

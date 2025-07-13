@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.Exceptions;
 using MotorbikeRental.Infrastructure.Constants;
+using System.Text.Json;
 
 namespace MotorbikeRental.Web.Middlewares
 {
