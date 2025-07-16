@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MotorbikeRental.Domain.Entities.Customers;
 using MotorbikeRental.Domain.Entities.Incidents;
+using MotorbikeRental.Domain.Entities.Pricing;
 using MotorbikeRental.Domain.Entities.User;
 using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Enums.ContractEnum;
@@ -17,7 +18,7 @@ namespace MotorbikeRental.Domain.Entities.Contract
         public virtual Customer Customer { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int? MotorbikeId { get; set; } //Mã xe
+        public int? MotorbikeId { get; set; } //Mã xe   
         public virtual Motorbike Motorbike { get; set; }
 
         [Required]
@@ -27,7 +28,6 @@ namespace MotorbikeRental.Domain.Entities.Contract
         [Required]
         [Range(1, int.MaxValue)]
         public int EmployeeId { get; set; } // Nhân viên làm hợp đồng
-
         public virtual Employee Employee { get; set; }
 
         [Required]
@@ -48,6 +48,12 @@ namespace MotorbikeRental.Domain.Entities.Contract
         [Range(0.1, 10.0)]
         public decimal? LateReturnFeeMultiplier { get; set; } = 2.0m;
 
+        [Range(1, int.MaxValue)]
+        public int? DiscountId { get; set; }  //Mã giảm giá
+        public virtual Discount Discount { get; set; }
+
+        [Range(0, 999999999)]
+        public decimal? DiscountAmount { get; set; } //Số tiền giảm
         [Required]
         public RentalContractStatus RentalContractStatus { get; set; } //Trạng thái (Đang thuê, đã trả)     
 

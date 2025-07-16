@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MotorbikeRental.Domain.Entities.Contract;
 using MotorbikeRental.Domain.Entities.Vehicles;
 
 namespace MotorbikeRental.Domain.Entities.Pricing
@@ -29,5 +30,6 @@ namespace MotorbikeRental.Domain.Entities.Pricing
         [Required]
         public DateTime CreatedAt { get; set; } //Ngày tạo
         public virtual ICollection<Discount_Category> Categories { get; set; }
+        public virtual ICollection<RentalContract> Contracts { get; set; }
     }
 }

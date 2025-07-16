@@ -43,5 +43,16 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.UserRepositories
             queryable = queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return (await queryable.ToListAsync(), totalCount);
         }
+        public async Task<Employee?> GetEmployeeBasicInfoById(int employeeId, CancellationToken cancellationToken = default)
+        {
+            return await dbContext.Employees.AsNoTracking()
+                .Where(e => e.EmployeeId == employeeId)
+                .Select(e => new Employee
+                {
+                    EmployeeId = e.EmployeeId,
+                    FullName = e.FullName
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

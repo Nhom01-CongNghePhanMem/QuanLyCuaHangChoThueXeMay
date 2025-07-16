@@ -4,6 +4,7 @@ namespace MotorbikeRental.Domain.Interfaces.IRepositories.IIncidents
 {
     public interface IIncidentRepository : IBaseRepository<Incident>
     {
-
+        Task<Incident?> GetIncidentByIdWithIncludes(int incidentId, bool isTracking, CancellationToken cancellationToken = default);
+        Task<bool> IsExistsContractIdForUpdate(int incidentId, int contractId, CancellationToken cancellationToken = default);
     }
 }

@@ -100,7 +100,7 @@ function createDiscount() {
 }
 
 function goToDetail(discountId) {
-  router.push(`/admin/discounts/${discountId}`)
+  router.push(`/admin/discount/${discountId}`)
 }
 
 function formatDate(dateString) {

@@ -33,5 +33,16 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.CustomerRepositories
             queryable = queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return (await queryable.ToListAsync(cancellationToken), totalCount);
         }
+        public async Task<Customer?> GetCustomerBasicInfoById(int customerId, CancellationToken cancellationToken = default)
+        {
+            return await dbContext.Customers.AsNoTracking()
+                .Where(c => c.CustomerId == customerId)
+                .Select(c => new Customer
+                {
+                    CustomerId = c.CustomerId,
+                    FullName = c.FullName
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

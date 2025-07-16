@@ -4,6 +4,7 @@ using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Enums.VehicleEnum;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
 using MotorbikeRental.Infrastructure.Data.Contexts;
+using System.Threading.Tasks;
 
 namespace MotorbikeRental.Infrastructure.Data.Repositories.VehicleRepositories
 {
@@ -52,6 +53,20 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.VehicleRepositories
                 .Select(m => m.Brand)
                 .Distinct()
                 .ToListAsync(cancellationToken);
+        }
+        public async Task<Motorbike?> GetMotorbikeBasicInfoById(int motorbikeId, CancellationToken cancellationToken = default)
+        {
+            return await dbContext.Motorbikes.AsNoTracking()
+                .Where(m => m.MotorbikeId == motorbikeId)
+                .Select(m => new Motorbike
+                {
+                    MotorbikeId = m.MotorbikeId,
+                    MotorbikeName = m.MotorbikeName,
+                    LicensePlate = m.LicensePlate,
+                    ImageUrl = m.ImageUrl,
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+
         }
     }
 }

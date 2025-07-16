@@ -39,7 +39,7 @@ namespace MotorbikeRental.Infrastructure.BackgroundJobs
                 {
                     logger.LogError(ex, "An error occurred while cleaning up expired discounts.");
                 }
-                await Task.Delay(TimeSpan.FromSeconds(3));
+                await Task.Delay(TimeSpan.FromMinutes(2));
             }
         }
     }

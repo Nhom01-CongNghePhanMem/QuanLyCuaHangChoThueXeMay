@@ -150,6 +150,10 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                     .OnDelete(DeleteBehavior.Restrict);
                 entity.Property(e => e.RentalTypeStatus)
                     .HasConversion<string>();
+                entity.HasOne(e => e.Discount)
+                    .WithMany(e => e.Contracts)
+                    .HasForeignKey(e => e.DiscountId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
         }
         public static void ConfigurationDiscount(ModelBuilder modelBuilder)
@@ -163,8 +167,10 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                     .WithOne(e => e.Discount);
                 entity.Property(e => e.StartDate)
                     .HasDefaultValueSql("GETDATE()");
+                entity.HasMany(e => e.Contracts)
+                    .WithOne(e => e.Discount);
             });
-            
+
         }
         public static void ConfigurationDiscount_Category(ModelBuilder modelBuilder)
         {
@@ -234,10 +240,6 @@ namespace MotorbikeRental.Infrastructure.Data.Contexts
                     .OnDelete(DeleteBehavior.Cascade);
                 entity.Property(e => e.PaymentStatus)
                     .HasConversion<string>();
-                entity.HasOne(e => e.Discount)
-                    .WithMany()
-                    .HasForeignKey(e => e.DiscountId)
-                    .OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne(e => e.Employee)
                     .WithMany()
                     .HasForeignKey(e => e.EmployeeId)

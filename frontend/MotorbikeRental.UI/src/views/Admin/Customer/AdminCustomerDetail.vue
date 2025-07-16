@@ -30,6 +30,7 @@ async function updateCustomer(params) {
     customer.value = response.data;
     router.push(`/admin/customer/detail/${customer.value.customerId}`);
   } catch (error) {
+    alert('Có lỗi xảy ra khi cập nhật thông tin khách hàng!');
     console.error('Error updating customer details:', error);
   } finally {
     isLoading.value = false;

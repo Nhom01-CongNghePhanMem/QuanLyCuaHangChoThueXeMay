@@ -1,10 +1,5 @@
 ﻿using MotorbikeRental.Domain.Enums.ContractEnum;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.Application.DTOs.ContractDto
 {
@@ -19,5 +14,7 @@ namespace MotorbikeRental.Application.DTOs.ContractDto
         public DateTime ExpectedReturnDate { get; set; }
         [Required(ErrorMessage = "Rental type status is required")]
         public RentalTypeStatus RentalTypeStatus { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Discount ID must be a positive integer")]
+        public int? DiscountId { get; set; } 
     }
 }

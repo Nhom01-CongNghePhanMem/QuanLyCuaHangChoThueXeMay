@@ -24,14 +24,8 @@ namespace MotorbikeRental.Domain.Entities.Contract
 
         [Range(0, 999999999)]
         public decimal? ContractIndemnity { get; set; } //Tiền phạt vi phạm hợp đồng
-
-        [Range(1, int.MaxValue)]
-        public int? DiscountId { get; set; }  //Mã giảm giá
-        public virtual Discount Discount { get; set; }
-
-        [Range(0, 999999999)]
-        public decimal? DiscountAmount { get; set; } //Số tiền giảm
-
+        [Range(0, double.MaxValue)]
+        public decimal? IncidentFineAmount { get; set; } //Tền phạt vi phạm hợp đồng do sự cố
         [Required]
         [Range(1, int.MaxValue)]
         public int EmployeeId { get; set; }

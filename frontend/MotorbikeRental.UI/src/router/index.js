@@ -103,6 +103,18 @@ const router = createRouter({
           component: () => import('@/views/Admin/Discount/AdminDiscountList.vue'),
           meta: { requiresAuth: true, roles: ['Manager'] },
         },
+        {
+          path: 'discount/create',
+          name: 'AdminDiscountCreate',
+          component: () => import('@/views/Admin/Discount/AdminDiscountCreate.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        },
+        {
+          path: 'discount/:id',
+          name: 'AdminDiscountDetail',
+          component: () => import('@/views/Admin/Discount/AdminDiscountDetail.vue'),
+          meta: { requiresAuth: true, roles: ['Manager'] },
+        }
       ],
     },
     {

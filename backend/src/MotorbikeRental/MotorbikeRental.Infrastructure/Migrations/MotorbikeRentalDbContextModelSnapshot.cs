@@ -142,14 +142,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.Property<decimal?>("ContractIndemnity")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("DiscountAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("DiscountId")
-                        .HasColumnType("int");
-
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("IncidentFineAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -163,8 +160,6 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.HasIndex("ContractId")
                         .IsUnique()
                         .HasFilter("[ContractId] IS NOT NULL");
-
-                    b.HasIndex("DiscountId");
 
                     b.HasIndex("EmployeeId");
 
@@ -187,6 +182,12 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
                     b.Property<decimal>("DepositAmount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("DiscountId")
+                        .HasColumnType("int");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -229,6 +230,8 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.HasKey("ContractId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("DiscountId");
 
                     b.HasIndex("EmployeeId");
 
@@ -296,7 +299,6 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -797,18 +799,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .HasForeignKey("MotorbikeRental.Domain.Entities.Contract.Payment", "ContractId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MotorbikeRental.Domain.Entities.Pricing.Discount", "Discount")
-                        .WithMany()
-                        .HasForeignKey("DiscountId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("MotorbikeRental.Domain.Entities.User.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Discount");
 
                     b.Navigation("Employee");
 
@@ -820,6 +815,11 @@ namespace MotorbikeRental.Infrastructure.Migrations
                     b.HasOne("MotorbikeRental.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany("RentalContracts")
                         .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("MotorbikeRental.Domain.Entities.Pricing.Discount", "Discount")
+                        .WithMany("Contracts")
+                        .HasForeignKey("DiscountId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MotorbikeRental.Domain.Entities.User.Employee", "Employee")
@@ -834,6 +834,8 @@ namespace MotorbikeRental.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Discount");
 
                     b.Navigation("Employee");
 
@@ -974,6 +976,8 @@ namespace MotorbikeRental.Infrastructure.Migrations
             modelBuilder.Entity("MotorbikeRental.Domain.Entities.Pricing.Discount", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("Contracts");
                 });
 
             modelBuilder.Entity("MotorbikeRental.Domain.Entities.User.Employee", b =>

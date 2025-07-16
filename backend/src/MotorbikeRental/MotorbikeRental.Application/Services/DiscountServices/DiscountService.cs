@@ -51,7 +51,7 @@ namespace MotorbikeRental.Application.Services.DiscountServices
         }
         public async Task<DiscountDto> GetDiscountById(int id, CancellationToken cancellationToken = default)
         {
-            return mapper.Map<DiscountDto>(await discountRepository.GetDiscountById(id,false, cancellationToken));
+            return mapper.Map<DiscountDto>(await discountRepository.GetDiscountById(id,false, cancellationToken) ?? throw new NotFoundException($"Discount with id {id} not found"));
         }
         public async Task<DiscountDto> UpdateDiscount(DiscountUpdateDto discountUpdateDto, CancellationToken cancellationToken = default)
         {

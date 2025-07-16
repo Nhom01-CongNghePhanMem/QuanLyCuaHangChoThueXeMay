@@ -15,7 +15,7 @@ namespace MotorbikeRental.Domain.Entities.Incidents
         public virtual RentalContract RentalContract { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int? MotorbikeId { get; set; } //Mã xe
+        public int? MotorbikeId { get; set; } //Mã xe 
         public virtual Motorbike Motorbike { get; set; }
 
         [Required]
@@ -28,9 +28,8 @@ namespace MotorbikeRental.Domain.Entities.Incidents
         [Required]
         public SeverityStatus Severity { get; set; } //Mức độ nghiêm trọng
 
-        [Required]
         [MaxLength(500)]
-        public string Description { get; set; } //Mô tả
+        public string? Description { get; set; } //Mô tả
 
         [Range(0, 999999999)]
         public decimal? DamageCost { get; set; } //Chi phí sửa chữa

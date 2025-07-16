@@ -46,7 +46,7 @@ const updateQuery = async (newQuery) => {
 }
 
 const handleCreateDiscount = () => {
-    router.push('/admin/discounts/create')
+    router.push({ name: 'AdminDiscountCreate' })
 }
 </script>
 <template>

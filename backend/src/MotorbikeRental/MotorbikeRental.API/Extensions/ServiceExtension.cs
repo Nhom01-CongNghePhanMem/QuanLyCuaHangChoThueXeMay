@@ -4,10 +4,13 @@ using MotorbikeRental.Application.Interface.IServices.IAuthServices;
 using MotorbikeRental.Application.Interface.IServices.IContractServices;
 using MotorbikeRental.Application.Interface.IServices.ICustomerServices;
 using MotorbikeRental.Application.Interface.IServices.IDiscountServices;
+using MotorbikeRental.Application.Interface.IServices.IIncidentServices;
 using MotorbikeRental.Application.Interface.IServices.IUserServices;
 using MotorbikeRental.Application.Interface.IServices.IVehicleServices;
+using MotorbikeRental.Application.Interface.IValidators.IContractValidators;
 using MotorbikeRental.Application.Interface.IValidators.ICustomerValidators;
 using MotorbikeRental.Application.Interface.IValidators.IDiscountValidators;
+using MotorbikeRental.Application.Interface.IValidators.IIncidentValidators;
 using MotorbikeRental.Application.Interface.IValidators.IUserValidators;
 using MotorbikeRental.Application.Interface.IValidators.IVehicleValidators;
 using MotorbikeRental.Application.Mappers;
@@ -15,10 +18,13 @@ using MotorbikeRental.Application.Services.AuthServices;
 using MotorbikeRental.Application.Services.ContractServices;
 using MotorbikeRental.Application.Services.CustomerServices;
 using MotorbikeRental.Application.Services.DiscountServices;
+using MotorbikeRental.Application.Services.IncidentServices;
 using MotorbikeRental.Application.Services.UserServices;
 using MotorbikeRental.Application.Services.VehicleServices;
+using MotorbikeRental.Application.Validators.ContractValidators;
 using MotorbikeRental.Application.Validators.CustomerValidators;
 using MotorbikeRental.Application.Validators.DiscountValidators;
+using MotorbikeRental.Application.Validators.IncidentValidators;
 using MotorbikeRental.Application.Validators.UserValidators;
 using MotorbikeRental.Application.Validators.VehicleValidators;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IContractRepositories;
@@ -67,6 +73,8 @@ namespace MotorbikeRental.Web.Extensions
             services.AddScoped<IContractService, ContractService>();
             //DiscountServices
             services.AddScoped<IDiscountService, DiscountService>();
+            //IncidentServices
+            services.AddScoped<IIncidentService, IncidentService>();
             return services;
         }
         private static IServiceCollection RegisterRepositories(IServiceCollection services)
@@ -115,6 +123,10 @@ namespace MotorbikeRental.Web.Extensions
             services.AddScoped<IUserCredentialsValidator, UserCredentialsValidator>();
             //DiscountValidator
             services.AddScoped<IDiscountValidator, DiscountValidator>();
+            //ContractValidator
+            services.AddScoped<IContractValidator, ContractValidator>();
+            //IncidentValidator
+            services.AddScoped<IIncidentValidator, IncidentValidator>();
             return services;
         }
     }
