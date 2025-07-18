@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MotorbikeRental.Application.DTOs.ContractDto;
 using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.Interface.IServices.IContractServices;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.API.Controllers
 {
@@ -24,7 +21,7 @@ namespace MotorbikeRental.API.Controllers
             var result = await contractService.CalculateRentalPrice(priceRequestDto, cancellationToken);
             return Ok(result);
         }
-        [HttpPost("create-contract")]
+        [HttpPost]
         public async Task<IActionResult> CreateContract([FromBody] ContractCreateDto contractCreate, CancellationToken cancellation = default)
         {
             var result = await contractService.CreateContract(contractCreate, cancellation);
@@ -36,10 +33,10 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("UpdateContractStatusActive")]
-        public async Task<IActionResult> UpdateContractStatusActive([FromBody] int contractId, CancellationToken cancellation = default)
+        [HttpPost("{id}/active")]
+        public async Task<IActionResult> UpdateContractStatusActive([FromBody] int id, CancellationToken cancellation = default)
         {
-            await contractService.UpdateContractStatusActive(contractId, cancellation);
+            await contractService.UpdateContractStatusActive(id, cancellation);
             var response = new ResponseDto
             {
                 Success = true,
@@ -47,10 +44,10 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("CancelContractByCustomer")]
-        public async Task<IActionResult> CancelContractByCustomer([FromBody] int contractId, CancellationToken cancellation = default)
+        [HttpPost("{id}/cancel-contract")]
+        public async Task<IActionResult> CancelContractByCustomer([FromBody] int id, CancellationToken cancellation = default)
         {
-            await contractService.CancelContractByCustomer(contractId, cancellation);
+            await contractService.CancelContractByCustomer(id, cancellation);
             var response = new ResponseDto
             {
                 Success = true,
@@ -58,9 +55,11 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPut("update-before-activation")]
-        public async Task<IActionResult> UpdateContractBeforeActivation([FromBody] ContractUpdateBeforeActivationDto contractUpdate, CancellationToken cancellation = default)
+        [HttpPut("{id}/before-activation")]
+        public async Task<IActionResult> UpdateContractBeforeActivation(int id, [FromBody] ContractUpdateBeforeActivationDto contractUpdate, CancellationToken cancellation = default)
         {
+            if(id != contractUpdate.ContractId)
+                return BadRequest("Contract ID mismatch");
             var result = await contractService.UpdateContractBeforeActivation(contractUpdate, cancellation);
             var response = new ResponseDto<ContractDto>
             {
@@ -70,10 +69,10 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("{id}/GetContractById")]
-        public async Task<IActionResult> GetContract(int contractId, CancellationToken cancellation = default)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetContract(int id, CancellationToken cancellation = default)
         {
-            var result = await contractService.GetContractById(contractId, cancellation);
+            var result = await contractService.GetContractById(id, cancellation);
             var response = new ResponseDto<ContractDto>
             {
                 Success = true,
@@ -82,7 +81,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete("{id}/DeleteContract")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContract(int contractId, CancellationToken cancellation = default)
         {
             await contractService.DeleteContract(contractId, cancellation);
@@ -93,9 +92,11 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("ContractSettlement")]
-        public async Task<IActionResult> ContractSettlement([FromBody] ContractSettlementDto contractSettlementDto, CancellationToken cancellation = default)
+        [HttpPost("{id}/settlement")]
+        public async Task<IActionResult> ContractSettlement(int id, [FromBody] ContractSettlementDto contractSettlementDto, CancellationToken cancellation = default)
         {
+            if (id != contractSettlementDto.ContractId)
+                return BadRequest("Contract ID mismatch");
             var result = await contractService.ContractSettlement(contractSettlementDto, cancellation);
             var response = new ResponseDto<ContractDto>
             {
@@ -105,7 +106,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("GetContractsByFilter")]
+        [HttpGet]
         public async Task<IActionResult> GetContractsByFilter([FromQuery] ContractFilterDto contractFilterDto, CancellationToken cancellation = default)
         {
             var result = await contractService.GetContractFilter(contractFilterDto, cancellation);

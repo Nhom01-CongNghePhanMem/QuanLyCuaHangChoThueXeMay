@@ -32,7 +32,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return CreatedAtAction(nameof(GetCustomerById), new { id = result.CustomerId }, response);
         }
-        [HttpGet("{id}/GetCustomerById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomerById(int id, CancellationToken cancellationToken = default)
         {
             var result = new CustomerDto();
@@ -54,7 +54,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPut("{id}/UpdateCustomer")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken = default)
         {
             if(id != customerUpdateDto.CustomerId)
@@ -75,7 +75,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("GetCustomerByFilter")]
+        [HttpGet]
         public async Task<IActionResult> GetCustomerByFilter([FromQuery] CustomerFilterDto? filterDto, CancellationToken cancellationToken = default)
         {
             var result = await customerService.GetCustomerByFilter(filterDto, cancellationToken);
@@ -87,7 +87,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete("{id}/DeleteCustomer")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id, CancellationToken cancellationToken = default)
         {
             var result = await customerService.DeleteCustomer(id, cancellationToken);

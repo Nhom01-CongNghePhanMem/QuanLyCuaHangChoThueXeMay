@@ -12,7 +12,7 @@ export const employeeService = {
   },
   async getRoles() {
     try {
-      const response = await apiClient.get('/Employee/getRoles')
+      const response = await apiClient.get('/Employee/roles')
       return response.data.data
     } catch (error) {
       console.log(error)
@@ -77,7 +77,7 @@ export const employeeService = {
   },
   async deleteAvatar(id){
     try {
-      const response = await apiClient.delete('/Employee/' + id + '/DeleteAvatar')
+      const response = await apiClient.delete('/Employee/' + id + '/avatar')
       return response.data
     } catch (error) {
       console.log(error)
@@ -95,7 +95,7 @@ export const employeeService = {
   },
   async createUserCredential(employeeId, form) {
     try {
-      const response = await apiClient.post('/UserCredentials/' + employeeId + '/CreateUserCredentialByAdmin', form)  
+      const response = await apiClient.post('/UserCredentials/' + employeeId , form)  
       return response.data
     } catch (error) {
       console.log(error)

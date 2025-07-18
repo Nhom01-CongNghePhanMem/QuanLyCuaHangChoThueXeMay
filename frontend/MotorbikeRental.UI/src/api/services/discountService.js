@@ -2,7 +2,7 @@ import apiClient from '../config/axios'
 export const discountService = {
   async getAll(query) {
     try {
-      const response = await apiClient.get('/Discount/GetDiscountsByFilter', { params: query })
+      const response = await apiClient.get('/Discount', { params: query })
       return response.data;
     } catch (error) {
       console.error('Error fetching discounts:', error)

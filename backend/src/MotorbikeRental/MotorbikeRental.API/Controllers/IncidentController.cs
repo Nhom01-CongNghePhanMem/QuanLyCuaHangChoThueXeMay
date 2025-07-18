@@ -4,6 +4,7 @@ using MotorbikeRental.Application.DTOs.Incident;
 using MotorbikeRental.Application.DTOs.Pagination;
 using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.Interface.IServices.IIncidentServices;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MotorbikeRental.API.Controllers
 {
@@ -43,7 +44,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("{id}/GetIncidentById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetIncidentById(int id, CancellationToken cancellationToken = default)
         {
             var result = new IncidentDto();
@@ -65,10 +66,11 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete("{incidentId}/DeleteIncident")]
-        public async Task<IActionResult> DeleteIncident(int incidentId, CancellationToken cancellationToken = default)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIncident(int id, CancellationToken cancellationToken = default)
         {
-            bool result = await incidentService.DeleteIncident(incidentId, cancellationToken);
+            bool result = await incidentService.DeleteIncident(id, cancellationToken);
+            memoryCache.Remove($"Incident_{id}");
             var response = new ResponseDto
             {
                 Success = result,
@@ -76,7 +78,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("GetIncidentsByFilter")]
+        [HttpGet]
         public async Task<IActionResult> GetIncidentsByFilter([FromQuery] IncidentFilterDto incidentFilterDto, CancellationToken cancellationToken = default)
         {
             var result = await incidentService.GetIncidentsByFilter(incidentFilterDto, cancellationToken);
@@ -88,7 +90,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("CompleteIncident")]
+        [HttpPost("complete")]
         public async Task<IActionResult> CompleteIncident([FromForm] IncidentCompleteDto incidentCompleteDto, CancellationToken cancellationToken = default)
         {
             var result = await incidentService.CompleteIncident(incidentCompleteDto, cancellationToken);

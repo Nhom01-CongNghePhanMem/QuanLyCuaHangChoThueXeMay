@@ -106,7 +106,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("GetRoles")]
+        [HttpGet("roles")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAllRole(CancellationToken cancellationToken)
         {
@@ -119,7 +119,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete("{id}/DeleteAvatar")]
+        [HttpDelete("{id}/avatar")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteAvatar(int id, CancellationToken cancellation = default)
         {

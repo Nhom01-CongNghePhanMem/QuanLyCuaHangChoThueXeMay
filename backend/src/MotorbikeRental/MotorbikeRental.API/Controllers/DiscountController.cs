@@ -55,7 +55,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("GetDiscountsByFilter")]
+        [HttpGet]
         public async Task<IActionResult> GetDiscountsByFilter([FromQuery] DiscountFilterDto filter, CancellationToken cancellationToken = default)
         {
             var result = await discountService.GetDiscountsByFilter(filter, cancellationToken);

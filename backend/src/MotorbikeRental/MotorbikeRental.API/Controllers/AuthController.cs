@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MotorbikeRental.Application.DTOs.AuthenticDto;
 using MotorbikeRental.Application.DTOs.Responses;
 using MotorbikeRental.Application.Interface.IServices.IAuthServices;
-using MotorbikeRental.Domain.Entities.User;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.API.Controllers
 {
@@ -35,11 +29,11 @@ namespace MotorbikeRental.API.Controllers
                 });
             }
             string token = jwtTokenService.GenerateJwtToken(result);
-            var response = new ResponseDto<string>
+            var response = new AuthResultDto
             {
                 Success = true,
                 Message = "Login successful",
-                Data = token
+                AccessToken = token,
             };
             return Ok(response);
         }

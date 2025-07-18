@@ -6,11 +6,6 @@ using MotorbikeRental.Application.Interface.IServices.IDiscountServices;
 using MotorbikeRental.Application.Interface.IValidators.IDiscountValidators;
 using MotorbikeRental.Domain.Entities.Pricing;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IPricingRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MotorbikeRental.Application.Services.DiscountServices
 {
@@ -46,17 +41,17 @@ namespace MotorbikeRental.Application.Services.DiscountServices
         }
         public async Task<PaginatedDataDto<DiscountDto>> GetDiscountsByFilter(DiscountFilterDto filter, CancellationToken cancellationToken = default)
         {
-            (IEnumerable<Discount> discount, int totalCount) = await discountRepository.GetFilterData(filter.Search, filter.PageNumber, filter.PageSize, filter.FilterStartDate, filter.FilterEndDate,filter.IsActive, cancellationToken);
+            (IEnumerable<Discount> discount, int totalCount) = await discountRepository.GetFilterData(filter.Search, filter.PageNumber, filter.PageSize, filter.CategoryId, filter.FilterStartDate, filter.FilterEndDate, filter.IsActive, cancellationToken);
             return new PaginatedDataDto<DiscountDto>(mapper.Map<IEnumerable<DiscountDto>>(discount), totalCount);
         }
         public async Task<DiscountDto> GetDiscountById(int id, CancellationToken cancellationToken = default)
         {
-            return mapper.Map<DiscountDto>(await discountRepository.GetDiscountById(id,false, cancellationToken) ?? throw new NotFoundException($"Discount with id {id} not found"));
+            return mapper.Map<DiscountDto>(await discountRepository.GetDiscountById(id, false, cancellationToken) ?? throw new NotFoundException($"Discount with id {id} not found"));
         }
         public async Task<DiscountDto> UpdateDiscount(DiscountUpdateDto discountUpdateDto, CancellationToken cancellationToken = default)
         {
             (bool isValid, List<string> categoryNames) = await discountValidator.ValidateForUpdate(discountUpdateDto, cancellationToken);
-            Discount discount = await discountRepository.GetDiscountById(discountUpdateDto.DiscountId,true, cancellationToken) ?? throw new NotFoundException($"Discount with id {discountUpdateDto.DiscountId} not found");
+            Discount discount = await discountRepository.GetDiscountById(discountUpdateDto.DiscountId, true, cancellationToken) ?? throw new NotFoundException($"Discount with id {discountUpdateDto.DiscountId} not found");
             mapper.Map(discountUpdateDto, discount);
             discount.Categories.Clear();
             for (int i = 0; i < discountUpdateDto.CategoryId.Count; i++)

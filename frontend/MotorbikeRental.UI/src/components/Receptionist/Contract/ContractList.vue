@@ -104,11 +104,10 @@ function formatCurrency(amount) {
 
 function getStatusText(status) {
   const statusMap = {
-    0: 'Chờ xác nhận',
-    1: 'Đã xác nhận',
-    2: 'Đang thuê',
-    3: 'Đã trả',
-    4: 'Hủy',
+    0: 'Đang thuê',
+    1: 'Đã hoàn thành',
+    2: 'Đã hủy',
+    3: 'Đang hẹn',
   }
   return statusMap[status] || 'Không xác định'
 }
@@ -175,11 +174,10 @@ function onImgError(event) {
           <label>Trạng thái</label>
           <select v-model="filterStatus" class="filter-select">
             <option value="">Tất cả</option>
-            <option value="0">Chờ xác nhận</option>
-            <option value="1">Đã xác nhận</option>
-            <option value="2">Đang thuê</option>
-            <option value="3">Đã trả</option>
-            <option value="4">Hủy</option>
+            <option value="0">Đang thuê</option>
+            <option value="1">Đã hoàn thành</option>
+            <option value="2">Đã hủy</option>
+            <option value="3">Đang hẹn</option>
           </select>
         </div>
 

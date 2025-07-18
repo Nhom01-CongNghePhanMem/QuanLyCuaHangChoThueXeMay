@@ -56,7 +56,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return CreatedAtAction(nameof(GetCategoryById), new { id = result.CategoryId }, responseDto);
         }
-        [HttpGet("{id}/GetCategoryById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id, CancellationToken cancellationToken = default)
         {
             var result = new CategoryDto();
@@ -78,7 +78,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPut("{id}/UpdateCategory")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryUpdateDto categoryUpdateDto, CancellationToken cancellationToken = default)
         {
             if (id != categoryUpdateDto.CategoryId)
@@ -95,7 +95,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(responseDto);
         }
-        [HttpDelete("{id}/DeleteCategory")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id, CancellationToken cancellationToken = default)
         {
             var result = await categoryService.DeleteCategory(id, cancellationToken);

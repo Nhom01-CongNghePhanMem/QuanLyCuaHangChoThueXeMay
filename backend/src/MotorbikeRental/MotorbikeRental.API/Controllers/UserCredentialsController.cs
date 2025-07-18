@@ -23,7 +23,7 @@ namespace MotorbikeRental.API.Controllers
             this.userCredentialsService = userCredentialsService;
             this.memoryCache = memoryCache;
         }
-        [HttpPost("{id}/CreateUserCredentialByAdmin")]
+        [HttpPost("{id}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateUserCredentials(int id, [FromBody] UserCredentialsCreateDto userCredentialsCreateDto, CancellationToken cancellationToken = default)
         {
@@ -41,7 +41,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return CreatedAtAction(nameof(GetUserCredentials), new { id }, response);
         }
-        [HttpGet("{id}/GetUserCredentials")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUserCredentials(int id, CancellationToken cancellation = default)
         {
             var result = new UserCredentialsDto();
@@ -52,7 +52,7 @@ namespace MotorbikeRental.API.Controllers
             else
             {
                 result = await userCredentialsService.GetUserCredentialsByEmployeeId(id, cancellation);
-                if(result != null)
+                if (result != null)
                     memoryCache.Set($"UserCredentials_{id}", result, TimeSpan.FromMinutes(10));
             }
             var response = new ResponseDto<UserCredentialsDto>
@@ -63,11 +63,11 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPut("{id}/UpdateUserCredentialByAdmin")]
-        [Authorize(Roles ="Manager")]
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UpdateUserCredentials(int id, [FromBody] UserCredentialsUpdateDto userCredentialsUpdateDto, CancellationToken cancellationToken = default)
         {
-            if(id != userCredentialsUpdateDto.EmployeeId)
+            if (id != userCredentialsUpdateDto.EmployeeId)
                 return BadRequest(new ResponseDto
                 {
                     Success = false,
@@ -83,10 +83,10 @@ namespace MotorbikeRental.API.Controllers
             return Ok(response);
         }
         [HttpPost("{id}/reset-email")]
-        [Authorize(Roles ="Manager")]
-        public async Task<IActionResult> ResetEmail(int id ,[FromBody] ResetEmailDto resetEmailDto, CancellationToken cancellationToken = default)
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> ResetEmail(int id, [FromBody] ResetEmailDto resetEmailDto, CancellationToken cancellationToken = default)
         {
-            if(resetEmailDto.EmployeeId != id)
+            if (resetEmailDto.EmployeeId != id)
             {
                 return BadRequest(new ResponseDto
                 {
@@ -103,8 +103,8 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("{id}/reset-passwordByAdmin")]
-        [Authorize(Roles ="Manager")]
+        [HttpPost("{id}/reset-password")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ResetPasswordByAdmin(int id, [FromBody] ResetPasswordDto resetPasswordDto, CancellationToken cancellationToken = default)
         {
             if (resetPasswordDto.EmployeeId != id)
@@ -124,7 +124,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("{id}/reset-phoneNumber")]
+        [HttpPost("{id}/reset-phone-number")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ResetPhoneNumber(int id, [FromBody] ResetPhoneNumberDto resetPhoneNumberDto, CancellationToken cancellationToken = default)
         {
@@ -145,7 +145,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("{id}/reset-userName")]
+        [HttpPost("{id}/reset-user-name")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ResetUserName(int id, [FromBody] ResetUserNameDto resetUserNameDto, CancellationToken cancellationToken = default)
         {
@@ -170,7 +170,7 @@ namespace MotorbikeRental.API.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ResetRole(int id, [FromBody] ResetRoleDto resetRoleDto, CancellationToken cancellationToken = default)
         {
-            if(resetRoleDto.EmployeeId != id)
+            if (resetRoleDto.EmployeeId != id)
             {
                 return BadRequest(new ResponseDto
                 {
@@ -187,7 +187,7 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpDelete("{id}/DeleteUserCredentialsByAdmin")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteUserCredentials(int id, CancellationToken cancellationToken = default)
         {
@@ -201,4 +201,4 @@ namespace MotorbikeRental.API.Controllers
             return Ok(response);
         }
     }
-}   
+}

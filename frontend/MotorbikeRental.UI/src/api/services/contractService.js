@@ -2,7 +2,7 @@ import apiClient from "../config/axios";
 export const contractService = {
     async getAll(query) {
         try{
-            const response = await apiClient.get('/Contract/GetContractsByFilter', { params: query });
+            const response = await apiClient.get('/Contract/', { params: query });
             return response.data;
         }catch (error) {
             console.log(error);
@@ -29,7 +29,7 @@ export const contractService = {
     },
     async updateContractStatusActive(contractId) {
         try {
-            const response = await apiClient.post('/Contract/UpdateContractStatusActive', contractId);
+            const response = await apiClient.post('/Contract/active', contractId);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -38,7 +38,7 @@ export const contractService = {
     },
     async cancelContractByCustomer(contractId) {
         try {
-            const response = await apiClient.post('/Contract/CancelContractByCustomer', contractId);
+            const response = await apiClient.post('/Contract/cancel-contract', contractId);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -47,7 +47,7 @@ export const contractService = {
     },
     async updateContractBeforeActivation(form) {
         try {
-            const response = await apiClient.put('/Contract/update-before-activation', form);
+            const response = await apiClient.put('/Contract/before-activation', form);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -56,7 +56,7 @@ export const contractService = {
     },
     async getById(contractId) {
         try{
-            const response = await apiClient.get('/Contract/' + contractId + '/GetContractById');
+            const response = await apiClient.get('/Contract/' + contractId);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -65,7 +65,7 @@ export const contractService = {
     },
     async deleteContract(contractId) {
         try {
-            await apiClient.delete('/Contract/' + contractId + '/DeleteContract');
+            await apiClient.delete('/Contract/' + contractId);
         } catch (error) {
             console.log(error);
             throw error;
@@ -73,7 +73,7 @@ export const contractService = {
     },
     async contractSettlement(form) {
         try {
-            const response = await apiClient.post('/Contract/ContractSettlement', form);
+            const response = await apiClient.post('/Contract/contract-settlement', form);
             return response.data;
         } catch (error) {
             console.log(error);

@@ -24,6 +24,5 @@ namespace MotorbikeRental.Application.DTOs.Vehicles
         public string? ImageUrl { get; set; }
         public decimal? Mileage { get; set; } // Số km đã đi
         public MotorbikeStatus Status { get; set; } //Thông tin xe
-        public IFormFile? FormFile { get; set; }
     }
 }

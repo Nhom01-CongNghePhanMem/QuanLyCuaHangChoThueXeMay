@@ -29,6 +29,7 @@ namespace MotorbikeRental.Application.DTOs.Discount
                 if(value >= 1 && value <= 100) pageSize = value;
             }
         }
+        public int? CategoryId { get; set; }
         public DateTime? FilterStartDate { get; set; }
         public DateTime? FilterEndDate { get; set; }
         public bool? IsActive { get; set; } 

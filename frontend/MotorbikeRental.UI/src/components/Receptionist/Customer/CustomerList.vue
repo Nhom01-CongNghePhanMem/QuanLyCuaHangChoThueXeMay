@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { contractStorage } from '@/utils/ContractStorageUtils.js'
 
 const router = useRouter()
 const props = defineProps({
@@ -89,6 +90,12 @@ function getGenderBadgeClass(gender) {
 function goToCreateCustomer() {
     router.push('/receptionist/customer/create')
 }
+
+function goToCreateContract(customerId) {
+    contractStorage.clear()
+    contractStorage.setCustomer(customerId)
+    router.push(`/receptionist/contract/select-motorbike`)
+}
 </script>
 
 <template>
@@ -168,6 +175,7 @@ function goToCreateCustomer() {
                             <th>Số điện thoại</th>
                             <th>Lượt thuê</th>
                             <th>Ngày tạo</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -193,6 +201,9 @@ function goToCreateCustomer() {
                             </td>
                             <td>
                                 <span class="date-text">{{ formatDate(customer.createAt) }}</span>
+                            </td>
+                            <td>
+                                <button @click="goToCreateContract(customer.customerId)" class="btn-createContract">Tạo hợp đồng</button>
                             </td>
                         </tr>
                     </tbody>
@@ -282,6 +293,30 @@ function goToCreateCustomer() {
 
 .btn-create:hover {
     background: #0056b3;
+}
+.btn-createContract {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-createContract:hover {
+    background: #218838;
+}
+
+.btn-createContract:active {
+    background: #1e7e34;
+}
+
+.btn-createContract:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
 }
 
 .total-count {

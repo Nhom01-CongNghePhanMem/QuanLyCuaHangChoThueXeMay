@@ -9,7 +9,7 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.PricingRepositories
     public class DiscountRepository : BaseRepository<Discount>, IDiscountRepository
     {
         public DiscountRepository(MotorbikeRentalDbContext motorbikeRentalDbContext) : base(motorbikeRentalDbContext) { }
-        public async Task<(IEnumerable<Discount>, int)> GetFilterData(string? search, int pageNumber, int pageSize, DateTime? filterStartDate, DateTime? filterEndDate,bool? isActive, CancellationToken cancellationToken = default)
+        public async Task<(IEnumerable<Discount>, int)> GetFilterData(string? search, int pageNumber, int pageSize, int? categoryId, DateTime? filterStartDate, DateTime? filterEndDate, bool? isActive, CancellationToken cancellationToken = default)
         {
             IQueryable<Discount> queryable = dbContext.Discounts.AsNoTracking()
                 .Include(d => d.Categories)
@@ -24,8 +24,13 @@ namespace MotorbikeRental.Infrastructure.Data.Repositories.PricingRepositories
                 queryable = queryable.Where(d => d.StartDate > filterStartDate);
             if (filterEndDate != null)
                 queryable = queryable.Where(d => d.StartDate < filterEndDate);
-            if(isActive != null)
+            if (isActive != null)
                 queryable = queryable.Where(d => d.IsActive == isActive);
+            if (categoryId.HasValue)
+            {
+                queryable = queryable.Where(d => d.Categories.Any(dc => dc.CategoryId == categoryId.Value));
+            }
+
             int totalCount = queryable.Count();
             queryable = queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return (await queryable.ToListAsync(cancellationToken), totalCount);

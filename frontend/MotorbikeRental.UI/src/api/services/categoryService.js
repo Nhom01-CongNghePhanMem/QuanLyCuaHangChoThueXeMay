@@ -20,7 +20,7 @@ export const categoryService = {
   },
   async deleteCategory(id) {
     try {
-      const response = await apiClient.delete('/Category/' + id + '/DeleteCategory')
+      const response = await apiClient.delete('/Category/' + id)
       return response.data
     } catch (error) {
       console.log(error)
@@ -29,7 +29,7 @@ export const categoryService = {
   },
   async getById(id) {
     try {
-      const response = await apiClient.get('/Category/' + id + '/GetCategoryById')
+      const response = await apiClient.get('/Category/' + id)
       return response.data
     } catch (error) {
       console.log(error)
@@ -38,7 +38,7 @@ export const categoryService = {
   },
   async updateCategory(id, formData) {
     try {
-      const response = await apiClient.put('/Category/' + id + '/UpdateCategory', formData)
+      const response = await apiClient.put('/Category/' + id, formData)
       return response.data
     } catch (error) {
       console.log(error)

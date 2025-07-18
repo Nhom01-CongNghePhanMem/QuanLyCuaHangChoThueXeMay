@@ -47,9 +47,9 @@ export default {
       })
       this.loading = false
       if (result.success) {
-        localStorage.setItem('token', result.data)
+        localStorage.setItem('token', result.accessToken)
         // Giải mã token để lấy thông tin user
-        const userInfo = jwtDecode(result.data)
+        const userInfo = jwtDecode(result.accessToken)
         // Ví dụ: chuyển trang dựa vào role
         if (userInfo.role === 'Manager') {
           this.$router.push({ name: 'AdminMotorbikeList' })
