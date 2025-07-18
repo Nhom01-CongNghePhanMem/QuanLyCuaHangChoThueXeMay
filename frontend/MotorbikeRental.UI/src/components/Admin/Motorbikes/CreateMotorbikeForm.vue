@@ -10,6 +10,7 @@ const props = defineProps({
 const emit = defineEmits(['submit'])
 
 const previewImage = ref(null)
+const fileInputRef = ref(null)
 
 function onSubmit() {
   emit('submit', props.form)
@@ -29,17 +30,23 @@ function onFileChange(event) {
 function removeImage() {
   props.form.FormFile = null
   previewImage.value = null
-  document.querySelector('input[type="file"]').value = ''
+  if (fileInputRef.value) {
+    fileInputRef.value.value = ''
+  }
+}
+
+function triggerFileInput() {
+  fileInputRef.value?.click()
 }
 
 // Status options
 const statusOptions = [
-  { value: 0, label: 'Có sẵn', class: 'status-available' },
-  { value: 1, label: 'Đang thuê', class: 'status-rented' },
-  { value: 2, label: 'Bảo trì', class: 'status-maintenance' },
-  { value: 3, label: 'Không hoạt động', class: 'status-inactive' },
-  { value: 4, label: 'Đã hư', class: 'status-broken' },
-  { value: 5, label: 'Chờ xử lý', class: 'status-pending' },
+  { value: 0, label: 'Có sẵn' },
+  { value: 1, label: 'Đang thuê' },
+  { value: 2, label: 'Bảo trì' },
+  { value: 3, label: 'Không hoạt động' },
+  { value: 4, label: 'Đã hư' },
+  { value: 5, label: 'Chờ xử lý' },
 ]
 
 const conditionOptions = [
@@ -52,36 +59,37 @@ const conditionOptions = [
 </script>
 
 <template>
-  <div class="create-motorbike-form">
-    <div class="form-container">
-      <!-- Form Header -->
-      <div class="form-header">
-        <div class="header-icon">🏍️</div>
-        <h2 class="form-title">Thêm xe máy mới</h2>
-        <p class="form-subtitle">Điền thông tin chi tiết về xe máy</p>
-      </div>
+  <div class="create-motorbike-container">
+    <!-- Header -->
+    <div class="page-header">
+      <h1>Thêm xe máy mới</h1>
+      <p>Điền thông tin chi tiết về xe máy</p>
+    </div>
 
-      <!-- Form Content -->
+    <!-- Form -->
+    <div class="form-container">
       <form @submit.prevent="onSubmit" class="motorbike-form">
-        <!-- Basic Information Section -->
+        <!-- Basic Information -->
         <div class="form-section">
-          <div class="section-header">
-            <h3 class="section-title">📋 Thông tin cơ bản</h3>
-          </div>
+          <h2>Thông tin cơ bản</h2>
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label">Tên xe *</label>
+              <label class="form-label">
+                Tên xe <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.MotorbikeName"
                 type="text"
                 class="form-input"
-                placeholder="VD: Honda Air Blade 125"
+                placeholder="Nhập tên xe máy"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label class="form-label">Loại xe *</label>
+              <label class="form-label">
+                Loại xe <span class="required">*</span>
+              </label>
               <select v-model="props.form.CategoryId" class="form-select" required>
                 <option value="">Chọn loại xe</option>
                 <option v-for="cat in categories" :key="cat.categoryId" :value="cat.categoryId">
@@ -91,18 +99,22 @@ const conditionOptions = [
             </div>
 
             <div class="form-group">
-              <label class="form-label">Thương hiệu *</label>
+              <label class="form-label">
+                Thương hiệu <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.Brand"
                 type="text"
                 class="form-input"
-                placeholder="VD: Honda, Yamaha, SYM..."
+                placeholder="Honda, Yamaha, SYM..."
                 required
               />
             </div>
 
             <div class="form-group">
-              <label class="form-label">Năm sản xuất *</label>
+              <label class="form-label">
+                Năm sản xuất <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.Year"
                 type="number"
@@ -120,12 +132,14 @@ const conditionOptions = [
                 v-model="props.form.Color"
                 type="text"
                 class="form-input"
-                placeholder="VD: Đen, Trắng, Đỏ..."
+                placeholder="Đen, Trắng, Đỏ..."
               />
             </div>
 
             <div class="form-group">
-              <label class="form-label">Dung tích động cơ (cc) *</label>
+              <label class="form-label">
+                Dung tích động cơ (cc) <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.EngineCapacity"
                 type="number"
@@ -138,25 +152,27 @@ const conditionOptions = [
           </div>
         </div>
 
-        <!-- Technical Information Section -->
+        <!-- Technical Information -->
         <div class="form-section">
-          <div class="section-header">
-            <h3 class="section-title">🔧 Thông tin kỹ thuật</h3>
-          </div>
+          <h2>Thông tin kỹ thuật</h2>
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label">Biển số xe *</label>
+              <label class="form-label">
+                Biển số xe <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.LicensePlate"
                 type="text"
                 class="form-input"
-                placeholder="VD: 30A-12345"
+                placeholder="30A-12345"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label class="form-label">Số khung *</label>
+              <label class="form-label">
+                Số khung <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.ChassisNumber"
                 type="text"
@@ -167,7 +183,9 @@ const conditionOptions = [
             </div>
 
             <div class="form-group">
-              <label class="form-label">Số máy *</label>
+              <label class="form-label">
+                Số máy <span class="required">*</span>
+              </label>
               <input
                 v-model="props.form.EngineNumber"
                 type="text"
@@ -189,7 +207,9 @@ const conditionOptions = [
             </div>
 
             <div class="form-group">
-              <label class="form-label">Tình trạng xe *</label>
+              <label class="form-label">
+                Tình trạng xe <span class="required">*</span>
+              </label>
               <select v-model="props.form.MotorbikeConditionStatus" class="form-select" required>
                 <option value="">Chọn tình trạng</option>
                 <option
@@ -203,7 +223,9 @@ const conditionOptions = [
             </div>
 
             <div class="form-group">
-              <label class="form-label">Trạng thái hoạt động *</label>
+              <label class="form-label">
+                Trạng thái hoạt động <span class="required">*</span>
+              </label>
               <select v-model="props.form.Status" class="form-select" required>
                 <option value="">Chọn trạng thái</option>
                 <option v-for="status in statusOptions" :key="status.value" :value="status.value">
@@ -214,50 +236,44 @@ const conditionOptions = [
           </div>
         </div>
 
-        <!-- Pricing Section -->
+        <!-- Pricing Information -->
         <div class="form-section">
-          <div class="section-header">
-            <h3 class="section-title">💰 Thông tin giá thuê</h3>
-          </div>
+          <h2>Thông tin giá thuê</h2>
           <div class="form-grid pricing-grid">
             <div class="form-group">
-              <label class="form-label">Giá thuê theo giờ (VNĐ) *</label>
-              <div class="input-with-suffix">
-                <input
-                  v-model="props.form.HourlyRate"
-                  type="number"
-                  class="form-input"
-                  placeholder="50000"
-                  min="0"
-                  required
-                />
-                <span class="input-suffix">VNĐ/giờ</span>
-              </div>
+              <label class="form-label">
+                Giá thuê theo giờ (VNĐ) <span class="required">*</span>
+              </label>
+              <input
+                v-model="props.form.HourlyRate"
+                type="number"
+                class="form-input"
+                placeholder="50000"
+                min="0"
+                required
+              />
             </div>
 
             <div class="form-group">
-              <label class="form-label">Giá thuê theo ngày (VNĐ) *</label>
-              <div class="input-with-suffix">
-                <input
-                  v-model="props.form.DailyRate"
-                  type="number"
-                  class="form-input"
-                  placeholder="300000"
-                  min="0"
-                  required
-                />
-                <span class="input-suffix">VNĐ/ngày</span>
-              </div>
+              <label class="form-label">
+                Giá thuê theo ngày (VNĐ) <span class="required">*</span>
+              </label>
+              <input
+                v-model="props.form.DailyRate"
+                type="number"
+                class="form-input"
+                placeholder="300000"
+                min="0"
+                required
+              />
             </div>
           </div>
         </div>
 
-        <!-- Description Section -->
+        <!-- Description & Image -->
         <div class="form-section">
-          <div class="section-header">
-            <h3 class="section-title">📝 Mô tả & Hình ảnh</h3>
-          </div>
-
+          <h2>Mô tả & Hình ảnh</h2>
+          
           <div class="form-group">
             <label class="form-label">Mô tả chi tiết</label>
             <textarea
@@ -268,19 +284,32 @@ const conditionOptions = [
             ></textarea>
           </div>
 
-          <!-- Image Upload Section -->
+          <!-- Image Upload -->
           <div class="form-group">
             <label class="form-label">Hình ảnh xe</label>
-            <div class="image-upload-area">
-              <div v-if="!previewImage" class="upload-placeholder">
-                <div class="upload-icon">📷</div>
-                <p class="upload-text">Chọn hình ảnh xe máy</p>
-                <input type="file" accept="image/*" @change="onFileChange" class="file-input" />
+            <div class="image-upload-section">
+              <div v-if="!previewImage" class="upload-area">
+                <div class="upload-content">
+                  <p>Chọn hình ảnh xe máy</p>
+                  <button type="button" @click="triggerFileInput" class="upload-btn">
+                    Chọn ảnh
+                  </button>
+                </div>
+                <input 
+                  ref="fileInputRef"
+                  type="file" 
+                  accept="image/*" 
+                  @change="onFileChange" 
+                  class="file-input" 
+                  hidden
+                />
               </div>
 
               <div v-else class="image-preview">
                 <img :src="previewImage" alt="Preview" class="preview-img" />
-                <button type="button" @click="removeImage" class="remove-btn">❌</button>
+                <button type="button" @click="removeImage" class="remove-btn">
+                  Xóa ảnh
+                </button>
               </div>
             </div>
           </div>
@@ -288,10 +317,10 @@ const conditionOptions = [
 
         <!-- Form Actions -->
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary">↩️ Hủy bỏ</button>
+          <button type="button" class="btn btn-secondary">
+            Hủy bỏ
+          </button>
           <button type="submit" class="btn btn-primary" :disabled="isLoading">
-            <span v-if="isLoading" class="loading-spinner">⏳</span>
-            <span v-else>✅</span>
             {{ isLoading ? 'Đang tạo...' : 'Tạo xe máy' }}
           </button>
         </div>
@@ -301,96 +330,98 @@ const conditionOptions = [
 </template>
 
 <style scoped>
-.create-motorbike-form {
+.create-motorbike-container {
+  padding: 20px;
+  background: #f8f9fa;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.page-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.page-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
 }
 
 .form-container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #ddd;
   overflow: hidden;
 }
 
-.form-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 3rem 2rem;
-  text-align: center;
-}
-
-.header-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.form-title {
-  margin: 0 0 0.5rem 0;
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-.form-subtitle {
-  margin: 0;
-  opacity: 0.9;
-  font-size: 1.1rem;
-}
-
 .motorbike-form {
-  padding: 2rem;
+  padding: 0;
 }
 
 .form-section {
-  margin-bottom: 3rem;
+  padding: 24px;
+  border-bottom: 1px solid #eee;
 }
 
-.section-header {
-  margin-bottom: 1.5rem;
+.form-section:last-child {
+  border-bottom: none;
 }
 
-.section-title {
-  color: #2d3748;
-  font-size: 1.3rem;
+.form-section h2 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
   font-weight: 600;
-  margin: 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  color: #333;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
 
 .pricing-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
 .form-label {
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.required {
+  color: #dc3545;
 }
 
 .form-input,
 .form-select,
 .form-textarea {
-  padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
   background: white;
 }
 
@@ -398,77 +429,57 @@ const conditionOptions = [
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #007bff;
 }
 
 .form-textarea {
   resize: vertical;
   font-family: inherit;
+  grid-column: 1 / -1;
 }
 
-.input-with-suffix {
-  position: relative;
+.image-upload-section {
+  grid-column: 1 / -1;
 }
 
-.input-suffix {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #718096;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.image-upload-area {
-  border: 2px dashed #cbd5e0;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.image-upload-area:hover {
-  border-color: #667eea;
-  background: #f7fafc;
-}
-
-.upload-placeholder {
-  padding: 3rem 2rem;
+.upload-area {
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 40px 20px;
   text-align: center;
-  position: relative;
+  background: #f8f9fa;
+}
+
+.upload-content p {
+  margin: 0 0 16px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.upload-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.upload-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.upload-text {
-  color: #718096;
-  font-weight: 500;
-  margin: 0;
-}
-
-.file-input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
+.upload-btn:hover {
+  background: #0056b3;
 }
 
 .image-preview {
   position: relative;
   display: inline-block;
-  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .preview-img {
-  width: 100%;
+  width: 300px;
   height: 200px;
   object-fit: cover;
   display: block;
@@ -476,105 +487,83 @@ const conditionOptions = [
 
 .remove-btn {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: rgba(0, 0, 0, 0.7);
+  top: 8px;
+  right: 8px;
+  background: #dc3545;
+  color: white;
   border: none;
-  border-radius: 50%;
-  width: 2rem;
-  height: 2rem;
+  padding: 4px 8px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 12px;
+}
+
+.remove-btn:hover {
+  background: #c82333;
 }
 
 .form-actions {
   display: flex;
-  gap: 1rem;
   justify-content: flex-end;
-  padding-top: 2rem;
-  border-top: 2px solid #e2e8f0;
+  gap: 12px;
+  padding: 24px;
+  background: #f8f9fa;
+  border-top: 1px solid #eee;
 }
 
 .btn {
-  padding: 0.75rem 2rem;
+  padding: 8px 16px;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-weight: 500;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #007bff;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  background: #0056b3;
 }
 
 .btn-primary:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .btn-secondary {
-  background: #e2e8f0;
-  color: #2d3748;
+  background: #6c757d;
+  color: white;
 }
 
 .btn-secondary:hover {
-  background: #cbd5e0;
-  transform: translateY(-2px);
-}
-
-.loading-spinner {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  background: #5a6268;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .create-motorbike-form {
-    padding: 1rem;
-  }
-
-  .form-header {
-    padding: 2rem 1rem;
-  }
-
-  .form-title {
-    font-size: 2rem;
-  }
-
-  .motorbike-form {
-    padding: 1rem;
+  .create-motorbike-container {
+    padding: 10px;
   }
 
   .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .form-actions {
-    flex-direction: column;
+  .pricing-grid {
+    grid-template-columns: 1fr;
   }
 
-  .btn {
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .preview-img {
     width: 100%;
-    justify-content: center;
+    max-width: 300px;
   }
 }
 </style>

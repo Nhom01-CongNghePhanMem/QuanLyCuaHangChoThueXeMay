@@ -4,7 +4,6 @@ using MotorbikeRental.Application.Interface.IServices.IIncidentServices;
 using MotorbikeRental.Domain.Entities.Contract;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IContractRepositories;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IIncidents;
-using MotorbikeRental.Domain.Enums.ContractEnum;
 using MotorbikeRental.Domain.Entities.User;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IUserRepositories;
 using AutoMapper;
@@ -12,12 +11,12 @@ using MotorbikeRental.Domain.Entities.Vehicles;
 using MotorbikeRental.Domain.Interfaces.IRepositories.IVehicleRepositories;
 using MotorbikeRental.Domain.Entities.Incidents;
 using MotorbikeRental.Domain.Interfaces.IRepositories.ICustomerRepositories;
-using MotorbikeRental.Application.Validators.IncidentValidators;
 using MotorbikeRental.Application.Interface.IValidators.IIncidentValidators;
 using MotorbikeRental.Domain.Entities.Customers;
 using MotorbikeRental.Application.Interface.IExternalServices.Storage;
+using MotorbikeRental.Application.DTOs.Pagination;
 using System.Threading.Tasks;
-using System.Security.Principal;
+using MotorbikeRental.Domain.Enums.VehicleEnum;
 
 namespace MotorbikeRental.Application.Services.IncidentServices
 {
@@ -48,7 +47,7 @@ namespace MotorbikeRental.Application.Services.IncidentServices
         {
             RentalContract rentalContract = await rentalContractRepository.GetContractById(incidentCreateDto.ContractId, cancellationToken) ?? throw new NotFoundException("Rental contract not found");
             Employee employee = await employeeRepository.GetEmployeeBasicInfoById(incidentCreateDto.ReportedByEmployeeId.Value, cancellationToken) ?? throw new NotFoundException("Employee not found");
-            Motorbike motorbike = await motorbikeRepository.GetByIdWithIncludes(rentalContract.MotorbikeId.Value, cancellationToken) ?? throw new NotFoundException("Motorbike not found");
+            Motorbike motorbike = await motorbikeRepository.GetById(rentalContract.MotorbikeId.Value, cancellationToken) ?? throw new NotFoundException("Motorbike not found");
             Customer? customer = await customerRepository.GetCustomerBasicInfoById(rentalContract.CustomerId.Value, cancellationToken);
             await incidentValidator.ValidateForCreate(incidentCreateDto, rentalContract, cancellationToken);
             Incident incident = mapper.Map<Incident>(incidentCreateDto);
@@ -63,6 +62,8 @@ namespace MotorbikeRental.Application.Services.IncidentServices
                 }).ToList();
             }
             IncidentDto incidentDto = mapper.Map<IncidentDto>(await incidentRepository.Create(incident, cancellationToken));
+            motorbike.Status = MotorbikeStatus.Damaged;
+            await motorbikeRepository.SaveChangeAsync(cancellationToken);
             MapToIncidentDto(incidentDto, customer, employee, motorbike);
             return incidentDto;
         }
@@ -95,7 +96,25 @@ namespace MotorbikeRental.Application.Services.IncidentServices
             MapToIncidentDto(incidentDto, customer, employee, motorbike);
             return incidentDto;
         }
-        public async Task<IncidentDto> GetincidentById(int id, CancellationToken cancellation = default)
+        public async Task<IncidentDto> CompleteIncident(IncidentCompleteDto incidentCompleteDto, CancellationToken cancellationToken = default)
+        {
+            Incident incident = await incidentRepository.GetById(incidentCompleteDto.IncidentId, cancellationToken) ?? throw new NotFoundException($"Incident with id {incidentCompleteDto.IncidentId} not found");
+            RentalContract rentalContract = await rentalContractRepository.GetContractById(incident.ContractId.Value, cancellationToken) ?? throw new NotFoundException("Rental contract not found");
+            incidentValidator.ValidateForCompleteIncident(incident, rentalContract, incidentCompleteDto);
+            Motorbike motorbike = await motorbikeRepository.GetById(rentalContract.MotorbikeId.Value, cancellationToken);
+            motorbike.Status = MotorbikeStatus.Available;
+            Employee employee = await employeeRepository.GetEmployeeBasicInfoById(incident.ReportedByEmployeeId.Value, cancellationToken);
+            Customer? customer = await customerRepository.GetCustomerBasicInfoById(rentalContract.CustomerId.Value, cancellationToken);
+            if (incidentCompleteDto.Notes != null)
+                incident.Notes = incidentCompleteDto.Notes;
+            incident.IsResolved = true;
+            incident.ResolvedDate = incidentCompleteDto.ResolvedDate;
+            await incidentRepository.SaveChangeAsync(cancellationToken);
+            IncidentDto incidentDto = mapper.Map<IncidentDto>(incident);
+            MapToIncidentDto(incidentDto, customer, employee, motorbike);
+            return incidentDto;
+        }
+        public async Task<IncidentDto> GetIncidentById(int id, CancellationToken cancellation = default)
         {
             Incident incident = await incidentRepository.GetIncidentByIdWithIncludes(id, false, cancellation) ?? throw new NotFoundException("Incident not found");
             RentalContract? rentalContract = await rentalContractRepository.GetContractById(incident.ContractId.Value, cancellation);
@@ -105,6 +124,12 @@ namespace MotorbikeRental.Application.Services.IncidentServices
             IncidentDto incidentDto = mapper.Map<IncidentDto>(incident);
             MapToIncidentDto(incidentDto, customer, employee, motorbike);
             return incidentDto;
+        }
+        public async Task<PaginatedDataDto<IncidentListDto>> GetIncidentsByFilter(IncidentFilterDto incidentFilterDto, CancellationToken cancellationToken = default)
+        {
+            (IEnumerable<Incident> incidents, int totalCount) = await incidentRepository.GetIncidentsByFilter(
+                    incidentFilterDto.PageNumber, incidentFilterDto.PageSize, incidentFilterDto.FromDate, incidentFilterDto.ToDate, incidentFilterDto.IsResolved, cancellationToken);
+            return new PaginatedDataDto<IncidentListDto>(mapper.Map<IEnumerable<IncidentListDto>>(incidents), totalCount);
         }
         public async Task<bool> DeleteIncident(int incidentId, CancellationToken cancellationToken = default)
         {

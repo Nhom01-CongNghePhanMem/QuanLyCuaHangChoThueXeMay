@@ -40,6 +40,10 @@ const updateQuery = async (newQuery) => {
         isLoading.value = false;
     }
 }
+const router = useRouter()
+const goToCreateContract = (customerId) => {
+    router.push({ name: 'ReceptionistCreateContract', query: { customerId } });
+}
 </script>
 <template>
     <ReceptionistLayout>

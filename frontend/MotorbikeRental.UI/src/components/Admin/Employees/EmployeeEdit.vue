@@ -63,10 +63,6 @@ async function removeImage() {
   }
 }
 
-form.value.FormFile = null
-previewImage.value = null
-if (fileInputRef.value) fileInputRef.value.value = ''
-
 function triggerFileInput() {
   fileInputRef.value?.click()
 }
@@ -78,6 +74,7 @@ function onSubmit() {
 function onCreateAccount() {
   router.push('/admin/employees/create-user/' + employeeId)
 }
+
 function onEditAccount(){
   router.push('/admin/employees/edit-user/' + employeeId)
 }
@@ -96,6 +93,7 @@ function toDateInputString(dateStr) {
   if (!dateStr) return ''
   return dateStr.split('T')[0]
 }
+
 function onDeleteEmployee() {
   if (confirm('Bạn có chắc chắn muốn xóa nhân viên này không? Hành động này không thể hoàn tác!')) {
     emit('delete-employee')
@@ -104,63 +102,50 @@ function onDeleteEmployee() {
 </script>
 
 <template>
-  <div class="employee-edit-page">
+  <div class="employee-edit-container">
     <!-- Header -->
-    <div class="page-header">
-      <div class="header-content">
-        <div class="breadcrumb">
+    <div class="header">
+      <div class="header-left">
+        <h1>Chỉnh sửa nhân viên</h1>
+        <nav class="breadcrumb">
           <span class="breadcrumb-item" @click="router.push('/admin/employees')">
-            <i class="icon">👥</i>
             Quản lý nhân viên
           </span>
-          <i class="breadcrumb-separator">❯</i>
-          <span class="breadcrumb-current">Chỉnh sửa nhân viên</span>
-        </div>
-        <h1 class="page-title">
-          <i class="title-icon">✏️</i>
-          Chỉnh sửa thông tin nhân viên
-        </h1>
-        <p class="page-subtitle">Cập nhật thông tin chi tiết của nhân viên</p>
+          <span class="breadcrumb-separator">></span>
+          <span class="breadcrumb-current">Chỉnh sửa</span>
+        </nav>
       </div>
     </div>
 
     <!-- Form -->
     <div class="form-container">
-      <form class="employee-form" @submit.prevent="onSubmit">
+      <form @submit.prevent="onSubmit" class="employee-form">
         <!-- Avatar Section -->
         <div class="avatar-section">
-          <div class="avatar-wrapper">
-            <div class="avatar-container">
-              <div class="avatar-preview">
-                <img v-if="previewImage" :src="previewImage" alt="Preview" class="avatar-img" />
-                <img
-                  v-else-if="form.avatar"
-                  :src="getFullPath(form.avatar)"
-                  alt="Current Avatar"
-                  class="avatar-img"
-                />
-                <div v-else class="avatar-placeholder">
-                  <i class="avatar-icon">📷</i>
-                  <span>Chọn ảnh</span>
-                </div>
-              </div>
-              <div class="avatar-overlay" @click="triggerFileInput">
-                <i class="overlay-icon">📁</i>
-                <span>Thay đổi</span>
+          <h2>Ảnh đại diện</h2>
+          <div class="avatar-content">
+            <div class="avatar-preview">
+              <img v-if="previewImage" :src="previewImage" alt="Preview" class="avatar-img" />
+              <img
+                v-else-if="form.avatar"
+                :src="getFullPath(form.avatar)"
+                alt="Current Avatar"
+                class="avatar-img"
+              />
+              <div v-else class="avatar-placeholder">
+                <span>Chưa có ảnh</span>
               </div>
             </div>
             <div class="avatar-actions">
-              <button type="button" class="btn btn-upload" @click="triggerFileInput">
-                <i class="btn-icon">📁</i>
-                Chọn ảnh mới
+              <button type="button" @click="triggerFileInput" class="btn-upload">
+                Chọn ảnh
               </button>
               <button
                 v-if="previewImage || form.avatar"
                 type="button"
-                class="btn btn-remove"
                 @click="removeImage"
+                class="btn-remove"
               >
-                <i class="btn-icon">🗑️</i>
                 Xóa ảnh
               </button>
             </div>
@@ -175,151 +160,104 @@ function onDeleteEmployee() {
           </div>
         </div>
 
-        <!-- Form Content -->
-        <div class="form-content">
-          <!-- Personal Info Section -->
-          <div class="form-section">
-            <h3 class="section-title">
-              <i class="section-icon">👤</i>
-              Thông tin cá nhân
-            </h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📝</i>
-                  Họ và tên
-                  <span class="required">*</span>
-                </label>
-                <input
-                  v-model="form.fullName"
-                  type="text"
-                  class="form-input"
-                  placeholder="Nhập họ và tên đầy đủ"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">🎂</i>
-                  Ngày sinh
-                  <span class="required">*</span>
-                </label>
-                <input v-model="form.dateOfBirth" type="date" class="form-input" required />
-              </div>
-
-              <div class="form-group full-width">
-                <label class="form-label">
-                  <i class="label-icon">📍</i>
-                  Địa chỉ
-                  <span class="required">*</span>
-                </label>
-                <input
-                  v-model="form.address"
-                  type="text"
-                  class="form-input"
-                  placeholder="Nhập địa chỉ đầy đủ"
-                  required
-                />
-              </div>
+        <!-- Personal Info -->
+        <div class="info-section">
+          <h2>Thông tin cá nhân</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Họ và tên *</label>
+              <input
+                v-model="form.fullName"
+                type="text"
+                class="form-input"
+                placeholder="Nhập họ và tên"
+                required
+              />
             </div>
-          </div>
 
-          <!-- Work Info Section -->
-          <div class="form-section">
-            <h3 class="section-title">
-              <i class="section-icon">💼</i>
-              Thông tin công việc
-            </h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📅</i>
-                  Ngày vào làm
-                  <span class="required">*</span>
-                </label>
-                <input v-model="form.startDate" type="date" class="form-input" required />
-              </div>
+            <div class="form-group">
+              <label>Ngày sinh *</label>
+              <input v-model="form.dateOfBirth" type="date" class="form-input" required />
+            </div>
 
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">💰</i>
-                  Lương (VNĐ)
-                  <span class="required">*</span>
-                </label>
-                <input
-                  v-model="form.salary"
-                  type="number"
-                  min="0"
-                  step="100000"
-                  class="form-input"
-                  placeholder="0"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📊</i>
-                  Trạng thái
-                  <span class="required">*</span>
-                </label>
-                <div class="select-wrapper">
-                  <select v-model="form.status" class="form-select" required>
-                    <option
-                      v-for="(label, code) in statusOptions"
-                      :key="code"
-                      :value="Number(code)"
-                    >
-                      {{ label }}
-                    </option>
-                  </select>
-                  <i class="select-arrow">⌄</i>
-                </div>
-              </div>
+            <div class="form-group full-width">
+              <label>Địa chỉ *</label>
+              <input
+                v-model="form.address"
+                type="text"
+                class="form-input"
+                placeholder="Nhập địa chỉ"
+                required
+              />
             </div>
           </div>
         </div>
 
-        <!-- Form Actions -->
+        <!-- Work Info -->
+        <div class="info-section">
+          <h2>Thông tin công việc</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Ngày vào làm *</label>
+              <input v-model="form.startDate" type="date" class="form-input" required />
+            </div>
+
+            <div class="form-group">
+              <label>Lương (VNĐ) *</label>
+              <input
+                v-model="form.salary"
+                type="number"
+                min="0"
+                step="100000"
+                class="form-input"
+                placeholder="0"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Trạng thái *</label>
+              <select v-model="form.status" class="form-select" required>
+                <option v-for="(label, code) in statusOptions" :key="code" :value="Number(code)">
+                  {{ label }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
         <div class="form-actions">
           <div class="action-left">
             <button
               v-if="!form.roleName"
               type="button"
-              class="btn btn-account"
               @click="onCreateAccount"
+              class="btn-account"
             >
-              <i class="btn-icon">👤</i>
               Tạo tài khoản
             </button>
-            
-            <!-- Nút chỉnh sửa tài khoản nếu đã có role -->
             <button
               v-else
               type="button"
-              class="btn btn-edit-account"
               @click="onEditAccount"
+              class="btn-edit-account"
             >
-              <i class="btn-icon">⚙️</i>
               Chỉnh sửa tài khoản
             </button>
             <button
               type="button"
-              class="btn btn-danger"
               @click="onDeleteEmployee"
+              class="btn-danger"
             >
-              <i class="btn-icon">🗑️</i>
               Xóa nhân viên
             </button>
           </div>
           <div class="action-right">
-            <button type="button" class="btn btn-secondary" @click="onCancel">
-              <i class="btn-icon">❌</i>
+            <button type="button" @click="onCancel" class="btn-cancel">
               Hủy bỏ
             </button>
-            <button type="submit" class="btn btn-primary">
-              <i class="btn-icon">💾</i>
+            <button type="submit" class="btn-save">
               Lưu thay đổi
             </button>
           </div>
@@ -330,111 +268,86 @@ function onDeleteEmployee() {
 </template>
 
 <style scoped>
-.employee-edit-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  padding: 2rem;
+.employee-edit-container {
+  padding: 20px;
 }
 
-/* Page Header */
-.page-header {
-  margin-bottom: 2rem;
-}
-
-.header-content {
+.header {
+  margin-bottom: 20px;
+  padding: 20px;
   background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.header-left h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #333;
 }
 
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
+  gap: 8px;
+  font-size: 14px;
 }
 
 .breadcrumb-item {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: #6366f1;
+  color: #007bff;
   cursor: pointer;
-  transition: color 0.2s ease;
 }
 
 .breadcrumb-item:hover {
-  color: #4f46e5;
+  text-decoration: underline;
 }
 
 .breadcrumb-separator {
-  color: #9ca3af;
-  font-size: 0.75rem;
+  color: #666;
 }
 
 .breadcrumb-current {
-  color: #6b7280;
+  color: #666;
 }
 
-.page-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
-}
-
-.title-icon {
-  font-size: 2.5rem;
-}
-
-.page-subtitle {
-  color: #64748b;
-  font-size: 1.125rem;
-  margin: 0;
-}
-
-/* Form Container */
 .form-container {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.employee-form {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border: 1px solid #ddd;
   overflow: hidden;
 }
 
-/* Avatar Section */
-.avatar-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 3rem 2rem;
-  text-align: center;
+.avatar-section,
+.info-section {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
 }
 
-.avatar-wrapper {
-  display: inline-block;
+.avatar-section:last-child,
+.info-section:last-child {
+  border-bottom: none;
 }
 
-.avatar-container {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1.5rem;
+.avatar-section h2,
+.info-section h2 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.avatar-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .avatar-preview {
-  width: 140px;
-  height: 140px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
-  border: 4px solid white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
+  background: #f8f9fa;
 }
 
 .avatar-img {
@@ -446,287 +359,160 @@ function onDeleteEmployee() {
 .avatar-placeholder {
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px dashed rgba(255, 255, 255, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 0.875rem;
-}
-
-.avatar-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-.avatar-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
-
-.avatar-container:hover .avatar-overlay {
-  opacity: 1;
-}
-
-.overlay-icon {
-  font-size: 2rem;
-  margin-bottom: 0.25rem;
+  color: #666;
+  font-size: 12px;
 }
 
 .avatar-actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  gap: 10px;
+}
+
+.btn-upload,
+.btn-remove {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .btn-upload {
-  background: rgba(255, 255, 255, 0.2);
+  background: #007bff;
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-upload:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: #0056b3;
 }
 
 .btn-remove {
-  background: rgba(239, 68, 68, 0.2);
+  background: #dc3545;
   color: white;
-  border: 2px solid rgba(239, 68, 68, 0.3);
 }
 
 .btn-remove:hover {
-  background: rgba(239, 68, 68, 0.3);
-  border-color: rgba(239, 68, 68, 0.5);
-}
-
-/* Form Content */
-.form-content {
-  padding: 2.5rem;
-}
-
-.form-section {
-  margin-bottom: 2.5rem;
-}
-
-.form-section:last-child {
-  margin-bottom: 0;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.375rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f3f4f6;
-}
-
-.section-icon {
-  font-size: 1.75rem;
+  background: #c82333;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  gap: 20px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .form-group.full-width {
   grid-column: 1 / -1;
 }
 
-.form-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.9rem;
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
 }
 
-.label-icon {
-  font-size: 1.1rem;
-}
-
-.required {
-  color: #ef4444;
-  font-weight: 700;
-}
-
-.form-input {
-  width: 100%;
-  padding: 1rem 1.25rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  background: #fafafa;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.select-wrapper {
-  position: relative;
-}
-
+.form-input,
 .form-select {
-  width: 100%;
-  padding: 1rem 3rem 1rem 1.25rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  background: #fafafa;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  appearance: none;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
+.form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #007bff;
 }
 
-.select-arrow {
-  position: absolute;
-  right: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  pointer-events: none;
-  font-size: 1.5rem;
-}
-
-/* Form Actions */
 .form-actions {
-  background: #f8fafc;
-  padding: 2rem 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e2e8f0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #eee;
 }
 
 .action-left {
-  flex: 1;
+  display: flex;
+  gap: 10px;
 }
 
 .action-right {
   display: flex;
-  gap: 1rem;
+  gap: 10px;
 }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.9rem;
+.btn-account,
+.btn-edit-account,
+.btn-danger,
+.btn-cancel,
+.btn-save {
+  padding: 8px 16px;
   border: none;
+  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.btn-icon {
-  font-size: 1.1rem;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
-}
-
-.btn-secondary {
-  background: white;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
-}
-
-.btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
 }
 
 .btn-account {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: #28a745;
   color: white;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 .btn-account:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+  background: #218838;
 }
+
 .btn-edit-account {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-  margin-right: 1rem;
+  background: #ffc107;
+  color: #212529;
 }
 
 .btn-edit-account:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4);
+  background: #e0a800;
 }
 
 .btn-danger {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: #dc3545;
   color: white;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 
 .btn-danger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.4);
+  background: #c82333;
 }
 
-/* Responsive */
+.btn-cancel {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #5a6268;
+}
+
+.btn-save {
+  background: #007bff;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #0056b3;
+}
+
 @media (max-width: 768px) {
-  .employee-edit-page {
-    padding: 1rem;
+  .employee-edit-container {
+    padding: 10px;
   }
 
   .form-grid {
@@ -739,7 +525,7 @@ function onDeleteEmployee() {
 
   .form-actions {
     flex-direction: column;
-    gap: 1rem;
+    gap: 16px;
   }
 
   .action-left,
@@ -747,38 +533,24 @@ function onDeleteEmployee() {
     width: 100%;
   }
 
+  .action-left {
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .action-right {
     flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .avatar-content {
+    flex-direction: column;
+    align-items: center;
   }
 
   .avatar-actions {
     flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .avatar-preview {
-    width: 100px;
-    height: 100px;
-  }
-
-  .page-title {
-    font-size: 1.5rem;
-  }
-
-  .section-title {
-    font-size: 1.125rem;
-  }
-}
-@media (max-width: 768px) {
-  .action-left {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .btn-edit-account {
-    margin-right: 0;
+    width: 100%;
   }
 }
 </style>

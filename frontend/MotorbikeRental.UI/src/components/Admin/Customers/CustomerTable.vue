@@ -34,10 +34,8 @@ const genderOptions = {
   2: 'Khác',
 }
 
-// Search
 const searchValue = ref(props.query.Search || '')
 
-// Debounced search
 let searchTimeout = null
 watch(searchValue, (newVal) => {
   clearTimeout(searchTimeout)
@@ -49,25 +47,12 @@ watch(searchValue, (newVal) => {
   }, 300)
 })
 
-// Computed properties
 const totalPages = computed(() => Math.ceil(props.totalCount / props.query.PageSize))
-const showingFrom = computed(() => (props.query.PageNumber - 1) * props.query.PageSize + 1)
-const showingTo = computed(() =>
-  Math.min(props.query.PageNumber * props.query.PageSize, props.totalCount),
-)
 
-// Functions
 function changePage(page) {
   if (page >= 1 && page <= totalPages.value) {
     emit('update-query', { PageNumber: page })
   }
-}
-
-function changePageSize(size) {
-  emit('update-query', {
-    PageSize: parseInt(size),
-    PageNumber: 1,
-  })
 }
 
 function clearSearch() {
@@ -96,204 +81,158 @@ function getGenderBadgeClass(gender) {
       return 'badge-other'
   }
 }
+
 function goToDetail(customerId) {
   router.push(`/admin/customer/detail/${customerId}`)
 }
 </script>
 
 <template>
-  <div class="customer-table-container">
+  <div class="customer-container">
     <!-- Header -->
-    <div class="page-header">
-      <h1 class="page-title">Danh sách khách hàng</h1>
+    <div class="header">
+      <h1>Danh sách khách hàng</h1>
       <div class="header-stats">
-        <span class="stat-item"> Tổng: {{ totalCount }} khách hàng </span>
+        <span class="stat-item">Tổng: {{ totalCount }} khách hàng</span>
       </div>
     </div>
 
     <!-- Search Section -->
     <div class="search-section">
       <div class="search-wrapper">
-        <div class="search-input-wrapper">
-          <input
-            v-model="searchValue"
-            class="search-input"
-            placeholder="Tìm kiếm khách hàng theo tên hoặc số điện thoại..."
-            type="text"
-          />
-          <button v-if="searchValue" @click="clearSearch" class="clear-btn" title="Xóa tìm kiếm">
-            ✕
-          </button>
-        </div>
-        <div class="search-info">
-          <span v-if="searchValue"> Tìm kiếm: "{{ searchValue }}" - {{ totalCount }} kết quả </span>
-        </div>
+        <input
+          v-model="searchValue"
+          class="search-input"
+          placeholder="Tìm kiếm khách hàng theo tên hoặc số điện thoại..."
+          type="text"
+        />
+        <button v-if="searchValue" @click="clearSearch" class="clear-btn">
+          ×
+        </button>
       </div>
-
-      <div class="page-size-control">
-        <label>Hiển thị:</label>
-        <select
-          :value="props.query.PageSize"
-          @change="changePageSize($event.target.value)"
-          class="page-size-select"
-        >
-          <option :value="6">6</option>
-          <option :value="12">12</option>
-          <option :value="24">24</option>
-          <option :value="50">50</option>
-        </select>
-        <span>/ trang</span>
+      <div v-if="searchValue" class="search-info">
+        Tìm kiếm: "{{ searchValue }}" - {{ totalCount }} kết quả
       </div>
     </div>
 
     <!-- Table Info -->
     <div class="table-info" v-if="!isLoading && totalCount > 0">
-      <span> Hiển thị {{ showingFrom }} - {{ showingTo }} trong {{ totalCount }} khách hàng </span>
+      Hiển thị {{ (props.query.PageNumber - 1) * props.query.PageSize + 1 }} - 
+      {{ Math.min(props.query.PageNumber * props.query.PageSize, totalCount) }} 
+      trong {{ totalCount }} khách hàng
     </div>
 
-    <!-- Loading State -->
-    <div v-if="isLoading" class="loading-container">
-      <div class="loading-spinner"></div>
-      <p>Đang tải dữ liệu...</p>
-    </div>
+    <!-- Content -->
+    <div class="content">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="loading">
+        <p>Đang tải dữ liệu...</p>
+      </div>
 
-    <!-- Table -->
-    <div v-else class="table-wrapper">
-      <table v-if="customers && customers.length > 0" class="customer-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Họ tên</th>
-            <th>Giới tính</th>
-            <th>Số điện thoại</th>
-            <th>Lượt thuê</th>
-            <th>Ngày tạo</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="customer in customers" :key="customer.customerId" class="table-row">
-            <td>
-              <span class="customer-id">#{{ customer.customerId }}</span>
-            </td>
-            <td>
-              <span class="customer-name">{{ customer.fullName }}</span>
-            </td>
-            <td>
-              <span class="gender-badge" :class="getGenderBadgeClass(customer.gender)">
-                {{ getGenderText(customer.gender) }}
-              </span>
-            </td>
-            <td>
-              <a :href="`tel:${customer.phoneNumber}`" class="phone-link">
-                {{ customer.phoneNumber }}
-              </a>
-            </td>
-            <td>
-              <span class="rental-count">{{ customer.rentalCount }}</span>
-            </td>
-            <td>
-              <span class="date-text">{{ formatDate(customer.createAt) }}</span>
-            </td>
-            <td>
-              <button class="btn-detail" @click="goToDetail(customer.customerId)">Chi tiết</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Table -->
+      <div v-else-if="customers && customers.length > 0" class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Họ tên</th>
+              <th>Giới tính</th>
+              <th>Số điện thoại</th>
+              <th>Lượt thuê</th>
+              <th>Ngày tạo</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="customer in customers" :key="customer.customerId">
+              <td>
+                <span class="customer-id">#{{ customer.customerId }}</span>
+              </td>
+              <td>
+                <span class="customer-name">{{ customer.fullName }}</span>
+              </td>
+              <td>
+                <span class="gender-badge" :class="getGenderBadgeClass(customer.gender)">
+                  {{ getGenderText(customer.gender) }}
+                </span>
+              </td>
+              <td>
+                <a :href="`tel:${customer.phoneNumber}`" class="phone-link">
+                  {{ customer.phoneNumber }}
+                </a>
+              </td>
+              <td>
+                <span class="rental-count">{{ customer.rentalCount }}</span>
+              </td>
+              <td>
+                <span class="date-text">{{ formatDate(customer.createAt) }}</span>
+              </td>
+              <td>
+                <button class="btn-detail" @click="goToDetail(customer.customerId)">
+                  Chi tiết
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- Empty State -->
       <div v-else class="empty-state">
-        <div class="empty-icon">🔍</div>
         <h3>{{ searchValue ? 'Không tìm thấy kết quả' : 'Chưa có khách hàng nào' }}</h3>
         <p v-if="searchValue">Không tìm thấy khách hàng nào với từ khóa "{{ searchValue }}"</p>
         <p v-else>Chưa có khách hàng nào được đăng ký trong hệ thống</p>
-        <button v-if="searchValue" @click="clearSearch" class="btn btn-primary">
+        <button v-if="searchValue" @click="clearSearch" class="btn-primary">
           Xóa tìm kiếm
         </button>
       </div>
     </div>
 
     <!-- Pagination -->
-    <div v-if="totalPages > 1" class="pagination-container">
-      <div class="pagination">
-        <button
-          :disabled="props.query.PageNumber === 1"
-          @click="changePage(1)"
-          class="pagination-btn"
-          title="Trang đầu"
-        >
-          ⟪
-        </button>
-        <button
-          :disabled="props.query.PageNumber === 1"
-          @click="changePage(props.query.PageNumber - 1)"
-          class="pagination-btn"
-        >
-          ‹ Trước
-        </button>
-
-        <div class="pagination-pages">
-          <span class="page-info"> Trang {{ props.query.PageNumber }} / {{ totalPages }} </span>
-        </div>
-
-        <button
-          :disabled="props.query.PageNumber >= totalPages"
-          @click="changePage(props.query.PageNumber + 1)"
-          class="pagination-btn"
-        >
-          Sau ›
-        </button>
-        <button
-          :disabled="props.query.PageNumber >= totalPages"
-          @click="changePage(totalPages)"
-          class="pagination-btn"
-          title="Trang cuối"
-        >
-          ⟫
-        </button>
-      </div>
+    <div v-if="totalPages > 1" class="pagination">
+      <button
+        :disabled="props.query.PageNumber === 1"
+        @click="changePage(props.query.PageNumber - 1)"
+        class="page-btn"
+      >
+        ‹
+      </button>
+      
+      <span class="page-info">
+        Trang {{ props.query.PageNumber }} / {{ totalPages }}
+      </span>
+      
+      <button
+        :disabled="props.query.PageNumber >= totalPages"
+        @click="changePage(props.query.PageNumber + 1)"
+        class="page-btn"
+      >
+        ›
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.btn-detail {
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid #d1d5db;
-    background: #fff;
-    color: #3b82f6;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-.btn-detail:hover {
-    background: #f3f4f6;
-    color: #2563eb;
-}
-.customer-table-container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px;
-  overflow: hidden;
+.customer-container {
+  padding: 20px;
 }
 
-.page-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
-  border-bottom: 1px solid #e5e7eb;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
+.header h1 {
   margin: 0;
+  font-size: 24px;
+  color: #333;
 }
 
 .header-stats {
@@ -302,153 +241,117 @@ function goToDetail(customerId) {
 }
 
 .stat-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-size: 14px;
+  color: #666;
   font-weight: 500;
 }
 
 .search-section {
-  padding: 24px 32px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
 .search-wrapper {
-  flex: 1;
-}
-
-.search-input-wrapper {
   position: relative;
   margin-bottom: 8px;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 8px 12px;
   padding-right: 40px;
-  border: 2px solid #d1d5db;
-  border-radius: 10px;
-  font-size: 16px;
-  transition: all 0.2s;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #007bff;
 }
 
 .clear-btn {
   position: absolute;
-  right: 12px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: #6b7280;
+  background: #6c757d;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .clear-btn:hover {
-  background: #4b5563;
+  background: #5a6268;
 }
 
 .search-info {
   font-size: 14px;
-  color: #6b7280;
+  color: #666;
   font-style: italic;
 }
 
-.page-size-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #6b7280;
-  white-space: nowrap;
-}
-
-.page-size-select {
-  padding: 6px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
 .table-info {
-  padding: 12px 32px;
-  background: #fff;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 12px 20px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
   font-size: 14px;
-  color: #6b7280;
+  color: #666;
 }
 
-.loading-container {
+.content {
+  min-height: 400px;
+}
+
+.loading {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  color: #6b7280;
+  align-items: center;
+  padding: 60px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
 }
 
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e5e7eb;
-  border-top: 4px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.table-wrapper {
+.table-container {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   overflow-x: auto;
 }
 
-.customer-table {
+.table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
 
-.customer-table th {
-  background: #f8fafc;
-  padding: 16px 12px;
+.table th {
+  background: #f8f9fa;
+  padding: 12px;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  color: #333;
+  border-bottom: 1px solid #ddd;
 }
 
-.customer-table td {
-  padding: 16px 12px;
-  border-bottom: 1px solid #f3f4f6;
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-.table-row:hover {
-  background: #f8fafc;
+.table tr:hover {
+  background: #f8f9fa;
 }
 
 .customer-id {
@@ -457,34 +360,34 @@ function goToDetail(customerId) {
 }
 
 .customer-name {
-  font-weight: 600;
-  color: #1f2937;
+  font-weight: 500;
+  color: #333;
 }
 
 .gender-badge {
   padding: 4px 8px;
-  border-radius: 12px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
 }
 
 .badge-male {
-  background: #dbeafe;
-  color: #1e40af;
+  background: #e3f2fd;
+  color: #1565c0;
 }
 
 .badge-female {
-  background: #fce7f3;
-  color: #be185d;
+  background: #fce4ec;
+  color: #ad1457;
 }
 
 .badge-other {
-  background: #f3f4f6;
-  color: #6b7280;
+  background: #f5f5f5;
+  color: #666;
 }
 
 .phone-link {
-  color: #059669;
+  color: #28a745;
   text-decoration: none;
 }
 
@@ -494,113 +397,114 @@ function goToDetail(customerId) {
 
 .rental-count {
   font-weight: 600;
-  color: #059669;
+  color: #28a745;
 }
 
 .date-text {
-  color: #6b7280;
+  color: #666;
+  font-size: 13px;
+}
+
+.btn-detail {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #007bff;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-detail:hover {
+  background: #f8f9fa;
+  border-color: #007bff;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #6b7280;
-}
-
-.empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
 }
 
 .empty-state h3 {
   margin: 0 0 8px 0;
-  color: #374151;
-}
-
-.btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
+  color: #333;
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #007bff;
   color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
-  background: #2563eb;
-}
-
-.pagination-container {
-  padding: 20px 32px;
-  background: #f8fafc;
-  border-top: 1px solid #e5e7eb;
+  background: #0056b3;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-.pagination-btn {
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
+.page-btn {
   background: white;
-  border-radius: 8px;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 6px 10px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
   font-size: 14px;
 }
 
-.pagination-btn:hover:not(:disabled) {
-  background: #f3f4f6;
-  border-color: #9ca3af;
+.page-btn:hover:not(:disabled) {
+  background: #f8f9fa;
 }
 
-.pagination-btn:disabled {
+.page-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.pagination-pages {
-  margin: 0 16px;
-}
-
 .page-info {
-  font-weight: 600;
-  color: #374151;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .customer-table-container {
-    margin: 10px;
+  .customer-container {
+    padding: 10px;
   }
 
-  .page-header {
+  .header {
     flex-direction: column;
     gap: 16px;
-    text-align: center;
   }
 
   .search-section {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
+    padding: 16px;
   }
 
-  .page-size-control {
-    justify-content: center;
+  .table-info {
+    padding: 12px 16px;
   }
 
   .pagination {
-    flex-wrap: wrap;
+    padding: 16px;
   }
 }
 </style>

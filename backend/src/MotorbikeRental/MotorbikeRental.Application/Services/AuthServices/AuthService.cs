@@ -16,23 +16,21 @@ namespace MotorbikeRental.Application.Services.AuthServices
         public AuthService(UserManager<UserCredentials> userManager, IUserCredentialsRepository userCredentialsRepository, IMapper mapper)
         {
             this.userManager = userManager;
-            this.userCredentialsRepository = userCredentialsRepository; 
+            this.userCredentialsRepository = userCredentialsRepository;
             this.mapper = mapper;
         }
         public async Task<UserCredentialsDto> Login(LoginDto loginDto, CancellationToken cancellationToken = default)
         {
-            UserCredentials? userCredentials = await userCredentialsRepository.GetByUserNameInCludes(loginDto.UserName, cancellationToken);
-            if (userCredentials == null)
-                throw new NotFoundException($"UserCredentials with username {loginDto.UserName} not found");
+            UserCredentials? userCredentials = await userCredentialsRepository.GetByUserNameInCludes(loginDto.UserName, cancellationToken) ?? throw new NotFoundException($"UserCredentials with username {loginDto.UserName} not found");
             if (userCredentials?.Employee.Status != 0)
                 throw new NotFoundException($"Employee with id {userCredentials?.EmployeeId} is not active");
-            if (userCredentials != null && await userManager.CheckPasswordAsync(userCredentials, loginDto.Password))
+            if (await userManager.CheckPasswordAsync(userCredentials, loginDto.Password))
             {
                 userCredentials.LastLogin = DateTime.UtcNow;
                 await userCredentialsRepository.Update(userCredentials, cancellationToken);
                 return mapper.Map<UserCredentialsDto>(userCredentials);
             }
-            return null;    
-        }   
+            return null;
+        }
     }
 }

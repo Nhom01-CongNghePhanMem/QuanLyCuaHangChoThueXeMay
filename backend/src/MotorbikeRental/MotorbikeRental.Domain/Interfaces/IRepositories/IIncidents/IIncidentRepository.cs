@@ -6,5 +6,6 @@ namespace MotorbikeRental.Domain.Interfaces.IRepositories.IIncidents
     {
         Task<Incident?> GetIncidentByIdWithIncludes(int incidentId, bool isTracking, CancellationToken cancellationToken = default);
         Task<bool> IsExistsContractIdForUpdate(int incidentId, int contractId, CancellationToken cancellationToken = default);
+        Task<(IEnumerable<Incident>, int totalCount)> GetIncidentsByFilter(int pageNumber, int pageSize, DateTime? fromDate, DateTime? toDate, bool? isResolved, CancellationToken cancellationToken = default);
     }
 }

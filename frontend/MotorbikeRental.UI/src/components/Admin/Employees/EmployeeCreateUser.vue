@@ -33,162 +33,130 @@ function toggleConfirmPasswordVisibility() {
 </script>
 
 <template>
-  <div class="create-user-page">
+  <div class="create-user-container">
     <!-- Header -->
-    <div class="page-header">
-      <div class="header-content">
-        <h1 class="page-title">
-          <i class="title-icon">👤</i>
-          Tạo tài khoản người dùng
-        </h1>
-        <p class="page-subtitle">Tạo tài khoản đăng nhập cho nhân viên</p>
-      </div>
+    <div class="header">
+      <h1>Tạo tài khoản nhân viên</h1>
+      <p>Tạo tài khoản đăng nhập cho nhân viên</p>
     </div>
 
     <!-- Form -->
     <div class="form-container">
       <form class="user-form" @submit.prevent="onSubmit">
-        <div class="form-content">
-          <!-- Account Info Section -->
-          <div class="form-section">
-            <h3 class="section-title">
-              <i class="section-icon">🔑</i>
-              Thông tin tài khoản
-            </h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">👤</i>
-                  Tên đăng nhập
-                  <span class="required">*</span>
-                </label>
+        <!-- Account Info -->
+        <div class="form-section">
+          <h2>Thông tin tài khoản</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                Tên đăng nhập <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.userName" 
+                type="text" 
+                class="form-input"
+                placeholder="Nhập tên đăng nhập"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Quyền hạn <span class="required">*</span>
+              </label>
+              <select v-model="form.roleId" class="form-select" required>
+                <option value="">Chọn quyền hạn</option>
+                <option v-for="role in roles" :key="role.id" :value="role.id">
+                  {{ role.roleName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Mật khẩu <span class="required">*</span>
+              </label>
+              <div class="password-wrapper">
                 <input 
-                  v-model="form.userName" 
-                  type="text" 
-                  class="form-input"
-                  placeholder="Nhập tên đăng nhập"
+                  v-model="form.password" 
+                  :type="showPassword ? 'text' : 'password'" 
+                  class="form-input password-input"
+                  placeholder="Nhập mật khẩu"
                   required
                 />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">🛡️</i>
-                  Quyền hạn
-                  <span class="required">*</span>
-                </label>
-                <div class="select-wrapper">
-                  <select v-model="form.roleId" class="form-select" required>
-                    <option value="">Chọn quyền hạn</option>
-                    <option v-for="result in roles" :key="result.id" :value="result.id">
-                      {{ result.roleName }}
-                    </option>
-                  </select>
-                  <i class="select-arrow">⌄</i>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">🔒</i>
-                  Mật khẩu
-                  <span class="required">*</span>
-                </label>
-                <div class="password-wrapper">
-                  <input 
-                    v-model="form.password" 
-                    :type="showPassword ? 'text' : 'password'" 
-                    class="form-input password-input"
-                    placeholder="Nhập mật khẩu"
-                    required
-                  />
-                  <button 
-                    type="button" 
-                    class="password-toggle"
-                    @click="togglePasswordVisibility"
-                  >
-                    <i v-if="showPassword">🙈</i>
-                    <i v-else>👁️</i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">🔐</i>
-                  Xác nhận mật khẩu
-                  <span class="required">*</span>
-                </label>
-                <div class="password-wrapper">
-                  <input 
-                    v-model="form.confirmPassword" 
-                    :type="showConfirmPassword ? 'text' : 'password'" 
-                    class="form-input password-input"
-                    placeholder="Xác nhận mật khẩu"
-                    required
-                  />
-                  <button 
-                    type="button" 
-                    class="password-toggle"
-                    @click="toggleConfirmPasswordVisibility"
-                  >
-                    <i v-if="showConfirmPassword">🙈</i>
-                    <i v-else>👁️</i>
-                  </button>
-                </div>
+                <button 
+                  type="button" 
+                  class="password-toggle"
+                  @click="togglePasswordVisibility"
+                >
+                  {{ showPassword ? 'Ẩn' : 'Hiện' }}
+                </button>
               </div>
             </div>
-          </div>
 
-          <!-- Contact Info Section -->
-          <div class="form-section">
-            <h3 class="section-title">
-              <i class="section-icon">📞</i>
-              Thông tin liên hệ
-            </h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📱</i>
-                  Số điện thoại
-                  <span class="required">*</span>
-                </label>
+            <div class="form-group">
+              <label class="form-label">
+                Xác nhận mật khẩu <span class="required">*</span>
+              </label>
+              <div class="password-wrapper">
                 <input 
-                  v-model="form.phoneNumber" 
-                  type="tel" 
-                  class="form-input"
-                  placeholder="Nhập số điện thoại"
+                  v-model="form.confirmPassword" 
+                  :type="showConfirmPassword ? 'text' : 'password'" 
+                  class="form-input password-input"
+                  placeholder="Xác nhận mật khẩu"
                   required
                 />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📧</i>
-                  Email
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  v-model="form.email" 
-                  type="email" 
-                  class="form-input"
-                  placeholder="Nhập địa chỉ email"
-                  required
-                />
+                <button 
+                  type="button" 
+                  class="password-toggle"
+                  @click="toggleConfirmPasswordVisibility"
+                >
+                  {{ showConfirmPassword ? 'Ẩn' : 'Hiện' }}
+                </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Form Actions -->
+        <!-- Contact Info -->
+        <div class="form-section">
+          <h2>Thông tin liên hệ</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                Số điện thoại <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.phoneNumber" 
+                type="tel" 
+                class="form-input"
+                placeholder="Nhập số điện thoại"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Email <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.email" 
+                type="email" 
+                class="form-input"
+                placeholder="Nhập địa chỉ email"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
         <div class="form-actions">
-          <button type="submit" class="btn btn-primary">
-            <i class="btn-icon">✅</i>
-            Tạo tài khoản
-          </button>
           <button type="button" class="btn btn-secondary" @click="$router.back()">
-            <i class="btn-icon">❌</i>
             Hủy bỏ
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Tạo tài khoản
           </button>
         </div>
       </form>
@@ -197,51 +165,31 @@ function toggleConfirmPasswordVisibility() {
 </template>
 
 <style scoped>
-.create-user-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  padding: 2rem;
+.create-user-container {
+  padding: 20px;
 }
 
-/* Page Header */
-.page-header {
-  margin-bottom: 2rem;
-}
-
-.header-content {
+.header {
+  margin-bottom: 20px;
+  padding: 20px;
   background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border: 1px solid #ddd;
   text-align: center;
 }
 
-.page-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
+.header h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #333;
 }
 
-.title-icon {
-  font-size: 2.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.page-subtitle {
-  color: #64748b;
-  font-size: 1.125rem;
+.header p {
   margin: 0;
+  color: #666;
+  font-size: 14px;
 }
 
-/* Form Container */
 .form-container {
   max-width: 800px;
   margin: 0 auto;
@@ -249,208 +197,126 @@ function toggleConfirmPasswordVisibility() {
 
 .user-form {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border: 1px solid #ddd;
   overflow: hidden;
 }
 
-/* Form Content */
-.form-content {
-  padding: 2.5rem;
-}
-
 .form-section {
-  margin-bottom: 2.5rem;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
 }
 
 .form-section:last-child {
-  margin-bottom: 0;
+  border-bottom: none;
 }
 
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.375rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f3f4f6;
-}
-
-.section-icon {
-  font-size: 1.75rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.form-section h2 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  gap: 16px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .form-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.9rem;
-}
-
-.label-icon {
-  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
 }
 
 .required {
-  color: #ef4444;
-  font-weight: 700;
+  color: #dc3545;
 }
 
-.form-input {
-  width: 100%;
-  padding: 1rem 1.25rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  background: #fafafa;
+.form-input,
+.form-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-.form-input:focus {
+.form-input:focus,
+.form-select:focus {
   outline: none;
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #007bff;
 }
 
-/* Password Input */
 .password-wrapper {
   position: relative;
 }
 
 .password-input {
-  padding-right: 3rem;
+  padding-right: 60px;
 }
 
 .password-toggle {
   position: absolute;
-  right: 1rem;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.25rem;
-  color: #9ca3af;
-  transition: color 0.2s ease;
+  font-size: 12px;
+  color: #007bff;
 }
 
 .password-toggle:hover {
-  color: #6366f1;
+  text-decoration: underline;
 }
 
-/* Select */
-.select-wrapper {
-  position: relative;
-}
-
-.form-select {
-  width: 100%;
-  padding: 1rem 3rem 1rem 1.25rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  background: #fafafa;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  appearance: none;
-}
-
-.form-select:focus {
-  outline: none;
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.select-arrow {
-  position: absolute;
-  right: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  pointer-events: none;
-  font-size: 1.5rem;
-}
-
-/* Form Actions */
 .form-actions {
-  background: #f8fafc;
-  padding: 2rem 2.5rem;
+  background: #f8f9fa;
+  padding: 20px;
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  border-top: 1px solid #e2e8f0;
+  gap: 16px;
+  border-top: 1px solid #eee;
 }
 
-/* Buttons */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding: 8px 16px;
   border: none;
+  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  min-width: 150px;
-  justify-content: center;
-}
-
-.btn-icon {
-  font-size: 1.1rem;
+  font-weight: 500;
+  min-width: 120px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: #007bff;
   color: white;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+  background: #0056b3;
 }
 
 .btn-secondary {
-  background: white;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
+  background: #6c757d;
+  color: white;
 }
 
 .btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
+  background: #5a6268;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .create-user-page {
-    padding: 1rem;
+  .create-user-container {
+    padding: 10px;
   }
   
   .form-grid {
@@ -459,28 +325,6 @@ function toggleConfirmPasswordVisibility() {
   
   .form-actions {
     flex-direction: column;
-  }
-  
-  .page-title {
-    font-size: 1.5rem;
-  }
-  
-  .section-title {
-    font-size: 1.125rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-content {
-    padding: 1.5rem;
-  }
-  
-  .form-content {
-    padding: 1.5rem;
-  }
-  
-  .form-actions {
-    padding: 1.5rem;
   }
 }
 </style>

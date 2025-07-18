@@ -10,7 +10,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update', 'delete'])
+const emit = defineEmits(['update', 'delete', 'back'])
 
 // Form data
 const form = reactive({
@@ -77,6 +77,10 @@ function deleteCategory() {
   }
 }
 
+function handleBack() {
+  emit('back')
+}
+
 function formatCurrency(amount) {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
@@ -89,35 +93,24 @@ function formatCurrency(amount) {
   <div class="category-detail-container" v-if="category">
     <!-- Header -->
     <div class="detail-header">
-      <h1 class="category-name">{{ category.categoryName }}</h1>
+      <div class="header-left">
+        <h1>Chi tiết loại xe</h1>
+        <p>Thông tin loại xe {{ category.categoryName }}</p>
+      </div>
       <div class="header-actions">
-        <button 
-          v-if="!isEditing" 
-          @click="toggleEdit" 
-          class="btn btn-primary"
-        >
+        <button @click="handleBack" class="btn-back">
+          ← Quay lại
+        </button>
+        <button v-if="!isEditing" @click="toggleEdit" class="btn-edit">
           Chỉnh sửa
         </button>
-        <button 
-          v-if="isEditing" 
-          @click="saveCategory" 
-          class="btn btn-success"
-          :disabled="isSubmitting"
-        >
-          <span v-if="isSubmitting">Đang lưu...</span>
-          <span v-else>Lưu</span>
+        <button v-if="isEditing" @click="saveCategory" class="btn-save" :disabled="isSubmitting">
+          {{ isSubmitting ? 'Đang lưu...' : 'Lưu' }}
         </button>
-        <button 
-          v-if="isEditing" 
-          @click="toggleEdit" 
-          class="btn btn-secondary"
-        >
+        <button v-if="isEditing" @click="toggleEdit" class="btn-cancel">
           Hủy
         </button>
-        <button 
-          @click="deleteCategory" 
-          class="btn btn-danger"
-        >
+        <button @click="deleteCategory" class="btn-delete">
           Xóa
         </button>
       </div>
@@ -126,11 +119,10 @@ function formatCurrency(amount) {
     <!-- Content -->
     <div class="detail-content">
       <div class="info-section">
-        <h2 class="section-title">Thông tin loại xe</h2>
+        <h2>Thông tin loại xe</h2>
         <div class="info-form">
-          <!-- Category Name -->
           <div class="form-group">
-            <label class="form-label">Tên loại xe</label>
+            <label>Tên loại xe</label>
             <input 
               v-if="isEditing"
               v-model="form.categoryName"
@@ -143,9 +135,8 @@ function formatCurrency(amount) {
             <span v-if="errors.categoryName" class="error-message">{{ errors.categoryName }}</span>
           </div>
 
-          <!-- Deposit Amount -->
           <div class="form-group">
-            <label class="form-label">Tiền cọc</label>
+            <label>Tiền cọc</label>
             <input 
               v-if="isEditing"
               v-model="form.depositAmount"
@@ -160,9 +151,8 @@ function formatCurrency(amount) {
             <span v-if="errors.depositAmount" class="error-message">{{ errors.depositAmount }}</span>
           </div>
 
-          <!-- Category ID -->
           <div class="form-group">
-            <label class="form-label">ID loại xe</label>
+            <label>ID loại xe</label>
             <span class="info-value category-id">#{{ category.categoryId }}</span>
           </div>
         </div>
@@ -173,108 +163,119 @@ function formatCurrency(amount) {
 
 <style scoped>
 .category-detail-container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px;
-  overflow: hidden;
-  max-width: 800px;
-  margin: 20px auto;
+  padding: 20px;
 }
 
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
-.category-name {
+.header-left h1 {
+  margin: 0 0 5px 0;
   font-size: 24px;
-  font-weight: 700;
+  color: #333;
+}
+
+.header-left p {
   margin: 0;
+  color: #666;
+  font-size: 14px;
 }
 
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
-.btn {
+.btn-back,
+.btn-edit,
+.btn-save,
+.btn-cancel,
+.btn-delete {
   padding: 8px 16px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.btn:disabled {
+.btn-back {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-back:hover {
+  background: #5a6268;
+}
+
+.btn-edit {
+  background: #007bff;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #0056b3;
+}
+
+.btn-save {
+  background: #28a745;
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: #218838;
+}
+
+.btn-save:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.btn-primary {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.btn-primary:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.btn-success {
-  background: #22c55e;
+.btn-cancel {
+  background: #6c757d;
   color: white;
 }
 
-.btn-success:hover:not(:disabled) {
-  background: #16a34a;
+.btn-cancel:hover {
+  background: #5a6268;
 }
 
-.btn-secondary {
-  background: #6b7280;
+.btn-delete {
+  background: #dc3545;
   color: white;
 }
 
-.btn-secondary:hover {
-  background: #4b5563;
-}
-
-.btn-danger {
-  background: #ef4444;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #dc2626;
+.btn-delete:hover {
+  background: #c82333;
 }
 
 .detail-content {
-  padding: 32px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.info-section {
-  margin-bottom: 32px;
-}
-
-.section-title {
+.info-section h2 {
+  margin: 0 0 20px 0;
   font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e5e7eb;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 .info-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .form-group {
@@ -283,24 +284,23 @@ function formatCurrency(amount) {
   gap: 8px;
 }
 
-.form-label {
+.form-group label {
+  font-weight: 500;
+  color: #333;
   font-size: 14px;
-  font-weight: 600;
-  color: #374151;
 }
 
 .info-value {
-  font-size: 16px;
-  color: #1f2937;
-  padding: 12px 0;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
+  padding: 8px 0;
+  color: #333;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .info-value.amount {
-  color: #059669;
+  color: #28a745;
   font-weight: 600;
+  font-size: 16px;
 }
 
 .info-value.category-id {
@@ -309,46 +309,39 @@ function formatCurrency(amount) {
 }
 
 .form-input {
-  padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.2s;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #007bff;
 }
 
 .form-input.error {
-  border-color: #ef4444;
+  border-color: #dc3545;
 }
 
 .error-message {
   font-size: 12px;
-  color: #ef4444;
+  color: #dc3545;
 }
 
 @media (max-width: 768px) {
   .category-detail-container {
-    margin: 10px;
+    padding: 10px;
   }
 
   .detail-header {
     flex-direction: column;
     gap: 16px;
-    text-align: center;
   }
 
   .header-actions {
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .detail-content {
-    padding: 20px;
   }
 }
 </style>

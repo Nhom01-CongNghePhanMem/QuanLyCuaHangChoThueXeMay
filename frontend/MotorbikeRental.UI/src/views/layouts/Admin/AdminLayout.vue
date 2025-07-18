@@ -1,4 +1,3 @@
-<!-- src/layouts/AdminLayout.vue - Version đẹp hơn -->
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -14,6 +13,8 @@ const currentPageName = computed(() => {
   const names = {
     '/admin': 'Dashboard',
     '/admin/motorbikes': 'Quản lý xe máy',
+    '/Admin/Index': 'Quản lý xe máy',
+    '/admin/categories': 'Quản lý loại xe',
     '/admin/employees': 'Quản lý nhân viên',
     '/admin/customers': 'Quản lý khách hàng',
     '/admin/reports': 'Báo cáo thống kê',
@@ -22,29 +23,24 @@ const currentPageName = computed(() => {
   }
   return names[route.path] || 'Admin'
 })
-const token = localStorage.getItem('token')
 
+const token = localStorage.getItem('token')
 let userId = null
 if (token) {
   const decodedToken = jwtDecode(token)
-  console.log('Decoded token:', decodedToken) // Thêm dòng này
   userId = decodedToken.sub
-  console.log('User ID:', userId) // Phải ra số cụ thể (vd: 3)
 }
-const employee = ref(null)
-onMounted(async () => {
-  console.log('onMounted is running') // 👈 kiểm tra dòng này
 
+const employee = ref(null)
+
+onMounted(async () => {
   if (userId) {
     try {
       const response = await employeeService.getEmployeeById(userId)
-      console.log('Employee fetched:', response.data)
       employee.value = response.data
     } catch (error) {
       console.error('Error fetching employee:', error)
     }
-  } else {
-    console.warn('No userId, skip fetching')
   }
 })
 
@@ -66,9 +62,8 @@ const isActive = (path) => {
     <header class="admin-header">
       <div class="header-left">
         <div class="logo">
-          <i class="logo-icon">🏍️</i>
           <span class="logo-text">MotorRental</span>
-          <span class="logo-badge">Admin</span>
+          <span class="logo-badge">ADMIN</span>
         </div>
       </div>
 
@@ -88,7 +83,6 @@ const isActive = (path) => {
             <span class="user-role">{{ employee.roleName }}</span>
           </div>
           <button @click="logout" class="logout-btn">
-            <i class="logout-icon">🚪</i>
             Đăng xuất
           </button>
         </div>
@@ -103,7 +97,6 @@ const isActive = (path) => {
             <div class="nav-section-title">MENU CHÍNH</div>
 
             <router-link to="/admin" class="nav-item" :class="{ active: isActive('/admin') }">
-              <i class="nav-icon">📊</i>
               <span class="nav-text">Dashboard</span>
             </router-link>
 
@@ -112,15 +105,14 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/Admin/Index') }"
             >
-              <i class="nav-icon">🏍️</i>
               <span class="nav-text">Quản lý xe máy</span>
             </router-link>
+
             <router-link
               to="/admin/categories"
               class="nav-item"
               :class="{ active: isActive('/admin/categories') }"
             >
-              <i class="nav-icon">🛵</i>
               <span class="nav-text">Quản lý loại xe</span>
             </router-link>
 
@@ -129,7 +121,6 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/discounts') }"
             >
-              <i class="nav-icon">🏷️</i>
               <span class="nav-text">Quản lý giảm giá</span>
             </router-link>
 
@@ -138,7 +129,6 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/employees') }"
             >
-              <i class="nav-icon">👥</i>
               <span class="nav-text">Quản lý nhân viên</span>
             </router-link>
 
@@ -147,7 +137,6 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/customers') }"
             >
-              <i class="nav-icon">👤</i>
               <span class="nav-text">Quản lý khách hàng</span>
             </router-link>
           </div>
@@ -160,7 +149,6 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/reports') }"
             >
-              <i class="nav-icon">📈</i>
               <span class="nav-text">Báo cáo thống kê</span>
             </router-link>
 
@@ -169,7 +157,6 @@ const isActive = (path) => {
               class="nav-item"
               :class="{ active: isActive('/admin/rentals') }"
             >
-              <i class="nav-icon">📋</i>
               <span class="nav-text">Lịch sử thuê xe</span>
             </router-link>
           </div>
@@ -181,8 +168,8 @@ const isActive = (path) => {
         <!-- Breadcrumb -->
         <div class="breadcrumb-container">
           <div class="breadcrumb">
-            <span class="breadcrumb-item">🏠 Admin</span>
-            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item">Admin</span>
+            <span class="breadcrumb-separator">></span>
             <span class="breadcrumb-item current">{{ currentPageName }}</span>
           </div>
         </div>
@@ -205,204 +192,160 @@ const isActive = (path) => {
 
 .admin-layout {
   min-height: 100vh;
-  background: #f8fafc;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
+  background: #f5f5f5;
+  font-family: Arial, sans-serif;
   width: 100%;
 }
 
 /* Header */
 .admin-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #2c3e50;
   color: white;
-  padding: 0 2rem;
-  height: 70px;
+  padding: 0 20px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid #34495e;
   position: sticky;
   top: 0;
   z-index: 1000;
-  margin: 0;
   width: 100%;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-}
-
-.logo-icon {
-  font-size: 2rem;
+  gap: 12px;
 }
 
 .logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
 }
 
 .logo-badge {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  background: #34495e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .user-menu {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 12px;
 }
 
 .user-avatar {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2.5px solid #fff;
-  box-shadow: 0 2px 8px #0002;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: box-shadow 0.2s;
-}
-
-.user-avatar:hover {
-  box-shadow: 0 4px 16px #6366f155;
+  border: 2px solid #34495e;
+  background: #34495e;
 }
 
 .avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .user-info {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 2px;
   min-width: 120px;
 }
 
 .user-name {
-  font-weight: 700;
-  font-size: 1rem;
-  color: #fff;
-  text-shadow: 0 1px 2px #0002;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
 }
 
 .user-role {
-  font-size: 0.85rem;
-  color: #e0e7ff;
-  font-weight: 500;
-}
-
-.user-email,
-.user-phone {
-  font-size: 0.75rem;
-  color: #c7d2fe;
-  opacity: 0.9;
-  line-height: 1.1;
+  font-size: 12px;
+  color: #bdc3c7;
 }
 
 .logout-btn {
-  background: rgba(231, 76, 60, 0.9);
+  background: #e74c3c;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s;
-  margin-left: 0.5rem;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .logout-btn:hover {
   background: #c0392b;
-  transform: translateY(-1px) scale(1.05);
 }
 
 /* Body */
 .admin-body {
   display: flex;
-  min-height: calc(100vh - 70px);
-  margin: 0;
-  padding: 0;
+  min-height: calc(100vh - 60px);
   width: 100%;
 }
 
 /* Sidebar */
 .admin-sidebar {
-  width: 280px;
+  width: 250px;
   background: white;
-  border-right: 1px solid #e2e8f0;
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
-  margin: 0;
-  padding: 0;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
 }
 
 .sidebar-nav {
-  padding: 2rem 0;
+  padding: 20px 0;
 }
 
 .nav-section {
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
 }
 
 .nav-section-title {
-  padding: 0 1.5rem 0.75rem 1.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #64748b;
-  border-bottom: 1px solid #f1f5f9;
-  margin-bottom: 0.75rem;
+  color: #666;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 8px;
+  background: #f8f9fa;
 }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.5rem;
-  color: #475569;
+  display: block;
+  padding: 12px 20px;
+  color: #333;
   text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 14px;
   border-left: 3px solid transparent;
-  margin-bottom: 0.25rem;
+  transition: all 0.2s;
 }
 
 .nav-item:hover {
-  background: #f8fafc;
-  color: #334155;
-  border-left-color: #cbd5e1;
+  background: #f8f9fa;
+  color: #2c3e50;
+  border-left-color: #bdc3c7;
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, #667eea10, #764ba210);
-  color: #667eea;
-  border-left-color: #667eea;
-  font-weight: 600;
+  background: #e8f4f8;
+  color: #2c3e50;
+  border-left-color: #3498db;
+  font-weight: bold;
 }
 
-.nav-icon {
-  font-size: 1.125rem;
-  width: 20px;
-  text-align: center;
+.nav-text {
+  display: block;
 }
 
 /* Content */
@@ -410,54 +353,51 @@ const isActive = (path) => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin: 0;
-  padding: 0;
+  background: #f5f5f5;
 }
 
 .breadcrumb-container {
   background: white;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 1rem 2rem;
-  margin: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 20px;
 }
 
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  gap: 8px;
+  font-size: 14px;
 }
 
 .breadcrumb-item {
-  color: #64748b;
+  color: #666;
 }
 
 .breadcrumb-item.current {
-  color: #334155;
-  font-weight: 600;
+  color: #333;
+  font-weight: bold;
 }
 
 .breadcrumb-separator {
-  color: #cbd5e1;
-  font-weight: 300;
+  color: #bdc3c7;
 }
 
 .content-area {
   flex: 1;
-  padding: 2rem;
-  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
   .admin-sidebar {
-    width: 240px;
+    width: 220px;
   }
 }
 
 @media (max-width: 768px) {
   .admin-header {
-    padding: 0 1rem;
+    padding: 0 16px;
   }
 
   .user-info {
@@ -469,7 +409,7 @@ const isActive = (path) => {
   }
 
   .content-area {
-    padding: 1rem;
+    padding: 0;
   }
 }
 </style>

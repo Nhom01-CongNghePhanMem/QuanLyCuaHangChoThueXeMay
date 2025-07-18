@@ -45,5 +45,15 @@ namespace MotorbikeRental.Application.Validators.IncidentValidators
                 throw new BusinessRuleException("Resolved date cannot be in the future");
             return true;
         }
+        public bool ValidateForCompleteIncident(Incident incident, RentalContract rentalContract, IncidentCompleteDto incidentCompleteDto)
+        {
+            if (incident.IsResolved)
+                throw new BusinessRuleException("Incident is already resolved");
+            if (incident.ResolvedDate < incidentCompleteDto.ResolvedDate)
+                throw new BusinessRuleException("Resolved date cannot be before incident date");
+            if (rentalContract.RentalContractStatus != RentalContractStatus.Completed)
+                throw new BusinessRuleException("Cannot complete incident for a contract that is not completed");
+            return true;
+        }
     }
 }

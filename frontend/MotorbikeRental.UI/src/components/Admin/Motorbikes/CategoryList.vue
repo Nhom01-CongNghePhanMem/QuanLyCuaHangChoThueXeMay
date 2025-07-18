@@ -33,45 +33,57 @@ function formatCurrency(amount) {
 <template>
   <div class="category-container">
     <!-- Header -->
-    <div class="category-header">
-      <h1 class="category-title">Danh sách loại xe</h1>
-      <button class="btn-create" @click="createCategory">
-        Thêm loại xe
-      </button>
+    <div class="header">
+      <h1>Danh sách loại xe</h1>
+      <div class="header-actions">
+        <button @click="createCategory" class="btn-create">
+          Thêm loại xe
+        </button>
+        <span class="total-count">{{ categories.length }} loại xe</span>
+      </div>
     </div>
 
-    <!-- Categories List -->
-    <div class="category-content">
+    <!-- Content -->
+    <div class="content">
+      <!-- Empty State -->
       <div v-if="categories.length === 0" class="empty-state">
-        <p>Chưa có loại xe nào</p>
+        <h3>Chưa có loại xe nào</h3>
+        <p>Hệ thống chưa có loại xe nào được tạo</p>
+        <button @click="createCategory" class="btn-primary">
+          Tạo loại xe đầu tiên
+        </button>
       </div>
-      
-      <div v-else class="category-grid">
-        <div 
-          v-for="category in categories" 
-          :key="category.categoryId"
-          class="category-card"
-        >
-          <div class="card-content">
-            <h3 class="category-name">{{ category.categoryName }}</h3>
-            <p class="deposit-amount">
-              <span class="label">Tiền cọc:</span>
-              <span class="amount">{{ formatCurrency(category.depositAmount) }}</span>
-            </p>
-            <p class="category-id">
-              <span class="label">ID:</span>
-              <span class="id-value">#{{ category.categoryId }}</span>
-            </p>
-          </div>
-          <div class="card-actions">
-            <button 
-              class="btn-detail" 
-              @click="goToDetail(category.categoryId)"
-            >
-              Chi tiết
-            </button>
-          </div>
-        </div>
+
+      <!-- Table -->
+      <div v-else class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên loại xe</th>
+              <th>Tiền cọc</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="category in categories" :key="category.categoryId">
+              <td>
+                <span class="category-id">#{{ category.categoryId }}</span>
+              </td>
+              <td>
+                <span class="category-name">{{ category.categoryName }}</span>
+              </td>
+              <td>
+                <span class="deposit-amount">{{ formatCurrency(category.depositAmount) }}</span>
+              </td>
+              <td>
+                <button class="btn-detail" @click="goToDetail(category.categoryId)">
+                  Chi tiết
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -79,146 +91,169 @@ function formatCurrency(amount) {
 
 <style scoped>
 .category-container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px;
-  overflow: hidden;
+  padding: 20px;
 }
 
-.category-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
-.category-title {
-  font-size: 24px;
-  font-weight: 700;
+.header h1 {
   margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .btn-create {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.2);
+  background: #007bff;
   color: white;
-  font-size: 14px;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s;
+  font-size: 14px;
 }
 
 .btn-create:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #0056b3;
 }
 
-.category-content {
-  padding: 32px;
+.total-count {
+  font-size: 14px;
+  color: #666;
+}
+
+.content {
+  min-height: 400px;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #6b7280;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
 }
 
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  color: #333;
 }
 
-.category-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 20px;
-  transition: all 0.2s;
+.btn-primary {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 16px;
 }
 
-.category-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+.btn-primary:hover {
+  background: #0056b3;
 }
 
-.card-content {
-  margin-bottom: 16px;
+.table-container {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  background: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table tr:hover {
+  background: #f8f9fa;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.category-id {
+  font-weight: 600;
+  color: #6366f1;
 }
 
 .category-name {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 12px 0;
-}
-
-.deposit-amount,
-.category-id {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.label {
-  color: #6b7280;
   font-weight: 500;
+  color: #333;
 }
 
-.amount {
-  color: #059669;
+.deposit-amount {
   font-weight: 600;
-}
-
-.id-value {
-  color: #6366f1;
-  font-weight: 600;
-}
-
-.card-actions {
-  display: flex;
-  justify-content: flex-end;
-  border-top: 1px solid #f3f4f6;
-  padding-top: 16px;
+  color: #28a745;
 }
 
 .btn-detail {
-  padding: 6px 14px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #3b82f6;
-  font-size: 14px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .btn-detail:hover {
-  background: #f3f4f6;
-  color: #2563eb;
+  background: #0056b3;
 }
 
 @media (max-width: 768px) {
   .category-container {
-    margin: 10px;
+    padding: 10px;
   }
 
-  .category-header {
+  .header {
     flex-direction: column;
     gap: 16px;
-    text-align: center;
   }
 
-  .category-content {
-    padding: 20px;
+  .header-actions {
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .category-grid {
-    grid-template-columns: 1fr;
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 500px;
   }
 }
 </style>

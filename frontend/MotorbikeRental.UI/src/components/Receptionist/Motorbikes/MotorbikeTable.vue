@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, nextTick } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { getFullPath } from '@/utils/UrlUtils'
 import { useRouter } from 'vue-router'
 
@@ -15,711 +15,484 @@ const props = defineProps({
 const emit = defineEmits(['updateQuery'])
 const router = useRouter()
 
-// Filter states
+const searchQuery = ref('')
 const selectedCategory = ref('')
 const selectedBrand = ref('')
 const selectedStatus = ref('')
-const searchQuery = ref('')
-const currentPage = ref(1)
-const pageSize = 12
 
-// Flag để chặn emit khi đang đồng bộ từ props hoặc clear filter
-let isSyncing = false
+let isUpdating = false
 
-// Đồng bộ filter local với props.query
-watch(
-  () => props.query,
-  (newQuery) => {
-    isSyncing = true
-    selectedCategory.value = newQuery.CategoryId || ''
-    selectedBrand.value = newQuery.Brand || ''
-    selectedStatus.value = newQuery.Status || ''
-    searchQuery.value = newQuery.Search || ''
-    currentPage.value = newQuery.PageNumber || 1
-    nextTick(() => {
-      isSyncing = false
-    })
-  },
-  { immediate: true },
-)
+watch(() => props.query, (newQuery) => {
+  isUpdating = true
+  searchQuery.value = newQuery.Search || ''
+  selectedCategory.value = newQuery.CategoryId || ''
+  selectedBrand.value = newQuery.Brand || ''
+  selectedStatus.value = newQuery.Status !== null && newQuery.Status !== undefined ? String(newQuery.Status) : ''
+  setTimeout(() => { isUpdating = false }, 0)
+}, { immediate: true })
 
-// Emit filter lên cha khi filter local thực sự khác với props.query
-const normalize = (v) => (v === null || v === undefined ? '' : String(v))
-watch(
-  [selectedCategory, selectedBrand, selectedStatus, searchQuery],
-  () => {
-    if (isSyncing) return
-    if (
-      normalize(selectedCategory.value) !== normalize(props.query.CategoryId) ||
-      normalize(selectedBrand.value) !== normalize(props.query.Brand) ||
-      normalize(selectedStatus.value) !== normalize(props.query.Status) ||
-      normalize(searchQuery.value) !== normalize(props.query.Search)
-    ) {
-      emit('updateQuery', {
-        CategoryId: selectedCategory.value || '',
-        Status: selectedStatus.value || '',
-        Brand: selectedBrand.value || '',
-        PageNumber: 1,
-        Search: searchQuery.value || '',
-      })
-    }
-  },
-  { immediate: false },
-)
+watch([searchQuery, selectedCategory, selectedBrand, selectedStatus], () => {
+  if (isUpdating) return
+  
+  const categoryId = selectedCategory.value || null
+  const brand = selectedBrand.value || null
+  const status = selectedStatus.value === '' ? null : parseInt(selectedStatus.value)
+  const search = searchQuery.value || null
+  
+  emit('updateQuery', {
+    CategoryId: categoryId,
+    Brand: brand,
+    Status: status,
+    Search: search,
+    PageNumber: 1
+  })
+})
 
-const totalPages = computed(() => Math.ceil(props.totalMotorbikes / pageSize))
+const totalPages = computed(() => Math.ceil(props.totalMotorbikes / 12))
 
 function goToPage(page) {
-  if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
+  if (page >= 1 && page <= totalPages.value) {
+    const categoryId = selectedCategory.value || null
+    const brand = selectedBrand.value || null
+    const status = selectedStatus.value === '' ? null : parseInt(selectedStatus.value)
+    const search = searchQuery.value || null
+    
     emit('updateQuery', {
-      CategoryId: selectedCategory.value || '',
-      Status: selectedStatus.value || '',
-      Brand: selectedBrand.value || '',
-      PageNumber: page,
-      Search: searchQuery.value || '',
+      CategoryId: categoryId,
+      Brand: brand,
+      Status: status,
+      Search: search,
+      PageNumber: page
     })
   }
 }
 
 function clearFilters() {
-  isSyncing = true
+  searchQuery.value = ''
   selectedCategory.value = ''
   selectedBrand.value = ''
   selectedStatus.value = ''
-  searchQuery.value = ''
-  currentPage.value = 1
-  nextTick(() => {
-    isSyncing = false
-    emit('updateQuery', {
-      CategoryId: '',
-      Status: '',
-      Brand: '',
-      PageNumber: 1,
-      Search: '',
-    })
-  })
 }
 
 function formatPrice(price) {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: 'VND',
+    currency: 'VND'
   }).format(price)
 }
 
-function getStatusInfo(statusCode) {
+function getStatusText(status) {
   const statusMap = {
-    0: { text: 'Có sẵn', class: 'status-available' },
-    1: { text: 'Đang thuê', class: 'status-rented' },
-    2: { text: 'Bảo trì', class: 'status-maintenance' },
-    3: { text: 'Không hoạt động', class: 'status-inactive' },
-    4: { text: 'Đã hư', class: 'status-broken' },
-    5: { text: 'Chờ xử lý', class: 'status-pending' },
+    0: 'Có sẵn',
+    1: 'Đang thuê',
+    2: 'Bảo trì',
+    3: 'Không hoạt động',
+    4: 'Đã hư',
+    5: 'Chờ xử lý'
   }
-  return statusMap[statusCode] || { text: 'Không xác định', class: 'status-unknown' }
-} 
-
-function getStatusText(statusCode) {
-  return getStatusInfo(statusCode).text
+  return statusMap[status] || 'Không xác định'
 }
 
-function getStatusClass(statusCode) {
-  return getStatusInfo(statusCode).class
-}
-
-function onImgError(event) {
-  if (!event.target.src.endsWith('/placeholder-bike.jpg')) {
-    event.target.src = '/placeholder-bike.jpg'
+function getStatusClass(status) {
+  const classMap = {
+    0: 'status-available',
+    1: 'status-rented',
+    2: 'status-maintenance',
+    3: 'status-inactive',
+    4: 'status-broken',
+    5: 'status-pending'
   }
+  return classMap[status] || 'status-unknown'
 }
+
 function goToDetail(id) {
   router.push(`/Receptionist/motorbike/detail/${id}`)
 }
 </script>
+
 <template>
-  <div class="motorbike-page">
-    <!-- Page Header -->
-    <div class="page-header">
-      <div class="page-title">
-        <h1>🏍️ Danh sách xe máy</h1>
-        <p class="page-subtitle">Tổng cộng {{ totalMotorbikes }} xe</p>
-      </div>
+  <div class="motorbike-container">
+    <div class="filters">
+      <input 
+        v-model="searchQuery" 
+        type="text" 
+        placeholder="Tìm kiếm xe..."
+        class="search-input"
+      >
+      
+      <select v-model="selectedCategory" class="filter-select">
+        <option value="">Tất cả loại xe</option>
+        <option v-for="cat in categories" :key="cat.categoryId" :value="cat.categoryId">
+          {{ cat.categoryName }}
+        </option>
+      </select>
+      
+      <select v-model="selectedBrand" class="filter-select">
+        <option value="">Tất cả thương hiệu</option>
+        <option v-for="brand in brands" :key="brand" :value="brand">
+          {{ brand }}
+        </option>
+      </select>
+      
+      <select v-model="selectedStatus" class="filter-select">
+        <option value="">Tất cả trạng thái</option>
+        <option v-for="status in motorbikeStatuses" :key="status" :value="String(status)">
+          {{ getStatusText(status) }}
+        </option>
+      </select>
+      
+      <button @click="clearFilters" class="clear-btn">
+        Xóa bộ lọc
+      </button>
     </div>
 
-    <!-- Filters Card -->
-    <div class="filters-card">
-      <div class="card-header">
-        <h3 class="card-title">🔍 Bộ lọc tìm kiếm</h3>
-      </div>
-      <div class="card-body">
-        <div class="filters-grid">
-          <!-- Search Input -->
-          <div class="form-group">
-            <label class="form-label">Tìm kiếm</label>
-            <div class="input-wrapper">
-              <i class="input-icon">🔍</i>
-              <input
-                v-model="searchQuery"
-                type="text"
-                class="form-input"
-                placeholder="Nhập tên xe..."
-              />
+    <div v-if="motorbikes.length === 0" class="empty">
+      <p>Không tìm thấy xe nào</p>
+    </div>
+
+    <div v-else class="motorbikes-grid">
+      <div v-for="motorbike in motorbikes" :key="motorbike.motorbikeId" class="motorbike-card">
+        <div class="card-image">
+          <img 
+            :src="motorbike.imageUrl ? getFullPath(motorbike.imageUrl) : '/placeholder-bike.jpg'"
+            :alt="motorbike.motorbikeName"
+          >
+          <span class="status-badge" :class="getStatusClass(motorbike.status)">
+            {{ getStatusText(motorbike.status) }}
+          </span>
+        </div>
+        
+        <div class="card-content">
+          <div class="card-header">
+            <h3>{{ motorbike.motorbikeName }}</h3>
+            <span class="bike-id">#{{ motorbike.motorbikeId }}</span>
+          </div>
+          
+          <div class="bike-info">
+            <div class="info-row">
+              <span>Loại:</span>
+              <span>{{ motorbike.categoryName }}</span>
+            </div>
+            <div class="info-row">
+              <span>Hãng:</span>
+              <span>{{ motorbike.brand }}</span>
             </div>
           </div>
-          <!-- Category Filter -->
-          <div class="form-group">
-            <label class="form-label">Loại xe</label>
-            <select v-model="selectedCategory" class="form-select">
-              <option value="">Tất cả loại xe</option>
-              <option v-for="cat in categories" :key="cat.categoryId" :value="cat.categoryId">
-                {{ cat.categoryName }}
-              </option>
-            </select>
+          
+          <div class="pricing">
+            <div class="price-row">
+              <span>Giá theo giờ:</span>
+              <span>{{ formatPrice(motorbike.hourlyRate) }}</span>
+            </div>
+            <div class="price-row">
+              <span>Giá theo ngày:</span>
+              <span>{{ formatPrice(motorbike.dailyRate) }}</span>
+            </div>
           </div>
-          <!-- Brand Filter -->
-          <div class="form-group">
-            <label class="form-label">Thương hiệu</label>
-            <select v-model="selectedBrand" class="form-select">
-              <option value="">Tất cả thương hiệu</option>
-              <option v-for="brand in brands" :key="brand" :value="brand">
-                {{ brand }}
-              </option>
-            </select>
-          </div>
-          <!-- Status Filter -->
-          <div class="form-group">
-            <label class="form-label">Trạng thái</label>
-            <select v-model="selectedStatus" class="form-select">
-              <option value="">Tất cả trạng thái</option>
-              <option v-for="status in motorbikeStatuses" :key="status" :value="status">
-                {{ getStatusText(status) }}
-              </option>
-            </select>
-          </div>
-          <!-- Clear Button -->
-          <div class="form-group">
-            <label class="form-label">&nbsp;</label>
-            <button @click="clearFilters" class="btn btn-outline">
-              <i class="btn-icon">❌</i>
-              Xóa bộ lọc
+          
+          <div class="card-actions">
+            <button @click="goToDetail(motorbike.motorbikeId)" class="detail-btn">
+              Chi tiết
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Results Section -->
-    <div class="results-section">
-      <!-- No Results -->
-      <div v-if="motorbikes.length === 0" class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <h3 class="empty-title">Không tìm thấy xe nào</h3>
-        <p class="empty-text">Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm</p>
-      </div>
-
-      <!-- Motorbikes Grid -->
-      <div v-else class="motorbikes-grid">
-        <div v-for="motorbike in motorbikes" :key="motorbike.motorbikeId" class="motorbike-card">
-          <!-- Card Image -->
-          <div class="card-image">
-            <img
-              :src="motorbike.imageUrl ? getFullPath(motorbike.imageUrl) : '/placeholder-bike.jpg'"
-              :alt="motorbike.motorbikeName"
-              @error="onImgError"
-            />
-            <div class="status-badge" :class="getStatusClass(motorbike.status)">
-              {{ getStatusText(motorbike.status) }}
-            </div>
-          </div>
-          <!-- Card Content -->
-          <div class="card-content">
-            <div class="card-header">
-              <h3 class="bike-name">{{ motorbike.motorbikeName }}</h3>
-              <span class="bike-id">#{{ motorbike.motorbikeId }}</span>
-            </div>
-            <div class="bike-info">
-              <div class="info-row">
-                <span class="info-label">Loại:</span>
-                <span class="info-value">{{ motorbike.categoryName }}</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Hãng:</span>
-                <span class="info-value">{{ motorbike.brand }}</span>
-              </div>
-            </div>
-            <div class="pricing-section">
-              <div class="price-item">
-                <span class="price-label">Giá theo giờ</span>
-                <span class="price-value">{{ formatPrice(motorbike.hourlyRate) }}</span>
-              </div>
-              <div class="price-item">
-                <span class="price-label">Giá theo ngày</span>
-                <span class="price-value">{{ formatPrice(motorbike.dailyRate) }}</span>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button class="btn btn-primary btn-sm"  :disabled="motorbike.status !== 0">
-                <i class="btn-icon">🏍️</i>
-                {{ motorbike.status === 0 ? 'Tạo hợp đồng' : 'Không khả dụng' }}
-              </button>
-              <button class="btn btn-outline btn-sm" @click="goToDetail(motorbike.motorbikeId)">
-                <i class="btn-icon">👁️</i>
-                Chi tiết
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pagination -->
-      <div
-        v-if="totalPages > 1"
-        class="pagination"
-        style="margin: 2rem 0; display: flex; justify-content: center; gap: 0.5rem"
+    <div v-if="totalPages > 1" class="pagination">
+      <button 
+        @click="goToPage(props.query.PageNumber - 1)" 
+        :disabled="props.query.PageNumber === 1"
+        class="page-btn"
       >
-        <button
-          class="btn btn-outline"
-          @click="goToPage(currentPage - 1)"
-          :disabled="currentPage === 1"
-        >
-          Trước
-        </button>
-        <button
-          v-for="page in totalPages"
-          :key="page"
-          class="btn"
-          :class="page === currentPage ? 'btn-primary' : 'btn-outline'"
-          @click="goToPage(page)"
-          :disabled="page === currentPage"
-        >
-          {{ page }}
-        </button>
-        <button
-          class="btn btn-outline"
-          @click="goToPage(currentPage + 1)"
-          :disabled="currentPage === totalPages"
-        >
-          Sau
-        </button>
-      </div>
+        ‹
+      </button>
+      
+      <span class="page-info">
+        {{ props.query.PageNumber }} / {{ totalPages }}
+      </span>
+      
+      <button 
+        @click="goToPage(props.query.PageNumber + 1)" 
+        :disabled="props.query.PageNumber >= totalPages"
+        class="page-btn"
+      >
+        ›
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.motorbike-page {
-  background: #f8fafc;
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
+.motorbike-container {
+  padding: 20px;
 }
 
-/* Page Header */
-.page-header {
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 20px;
   background: white;
-  padding: 2rem;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.page-title h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.page-subtitle {
-  color: #64748b;
-  font-size: 1rem;
-  margin: 0;
-}
-
-.page-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-/* Cards */
-.filters-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  margin: 0 2rem 2rem 2rem;
-  overflow: hidden;
-}
-
-.card-header {
-  padding: 1.5rem 2rem 0 2rem;
-}
-
-.card-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #334155;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.card-body {
-  padding: 1.5rem 2rem 2rem 2rem;
-}
-
-/* Forms */
-.filters-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: 1.5rem;
-  align-items: end;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.5rem;
-}
-
-.input-wrapper {
-  position: relative;
-}
-
-.input-icon {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1rem;
-  color: #9ca3af;
-}
-
-.form-input,
-.form-select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 0.875rem;
-  background: white;
-  transition: all 0.2s ease;
+  flex-wrap: wrap;
 }
 
-.form-input {
-  padding-left: 2.5rem;
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-.form-input:focus,
-.form-select:focus {
+.search-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #007bff;
 }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.clear-btn {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
+  font-size: 14px;
 }
 
-.btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.8rem;
+.clear-btn:hover {
+  background: #e9ecef;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.btn-primary:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.btn-outline {
-  background: white;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
-}
-
-.btn-outline:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-}
-
-.btn-icon {
-  font-size: 1rem;
-}
-
-/* Results Section */
-.results-section {
-  margin: 0 2rem;
-}
-
-/* Empty State */
-.empty-state {
+.empty {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 40px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-.empty-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.empty-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 0.5rem 0;
-}
-
-.empty-text {
-  color: #6b7280;
-  margin: 0;
-}
-
-/* Motorbikes Grid */
 .motorbikes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .motorbike-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
 }
 
 .motorbike-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
-/* Card Image */
 .card-image {
   position: relative;
   height: 200px;
   overflow: hidden;
-  background: #f3f4f6;
 }
 
 .card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.motorbike-card:hover .card-image img {
-  transform: scale(1.05);
 }
 
 .status-badge {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-/* Status Colors */
 .status-available {
-  background: #dcfce7;
-  color: #166534;
+  background: #d4edda;
+  color: #155724;
 }
 
 .status-rented {
-  background: #fee2e2;
-  color: #991b1b;
+  background: #f8d7da;
+  color: #721c24;
 }
 
 .status-maintenance {
-  background: #fef3c7;
-  color: #92400e;
+  background: #fff3cd;
+  color: #856404;
 }
 
 .status-inactive,
 .status-broken,
 .status-unknown {
-  background: #f3f4f6;
-  color: #374151;
+  background: #e2e3e5;
+  color: #383d41;
 }
 
 .status-pending {
-  background: #dbeafe;
-  color: #1e40af;
+  background: #cce5ff;
+  color: #004085;
 }
 
-/* Card Content */
 .card-content {
-  padding: 1.5rem;
+  padding: 16px;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
 }
 
-.bike-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1e293b;
+.card-header h3 {
   margin: 0;
+  font-size: 16px;
+  color: #333;
 }
 
 .bike-id {
-  background: #f1f5f9;
-  color: #64748b;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  background: #f8f9fa;
+  color: #666;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
 }
 
 .bike-info {
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4px;
+  font-size: 14px;
 }
 
-.info-label {
-  color: #64748b;
-  font-size: 0.875rem;
+.info-row span:first-child {
+  color: #666;
 }
 
-.info-value {
-  color: #334155;
+.info-row span:last-child {
+  color: #333;
   font-weight: 500;
-  font-size: 0.875rem;
 }
 
-.pricing-section {
-  background: #f8fafc;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+.pricing {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
 }
 
-.price-item {
+.price-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4px;
+  font-size: 14px;
 }
 
-.price-item:last-child {
+.price-row:last-child {
   margin-bottom: 0;
 }
 
-.price-label {
-  color: #64748b;
-  font-size: 0.875rem;
+.price-row span:first-child {
+  color: #666;
 }
 
-.price-value {
-  color: #059669;
-  font-weight: 700;
-  font-size: 0.875rem;
+.price-row span:last-child {
+  color: #28a745;
+  font-weight: 600;
 }
 
 .card-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 8px;
 }
 
-.card-actions .btn {
+.detail-btn {
   flex: 1;
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .filters-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-  }
+.detail-btn:hover {
+  background: #0056b3;
+}
 
-  .filters-grid .form-group:last-child {
-    grid-column: 1 / -1;
-    justify-self: start;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+.page-btn {
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #f8f9fa;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
 }
 
 @media (max-width: 768px) {
-  .page-header {
+  .motorbike-container {
+    padding: 10px;
+  }
+  
+  .filters {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
   }
-
-  .filters-card {
-    margin: 0 1rem 1.5rem 1rem;
+  
+  .search-input {
+    min-width: auto;
   }
-
-  .card-body {
-    padding: 1rem;
-  }
-
-  .filters-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .results-section {
-    margin: 0 1rem;
-  }
-
+  
   .motorbikes-grid {
     grid-template-columns: 1fr;
-  }
-
-  .card-actions {
-    flex-direction: column;
   }
 }
 </style>

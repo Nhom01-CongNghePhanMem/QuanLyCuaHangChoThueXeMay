@@ -15,12 +15,10 @@ const props = defineProps({
 
 const emit = defineEmits(['update', 'delete', 'back'])
 
-// Edit mode
 const isEditing = ref(false)
 const isSubmitting = ref(false)
 const errors = ref({})
 
-// Form data
 const form = reactive({
   name: '',
   description: '',
@@ -31,12 +29,10 @@ const form = reactive({
   isActive: true
 })
 
-// Watch for discount changes
 watch(() => props.discount, (newDiscount) => {
   if (newDiscount) {
     form.name = newDiscount.name
     form.description = newDiscount.description || ''
-    // Convert categoryNames to categoryIds for editing
     form.categoryId = getCategoryIdsByNames(newDiscount.categoryNames)
     form.value = newDiscount.value
     form.startDate = formatDateForInput(newDiscount.startDate)
@@ -59,11 +55,7 @@ function formatDateForInput(dateString) {
 
 function formatDateForDisplay(dateString) {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('vi-VN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  })
+  return new Date(dateString).toLocaleDateString('vi-VN')
 }
 
 function validateForm() {
@@ -99,7 +91,6 @@ function validateForm() {
 function toggleEdit() {
   isEditing.value = !isEditing.value
   if (!isEditing.value) {
-    // Reset form if canceling
     form.name = props.discount.name
     form.description = props.discount.description || ''
     form.categoryId = getCategoryIdsByNames(props.discount.categoryNames)
@@ -136,7 +127,7 @@ function handleSave() {
 }
 
 function handleDelete() {
-  if (confirm('Bạn có chắc chắn muốn xóa mã giảm giá này không? Hành động này không thể hoàn tác!')) {
+  if (confirm('Bạn có chắc chắn muốn xóa mã giảm giá này?')) {
     emit('delete', props.discount.discountId)
   }
 }
@@ -159,221 +150,150 @@ function toggleCategory(categoryId) {
   <div class="discount-detail-container" v-if="discount">
     <!-- Header -->
     <div class="header">
-      <div class="header-content">
-        <h1 class="title">Chi tiết mã giảm giá</h1>
-        <div class="header-actions">
-          <button class="btn-back" @click="handleBack">
-            ← Quay lại
-          </button>
-          <button 
-            v-if="!isEditing" 
-            @click="toggleEdit" 
-            class="btn-edit"
-          >
-            Chỉnh sửa
-          </button>
-          <button 
-            v-if="isEditing" 
-            @click="handleSave" 
-            class="btn-save"
-            :disabled="isSubmitting"
-          >
-            <span v-if="isSubmitting">Đang lưu...</span>
-            <span v-else>Lưu</span>
-          </button>
-          <button 
-            v-if="isEditing" 
-            @click="toggleEdit" 
-            class="btn-cancel"
-          >
-            Hủy
-          </button>
-          <button 
-            @click="handleDelete" 
-            class="btn-delete"
-          >
-            Xóa
-          </button>
+      <div class="header-left">
+        <h1>Chi tiết mã giảm giá</h1>
+        <p>Quản lý thông tin mã giảm giá {{ discount.name }}</p>
+      </div>
+      <div class="header-actions">
+        <button @click="handleBack" class="btn-back">← Quay lại</button>
+        <button v-if="!isEditing" @click="toggleEdit" class="btn-edit">Chỉnh sửa</button>
+        <button v-if="isEditing" @click="handleSave" class="btn-save" :disabled="isSubmitting">
+          {{ isSubmitting ? 'Đang lưu...' : 'Lưu' }}
+        </button>
+        <button v-if="isEditing" @click="toggleEdit" class="btn-cancel">Hủy</button>
+        <button @click="handleDelete" class="btn-delete">Xóa</button>
+      </div>
+    </div>
+
+    <!-- Basic Info -->
+    <div class="info-section">
+      <h2>Thông tin cơ bản</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Tên mã giảm giá</label>
+          <div v-if="isEditing">
+            <input v-model="form.name" type="text" class="form-input" :class="{ 'error': errors.name }" />
+            <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
+          </div>
+          <span v-else class="info-value">{{ discount.name }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>ID mã giảm giá</label>
+          <span class="info-value">#{{ discount.discountId }}</span>
+        </div>
+
+        <div class="info-item">
+          <label>Giá trị giảm giá</label>
+          <div v-if="isEditing">
+            <input v-model="form.value" type="number" class="form-input" :class="{ 'error': errors.value }" min="1" max="100" />
+            <span v-if="errors.value" class="error-message">{{ errors.value }}</span>
+          </div>
+          <span v-else class="info-value discount-value">{{ discount.value }}%</span>
+        </div>
+
+        <div class="info-item">
+          <label>Trạng thái</label>
+          <div v-if="isEditing">
+            <select v-model="form.isActive" class="form-select">
+              <option :value="true">Hoạt động</option>
+              <option :value="false">Không hoạt động</option>
+            </select>
+          </div>
+          <span v-else class="info-value">
+            <span class="status-badge" :class="discount.isActive ? 'status-active' : 'status-inactive'">
+              {{ discount.isActive ? 'Hoạt động' : 'Không hoạt động' }}
+            </span>
+          </span>
         </div>
       </div>
     </div>
 
-    <!-- Content -->
-    <div class="content">
-      <div class="info-container">
-        <div class="info-grid">
-          <!-- Name -->
-          <div class="info-group">
-            <label class="info-label">Tên mã giảm giá</label>
-            <div v-if="isEditing" class="edit-field">
-              <input
-                v-model="form.name"
-                type="text"
-                class="form-input"
-                :class="{ 'error': errors.name }"
-                placeholder="Nhập tên mã giảm giá"
-              />
-              <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
-            </div>
-            <span v-else class="info-value">{{ discount.name }}</span>
+    <!-- Date Range -->
+    <div class="info-section">
+      <h2>Thời gian áp dụng</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Ngày bắt đầu</label>
+          <div v-if="isEditing">
+            <input v-model="form.startDate" type="date" class="form-input" :class="{ 'error': errors.startDate }" />
+            <span v-if="errors.startDate" class="error-message">{{ errors.startDate }}</span>
           </div>
+          <span v-else class="info-value">{{ formatDateForDisplay(discount.startDate) }}</span>
+        </div>
 
-          <!-- Discount ID -->
-          <div class="info-group">
-            <label class="info-label">ID mã giảm giá</label>
-            <span class="info-value discount-id">#{{ discount.discountId }}</span>
+        <div class="info-item">
+          <label>Ngày kết thúc</label>
+          <div v-if="isEditing">
+            <input v-model="form.endDate" type="date" class="form-input" :class="{ 'error': errors.endDate }" />
+            <span v-if="errors.endDate" class="error-message">{{ errors.endDate }}</span>
           </div>
-
-          <!-- Categories -->
-          <div class="info-group full-width">
-            <label class="info-label">Loại xe áp dụng</label>
-            <div v-if="isEditing" class="edit-field">
-              <div class="category-list">
-                <div
-                  v-for="category in categories"
-                  :key="category.categoryId"
-                  class="category-item"
-                  :class="{ 'selected': form.categoryId.includes(category.categoryId) }"
-                  @click="toggleCategory(category.categoryId)"
-                >
-                  <input
-                    type="checkbox"
-                    :checked="form.categoryId.includes(category.categoryId)"
-                    @change="toggleCategory(category.categoryId)"
-                  />
-                  <span class="category-name">{{ category.categoryName }}</span>
-                </div>
-              </div>
-              <span v-if="errors.categoryId" class="error-message">{{ errors.categoryId }}</span>
-            </div>
-            <div v-else class="category-tags">
-              <span 
-                v-for="categoryName in discount.categoryNames" 
-                :key="categoryName"
-                class="category-tag"
-              >
-                {{ categoryName }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Value -->
-          <div class="info-group">
-            <label class="info-label">Giá trị giảm giá</label>
-            <div v-if="isEditing" class="edit-field">
-              <input
-                v-model="form.value"
-                type="number"
-                class="form-input"
-                :class="{ 'error': errors.value }"
-                placeholder="Nhập % giảm giá"
-                min="1"
-                max="100"
-              />
-              <span v-if="errors.value" class="error-message">{{ errors.value }}</span>
-            </div>
-            <span v-else class="info-value discount-value">{{ discount.value }}%</span>
-          </div>
-
-          <!-- Status -->
-          <div class="info-group">
-            <label class="info-label">Trạng thái</label>
-            <div v-if="isEditing" class="edit-field">
-              <select v-model="form.isActive" class="form-select">
-                <option :value="true">Hoạt động</option>
-                <option :value="false">Không hoạt động</option>
-              </select>
-            </div>
-            <span v-else class="info-value">
-              <span 
-                class="status-badge" 
-                :class="discount.isActive ? 'status-active' : 'status-inactive'"
-              >
-                {{ discount.isActive ? 'Hoạt động' : 'Không hoạt động' }}
-              </span>
-            </span>
-          </div>
-
-          <!-- Start Date -->
-          <div class="info-group">
-            <label class="info-label">Ngày bắt đầu</label>
-            <div v-if="isEditing" class="edit-field">
-              <input
-                v-model="form.startDate"
-                type="date"
-                class="form-input"
-                :class="{ 'error': errors.startDate }"
-              />
-              <span v-if="errors.startDate" class="error-message">{{ errors.startDate }}</span>
-            </div>
-            <span v-else class="info-value">{{ formatDateForDisplay(discount.startDate) }}</span>
-          </div>
-
-          <!-- End Date -->
-          <div class="info-group">
-            <label class="info-label">Ngày kết thúc</label>
-            <div v-if="isEditing" class="edit-field">
-              <input
-                v-model="form.endDate"
-                type="date"
-                class="form-input"
-                :class="{ 'error': errors.endDate }"
-              />
-              <span v-if="errors.endDate" class="error-message">{{ errors.endDate }}</span>
-            </div>
-            <span v-else class="info-value">{{ formatDateForDisplay(discount.endDate) }}</span>
-          </div>
-
-          <!-- Description -->
-          <div class="info-group full-width">
-            <label class="info-label">Mô tả</label>
-            <div v-if="isEditing" class="edit-field">
-              <textarea
-                v-model="form.description"
-                class="form-textarea"
-                placeholder="Nhập mô tả mã giảm giá"
-                rows="3"
-              ></textarea>
-            </div>
-            <span v-else class="info-value">{{ discount.description || 'Không có mô tả' }}</span>
-          </div>
+          <span v-else class="info-value">{{ formatDateForDisplay(discount.endDate) }}</span>
         </div>
       </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="info-section">
+      <h2>Loại xe áp dụng</h2>
+      <div v-if="isEditing">
+        <div class="category-list">
+          <div v-for="category in categories" :key="category.categoryId" class="category-item" @click="toggleCategory(category.categoryId)">
+            <input type="checkbox" :checked="form.categoryId.includes(category.categoryId)" />
+            <span>{{ category.categoryName }}</span>
+          </div>
+        </div>
+        <span v-if="errors.categoryId" class="error-message">{{ errors.categoryId }}</span>
+      </div>
+      <div v-else class="category-tags">
+        <span v-for="categoryName in discount.categoryNames" :key="categoryName" class="category-tag">
+          {{ categoryName }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="info-section">
+      <h2>Mô tả</h2>
+      <div v-if="isEditing">
+        <textarea v-model="form.description" class="form-textarea" placeholder="Nhập mô tả mã giảm giá" rows="3"></textarea>
+      </div>
+      <p v-else class="description">{{ discount.description || 'Không có mô tả' }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
 .discount-detail-container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px;
-  overflow: hidden;
+  padding: 20px;
 }
 
-/* Header */
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 24px 32px;
-}
-
-.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
-.title {
+.header-left h1 {
+  margin: 0 0 5px 0;
   font-size: 24px;
-  font-weight: 700;
+  color: #333;
+}
+
+.header-left p {
   margin: 0;
+  color: #666;
+  font-size: 14px;
 }
 
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .btn-back,
@@ -383,32 +303,37 @@ function toggleCategory(categoryId) {
 .btn-delete {
   padding: 8px 16px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.btn-back,
-.btn-edit {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.btn-back {
+  background: #6c757d;
   color: white;
 }
 
-.btn-back:hover,
+.btn-back:hover {
+  background: #5a6268;
+}
+
+.btn-edit {
+  background: #007bff;
+  color: white;
+}
+
 .btn-edit:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #0056b3;
 }
 
 .btn-save {
-  background: #22c55e;
+  background: #28a745;
   color: white;
 }
 
 .btn-save:hover:not(:disabled) {
-  background: #16a34a;
+  background: #218838;
 }
 
 .btn-save:disabled {
@@ -417,104 +342,90 @@ function toggleCategory(categoryId) {
 }
 
 .btn-cancel {
-  background: #6b7280;
+  background: #6c757d;
   color: white;
 }
 
 .btn-cancel:hover {
-  background: #4b5563;
+  background: #5a6268;
 }
 
 .btn-delete {
-  background: #ef4444;
+  background: #dc3545;
   color: white;
 }
 
 .btn-delete:hover {
-  background: #dc2626;
+  background: #c82333;
 }
 
-/* Content */
-.content {
-  padding: 32px;
+.info-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
-.info-container {
-  max-width: 800px;
-  margin: 0 auto;
+.info-section h2 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 
-.info-group {
+.info-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.info-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.info-label {
+.info-item label {
+  font-weight: 500;
+  color: #333;
   font-size: 14px;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .info-value {
-  font-size: 16px;
-  color: #1f2937;
-  font-weight: 500;
-  padding: 12px 0;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .discount-value {
-  color: #059669;
-  font-weight: 700;
-  font-size: 18px;
-}
-
-.discount-id {
-  color: #6366f1;
-  font-weight: 700;
-}
-
-.edit-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  color: #28a745;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .form-input,
 .form-select,
 .form-textarea {
-  padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-size: 14px;
-  transition: all 0.2s;
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #007bff;
 }
 
 .form-input.error,
 .form-select.error,
 .form-textarea.error {
-  border-color: #ef4444;
+  border-color: #dc3545;
 }
 
 .form-textarea {
@@ -524,89 +435,76 @@ function toggleCategory(categoryId) {
 
 .error-message {
   font-size: 12px;
-  color: #ef4444;
+  color: #dc3545;
 }
 
-/* Categories */
 .category-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 8px;
+  gap: 10px;
 }
 
 .category-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .category-item:hover {
-  border-color: #667eea;
-  background: #f8fafc;
-}
-
-.category-item.selected {
-  border-color: #667eea;
-  background: #f0f4ff;
-}
-
-.category-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
+  background: #f8f9fa;
+  border-color: #007bff;
 }
 
 .category-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f3f4f6;
 }
 
 .category-tag {
-  background: #dbeafe;
-  color: #1e40af;
-  padding: 6px 12px;
-  border-radius: 20px;
+  background: #e9ecef;
+  color: #495057;
+  padding: 4px 8px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
 }
 
 .status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 4px 8px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
 }
 
 .status-active {
-  background: #dcfce7;
-  color: #166534;
+  background: #d4edda;
+  color: #155724;
 }
 
 .status-inactive {
-  background: #fef2f2;
-  color: #dc2626;
+  background: #f8d7da;
+  color: #721c24;
 }
 
-/* Responsive */
+.description {
+  margin: 0;
+  color: #333;
+  line-height: 1.5;
+}
+
 @media (max-width: 768px) {
   .discount-detail-container {
-    margin: 10px;
+    padding: 10px;
   }
 
-  .header-content {
+  .header {
     flex-direction: column;
-    gap: 16px;
-    text-align: center;
+    gap: 15px;
   }
 
   .header-actions {
@@ -614,13 +512,8 @@ function toggleCategory(categoryId) {
     justify-content: center;
   }
 
-  .content {
-    padding: 20px;
-  }
-
   .info-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
   }
 
   .category-list {

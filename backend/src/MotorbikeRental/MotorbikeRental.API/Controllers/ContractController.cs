@@ -47,8 +47,8 @@ namespace MotorbikeRental.API.Controllers
             };
             return Ok(response);
         }
-        [HttpPost("CompleteContractAfterReturn")]
-        public async Task<IActionResult> CompleteContractAfterReturn([FromBody] int contractId, CancellationToken cancellation = default)
+        [HttpPost("CancelContractByCustomer")]
+        public async Task<IActionResult> CancelContractByCustomer([FromBody] int contractId, CancellationToken cancellation = default)
         {
             await contractService.CancelContractByCustomer(contractId, cancellation);
             var response = new ResponseDto

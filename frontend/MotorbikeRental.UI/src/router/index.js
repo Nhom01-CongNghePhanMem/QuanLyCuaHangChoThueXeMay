@@ -143,6 +143,24 @@ const router = createRouter({
           component: () => import('@/views/Receptionist/Motorbikes/DetailMotorbike.vue'),
           meta: { requiresAuth: true, roles: ['Receptionist'] },
         },
+        {
+          path: 'contracts',
+          name: 'ReceptionistListContract',
+          component: () => import('@/views/Receptionist/Contract/ReceptionistListContract.vue'),
+          meta: { requiresAuth: true, roles: ['Receptionist'] },
+        },
+        {
+          path: 'contract/create/:customerId?',
+          name: 'ReceptionistCreateContract',
+          component: () => import('@/views/Receptionist/Contract/ReceptionistCreateContract.vue'),
+          meta: { requiresAuth: true, roles: ['Receptionist'] },
+        },
+        {
+          path: 'contract/select-motorbike',
+          name: 'ReceptionistSelectMotorbike',
+          component: () => import('@/views/Receptionist/Contract/ReceptionistSelectMotorbike.vue'),
+          meta: { requiresAuth: true, roles: ['Receptionist'] },
+        }
       ]
     },
     {

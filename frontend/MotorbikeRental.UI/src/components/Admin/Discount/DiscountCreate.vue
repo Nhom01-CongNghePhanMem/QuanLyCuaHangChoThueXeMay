@@ -15,7 +15,6 @@ const props = defineProps({
 
 const emit = defineEmits(['submit', 'back'])
 
-// Form data
 const form = reactive({
   name: '',
   categoryId: [],
@@ -26,7 +25,6 @@ const form = reactive({
   isActive: true
 })
 
-// Form validation
 const errors = ref({})
 
 function validateForm() {
@@ -104,66 +102,34 @@ function toggleCategory(categoryId) {
   <div class="discount-create-container">
     <!-- Header -->
     <div class="header">
-      <div class="header-content">
-        <h1 class="title">Tạo mã giảm giá mới</h1>
-        <button class="btn-back" @click="handleBack">
-          ← Quay lại
-        </button>
-      </div>
+      <h1>Tạo mã giảm giá mới</h1>
+      <button @click="handleBack" class="btn-back">
+        ← Quay lại
+      </button>
     </div>
 
     <!-- Form -->
     <div class="form-container">
       <form @submit.prevent="handleSubmit" class="form">
-        <div class="form-grid">
-          <!-- Name -->
-          <div class="form-group full-width">
-            <label class="form-label">
-              Tên mã giảm giá <span class="required">*</span>
-            </label>
+        <div class="form-section">
+          <h2>Thông tin cơ bản</h2>
+          
+          <div class="form-group">
+            <label>Tên mã giảm giá *</label>
             <input
               v-model="form.name"
               type="text"
-              class="form-input"
               :class="{ 'error': errors.name }"
               placeholder="Nhập tên mã giảm giá"
             />
             <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
           </div>
 
-          <!-- Categories -->
-          <div class="form-group full-width">
-            <label class="form-label">
-              Loại xe áp dụng <span class="required">*</span>
-            </label>
-            <div class="category-list">
-              <div
-                v-for="category in categories"
-                :key="category.categoryId"
-                class="category-item"
-                :class="{ 'selected': form.categoryId.includes(category.categoryId) }"
-                @click="toggleCategory(category.categoryId)"
-              >
-                <input
-                  type="checkbox"
-                  :checked="form.categoryId.includes(category.categoryId)"
-                  @change="toggleCategory(category.categoryId)"
-                />
-                <span class="category-name">{{ category.categoryName }}</span>
-              </div>
-            </div>
-            <span v-if="errors.categoryId" class="error-message">{{ errors.categoryId }}</span>
-          </div>
-
-          <!-- Value -->
           <div class="form-group">
-            <label class="form-label">
-              Giá trị giảm giá (%) <span class="required">*</span>
-            </label>
+            <label>Giá trị giảm giá (%) *</label>
             <input
               v-model="form.value"
               type="number"
-              class="form-input"
               :class="{ 'error': errors.value }"
               placeholder="Nhập % giảm giá"
               min="1"
@@ -172,49 +138,69 @@ function toggleCategory(categoryId) {
             <span v-if="errors.value" class="error-message">{{ errors.value }}</span>
           </div>
 
-          <!-- Status -->
           <div class="form-group">
-            <label class="form-label">Trạng thái</label>
-            <select v-model="form.isActive" class="form-select">
+            <label>Trạng thái</label>
+            <select v-model="form.isActive">
               <option :value="true">Hoạt động</option>
               <option :value="false">Không hoạt động</option>
             </select>
           </div>
+        </div>
 
-          <!-- Start Date -->
-          <div class="form-group">
-            <label class="form-label">
-              Ngày bắt đầu <span class="required">*</span>
-            </label>
-            <input
-              v-model="form.startDate"
-              type="date"
-              class="form-input"
-              :class="{ 'error': errors.startDate }"
-            />
-            <span v-if="errors.startDate" class="error-message">{{ errors.startDate }}</span>
+        <div class="form-section">
+          <h2>Thời gian áp dụng</h2>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ngày bắt đầu *</label>
+              <input
+                v-model="form.startDate"
+                type="date"
+                :class="{ 'error': errors.startDate }"
+              />
+              <span v-if="errors.startDate" class="error-message">{{ errors.startDate }}</span>
+            </div>
+
+            <div class="form-group">
+              <label>Ngày kết thúc *</label>
+              <input
+                v-model="form.endDate"
+                type="date"
+                :class="{ 'error': errors.endDate }"
+              />
+              <span v-if="errors.endDate" class="error-message">{{ errors.endDate }}</span>
+            </div>
           </div>
+        </div>
 
-          <!-- End Date -->
-          <div class="form-group">
-            <label class="form-label">
-              Ngày kết thúc <span class="required">*</span>
-            </label>
-            <input
-              v-model="form.endDate"
-              type="date"
-              class="form-input"
-              :class="{ 'error': errors.endDate }"
-            />
-            <span v-if="errors.endDate" class="error-message">{{ errors.endDate }}</span>
+        <div class="form-section">
+          <h2>Loại xe áp dụng</h2>
+          
+          <div class="category-grid">
+            <div
+              v-for="category in categories"
+              :key="category.categoryId"
+              class="category-item"
+              :class="{ 'selected': form.categoryId.includes(category.categoryId) }"
+              @click="toggleCategory(category.categoryId)"
+            >
+              <input
+                type="checkbox"
+                :checked="form.categoryId.includes(category.categoryId)"
+                @change="toggleCategory(category.categoryId)"
+              />
+              <span>{{ category.categoryName }}</span>
+            </div>
           </div>
+          <span v-if="errors.categoryId" class="error-message">{{ errors.categoryId }}</span>
+        </div>
 
-          <!-- Description -->
-          <div class="form-group full-width">
-            <label class="form-label">Mô tả</label>
+        <div class="form-section">
+          <h2>Mô tả</h2>
+          
+          <div class="form-group">
             <textarea
               v-model="form.description"
-              class="form-textarea"
               placeholder="Nhập mô tả mã giảm giá (không bắt buộc)"
               rows="3"
             ></textarea>
@@ -226,18 +212,17 @@ function toggleCategory(categoryId) {
           <button
             type="button"
             @click="resetForm"
-            class="btn btn-secondary"
+            class="btn-secondary"
             :disabled="isLoading"
           >
             Làm mới
           </button>
           <button
             type="submit"
-            class="btn btn-primary"
+            class="btn-primary"
             :disabled="isLoading"
           >
-            <span v-if="isLoading">Đang tạo...</span>
-            <span v-else>Tạo mã giảm giá</span>
+            {{ isLoading ? 'Đang tạo...' : 'Tạo mã giảm giá' }}
           </button>
         </div>
       </form>
@@ -247,62 +232,67 @@ function toggleCategory(categoryId) {
 
 <style scoped>
 .discount-create-container {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  overflow: hidden;
+  padding: 20px;
 }
 
-/* Header */
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 24px 32px;
-}
-
-.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: 700;
+.header h1 {
   margin: 0;
+  font-size: 24px;
+  color: #333;
 }
 
 .btn-back {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #6c757d;
   color: white;
+  border: none;
   padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 14px;
 }
 
 .btn-back:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #5a6268;
 }
 
-/* Form */
 .form-container {
-  padding: 32px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
 }
 
-.form {
-  max-width: 800px;
-  margin: 0 auto;
+.form-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
 }
 
-.form-grid {
+.form-section:last-child {
+  border-bottom: none;
+}
+
+.form-section h2 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 20px;
 }
 
 .form-group {
@@ -311,164 +301,133 @@ function toggleCategory(categoryId) {
   gap: 8px;
 }
 
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.form-label {
+.form-group label {
   font-size: 14px;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 500;
+  color: #333;
 }
 
-.required {
-  color: #ef4444;
-}
-
-.form-input,
-.form-select,
-.form-textarea {
-  padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-size: 14px;
-  transition: all 0.2s;
 }
 
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #007bff;
 }
 
-.form-input.error,
-.form-select.error,
-.form-textarea.error {
-  border-color: #ef4444;
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #dc3545;
 }
 
-.form-textarea {
+.form-group textarea {
   resize: vertical;
   min-height: 80px;
 }
 
 .error-message {
   font-size: 12px;
-  color: #ef4444;
+  color: #dc3545;
 }
 
-/* Categories */
-.category-list {
+.category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 8px;
+  gap: 10px;
 }
 
 .category-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .category-item:hover {
-  border-color: #667eea;
-  background: #f8fafc;
+  background: #f8f9fa;
+  border-color: #007bff;
 }
 
 .category-item.selected {
-  border-color: #667eea;
-  background: #f0f4ff;
+  border-color: #007bff;
+  background: #e3f2fd;
 }
 
-.category-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-}
-
-/* Actions */
 .form-actions {
   display: flex;
   justify-content: center;
   gap: 16px;
-  padding-top: 24px;
-  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 
-.btn {
-  padding: 12px 24px;
+.btn-primary,
+.btn-secondary {
+  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
   min-width: 120px;
 }
 
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .btn-primary {
-  background: #667eea;
+  background: #007bff;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #5a67d8;
+  background: #0056b3;
 }
 
 .btn-secondary {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  background: #6c757d;
+  color: white;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #e5e7eb;
+  background: #5a6268;
 }
 
-/* Responsive */
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .discount-create-container {
-    margin: 10px;
+    padding: 10px;
   }
 
-  .header-content {
+  .header {
     flex-direction: column;
     gap: 16px;
-    text-align: center;
   }
 
-  .form-container {
-    padding: 20px;
-  }
-
-  .form-grid {
+  .form-row {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 
-  .category-list {
+  .category-grid {
     grid-template-columns: 1fr;
   }
 
   .form-actions {
     flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
   }
 }
 </style>

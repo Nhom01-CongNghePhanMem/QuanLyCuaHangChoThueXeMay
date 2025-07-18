@@ -24,7 +24,7 @@ const temp = ref({
   userName: props.userCredentials.userName,
   email: props.userCredentials.email,
   phoneNumber: props.userCredentials.phoneNumber,
-  newPassword: '',
+  password: '',
   confirmPassword: '',
   roleId: props.userCredentials.roleId,
 })
@@ -44,7 +44,6 @@ function cancelEdit(field) {
   temp.value[field] = props.userCredentials[field] || ''
   if (field === 'password') {
     temp.value.password = ''
-    temp.value.newPassword = ''
     temp.value.confirmPassword = ''
   }
   if (field === 'role') {
@@ -88,7 +87,6 @@ function savePassword() {
   })
   editing.value.password = false
   temp.value.password = ''
-  temp.value.newPassword = ''
   temp.value.confirmPassword = ''
 }
 
@@ -100,10 +98,12 @@ function saveRole() {
 
 <template>
   <div class="edit-user-container">
+    <!-- Header -->
     <div class="header">
-      <h2>Chỉnh sửa tài khoản nhân viên</h2>
+      <h1>Chỉnh sửa tài khoản nhân viên</h1>
     </div>
     
+    <!-- Form -->
     <div class="form-container">
       <!-- UserName -->
       <div class="form-group">
@@ -250,8 +250,9 @@ function saveRole() {
       </div>
     </div>
 
+    <!-- Danger Zone -->
     <div class="danger-zone">
-      <h3>Vùng nguy hiểm</h3>
+      <h2>Vùng nguy hiểm</h2>
       <p>Xóa tài khoản này sẽ không thể hoàn tác</p>
       <button @click="deleteUser" class="btn btn-danger">Xóa tài khoản</button>
     </div>
@@ -260,49 +261,48 @@ function saveRole() {
 
 <style scoped>
 .edit-user-container {
-  max-width: 800px;
-  margin: 0 auto;
   padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
-.header h2 {
-  color: #1f2937;
-  font-size: 24px;
-  font-weight: 600;
+.header h1 {
   margin: 0;
+  font-size: 24px;
+  color: #333;
 }
 
 .form-container {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
 .form-label {
   display: block;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
   font-size: 14px;
 }
 
 .form-field {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 12px;
 }
 
 .view-mode {
@@ -312,131 +312,116 @@ function saveRole() {
 }
 
 .field-value {
-  font-size: 16px;
-  color: #1f2937;
+  font-size: 14px;
+  color: #333;
   font-weight: 500;
 }
 
 .edit-mode {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 .password-inputs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .form-input {
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-size: 14px;
-  transition: border-color 0.2s;
   width: 100%;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-select.form-input {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-  background-position: right 0.5rem center;
-  background-repeat: no-repeat;
-  background-size: 1.5em 1.5em;
-  padding-right: 2.5rem;
+  border-color: #007bff;
 }
 
 .button-group {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .btn {
-  padding: 8px 16px;
+  padding: 6px 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .btn-edit {
-  background: #3b82f6;
+  background: #007bff;
   color: white;
 }
 
 .btn-edit:hover {
-  background: #2563eb;
+  background: #0056b3;
 }
 
 .btn-save {
-  background: #10b981;
+  background: #28a745;
   color: white;
 }
 
 .btn-save:hover {
-  background: #059669;
+  background: #218838;
 }
 
 .btn-cancel {
-  background: #6b7280;
+  background: #6c757d;
   color: white;
 }
 
 .btn-cancel:hover {
-  background: #4b5563;
+  background: #5a6268;
 }
 
 .danger-zone {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
   padding: 20px;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
   text-align: center;
 }
 
-.danger-zone h3 {
-  color: #dc2626;
-  margin: 0 0 10px 0;
+.danger-zone h2 {
+  margin: 0 0 8px 0;
+  color: #dc3545;
   font-size: 18px;
 }
 
 .danger-zone p {
-  color: #6b7280;
-  margin: 0 0 15px 0;
+  margin: 0 0 12px 0;
+  color: #666;
   font-size: 14px;
 }
 
 .btn-danger {
-  background: #dc2626;
+  background: #dc3545;
   color: white;
-  padding: 10px 20px;
+  padding: 8px 16px;
   font-size: 14px;
-  font-weight: 600;
 }
 
 .btn-danger:hover {
-  background: #b91c1c;
+  background: #c82333;
 }
 
 @media (max-width: 768px) {
   .edit-user-container {
-    margin: 10px;
-    padding: 15px;
+    padding: 10px;
   }
   
   .view-mode {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
   }
   
   .button-group {

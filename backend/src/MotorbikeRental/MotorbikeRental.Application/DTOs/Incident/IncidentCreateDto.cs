@@ -23,8 +23,6 @@ namespace MotorbikeRental.Application.DTOs.Incident
         public DateTime? ResolvedDate { get; set; } // Ngày giải quyết (nếu đã giải quyết)
         [Range(1, int.MaxValue, ErrorMessage = "ReportedByEmployeeId must be a positive integer.")]
         public int? ReportedByEmployeeId { get; set; } // Nhân viên báo cáo sự cố
-        [MaxLength(1000, ErrorMessage = "Notes cannot exceed 1000 characters.")]
-        public string? Notes { get; set; } // Ghi chú bổ sung
         public List<IFormFile>? Images { get; set; } // Danh sách hình ảnh liên quan đến sự cố
     }
 }

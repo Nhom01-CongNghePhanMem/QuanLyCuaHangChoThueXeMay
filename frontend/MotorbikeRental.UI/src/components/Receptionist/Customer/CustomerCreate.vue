@@ -50,7 +50,6 @@ function handleSubmit() {
     isSubmitting.value = true
     emit('submit', { ...form })
     
-    // Reset submitting state after a delay
     setTimeout(() => {
         isSubmitting.value = false
     }, 1000)
@@ -72,8 +71,8 @@ function resetForm() {
     <div class="create-customer-container">
         <!-- Header -->
         <div class="form-header">
-            <h1 class="form-title">Tạo khách hàng mới</h1>
-            <p class="form-subtitle">Nhập thông tin khách hàng để tạo tài khoản mới</p>
+            <h1>Tạo khách hàng mới</h1>
+            <p>Nhập thông tin khách hàng để tạo tài khoản mới</p>
         </div>
 
         <!-- Form -->
@@ -176,8 +175,7 @@ function resetForm() {
                         class="btn btn-primary"
                         :disabled="isSubmitting"
                     >
-                        <span v-if="isSubmitting">Đang tạo...</span>
-                        <span v-else>Tạo khách hàng</span>
+                        {{ isSubmitting ? 'Đang tạo...' : 'Tạo khách hàng' }}
                     </button>
                 </div>
             </form>
@@ -188,45 +186,46 @@ function resetForm() {
 <style scoped>
 .create-customer-container {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    border: 1px solid #ddd;
     margin: 20px;
     overflow: hidden;
 }
 
 .form-header {
-    padding: 32px 32px 24px 32px;
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    color: white;
+    padding: 20px 24px;
+    background: white;
+    border-bottom: 1px solid #eee;
     text-align: center;
 }
 
-.form-title {
-    font-size: 28px;
-    font-weight: 700;
+.form-header h1 {
+    font-size: 24px;
+    font-weight: 600;
     margin: 0 0 8px 0;
+    color: #333;
 }
 
-.form-subtitle {
-    font-size: 16px;
+.form-header p {
+    font-size: 14px;
     margin: 0;
-    opacity: 0.9;
+    color: #666;
 }
 
 .form-content {
-    padding: 32px;
+    padding: 24px;
 }
 
 .customer-form {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 32px;
+    gap: 20px;
+    margin-bottom: 24px;
 }
 
 .form-group {
@@ -241,57 +240,52 @@ function resetForm() {
 
 .form-label {
     font-size: 14px;
-    font-weight: 600;
-    color: #374151;
+    font-weight: 500;
+    color: #333;
 }
 
 .required {
-    color: #ef4444;
+    color: #dc3545;
 }
 
 .form-input,
 .form-select {
-    padding: 12px 16px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.2s;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .form-input:focus,
 .form-select:focus {
     outline: none;
-    border-color: #22c55e;
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    border-color: #007bff;
 }
 
 .form-input.error {
-    border-color: #ef4444;
+    border-color: #dc3545;
 }
 
 .error-message {
     font-size: 12px;
-    color: #ef4444;
-    margin-top: 4px;
+    color: #dc3545;
 }
 
 .form-actions {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    padding-top: 24px;
-    border-top: 1px solid #e5e7eb;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
 }
 
 .btn {
-    padding: 12px 24px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 4px;
+    font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s;
-    min-width: 140px;
+    min-width: 120px;
 }
 
 .btn:disabled {
@@ -300,23 +294,21 @@ function resetForm() {
 }
 
 .btn-primary {
-    background: #22c55e;
+    background: #007bff;
     color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #16a34a;
-    transform: translateY(-1px);
+    background: #0056b3;
 }
 
 .btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
+    background: #6c757d;
+    color: white;
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: #e5e7eb;
+    background: #5a6268;
 }
 
 @media (max-width: 768px) {
@@ -324,25 +316,12 @@ function resetForm() {
         margin: 10px;
     }
 
-    .form-header {
-        padding: 24px 20px;
-    }
-
-    .form-content {
-        padding: 24px 20px;
-    }
-
     .form-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
     }
 
     .form-actions {
         flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
     }
 }
 </style>

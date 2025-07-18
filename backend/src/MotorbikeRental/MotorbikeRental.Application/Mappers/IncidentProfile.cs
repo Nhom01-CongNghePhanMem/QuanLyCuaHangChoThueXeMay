@@ -25,6 +25,9 @@ namespace MotorbikeRental.Application.Mappers
                 opt => opt.MapFrom(src => src.ResolvedDate.HasValue ? true : false))
                 .ForMember(dest => dest.Images,
                 opt => opt.Ignore());
+            CreateMap<Incident, IncidentListDto>()
+                .ForMember(dest => dest.Images,
+                opt => opt.MapFrom(src => src.Images));
         }
     }
 }

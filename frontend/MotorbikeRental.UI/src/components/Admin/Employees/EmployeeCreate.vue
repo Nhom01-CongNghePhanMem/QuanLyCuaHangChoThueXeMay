@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import defaultAvatar from '@/assets/image.png'
 
 const props = defineProps({
   form: { type: Object, required: true },
@@ -61,27 +60,27 @@ const statusOptions = {
 </script>
 
 <template>
-  <div class="employee-create-page">
-    <div class="page-header">
-      <div class="header-content">
-        <div class="breadcrumb">
-          <span class="breadcrumb-item" @click="router.push('/admin/employees')">Quản lý nhân viên</span>
-          <i class="breadcrumb-separator">❯</i>
-          <span class="breadcrumb-current">Thêm nhân viên mới</span>
-        </div>
-        <h1 class="page-title">
-          <i class="title-icon">👤</i>
-          Thêm nhân viên mới
-        </h1>
-        <p class="page-subtitle">Điền thông tin chi tiết để tạo nhân viên mới</p>
+  <div class="employee-create-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="breadcrumb">
+        <span class="breadcrumb-item" @click="router.push('/admin/employees')">
+          Quản lý nhân viên
+        </span>
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-current">Thêm nhân viên mới</span>
       </div>
+      <h1>Thêm nhân viên mới</h1>
+      <p>Điền thông tin chi tiết để tạo nhân viên mới</p>
     </div>
 
+    <!-- Form -->
     <div class="form-container">
       <form class="employee-form" @submit.prevent="onSubmit">
         <!-- Avatar Section -->
         <div class="avatar-section">
-          <div class="avatar-wrapper">
+          <h2>Ảnh đại diện</h2>
+          <div class="avatar-content">
             <div class="avatar-preview">
               <img
                 v-if="previewImage"
@@ -96,13 +95,11 @@ const statusOptions = {
                 class="avatar-img"
               />
               <div v-else class="avatar-placeholder">
-                <i class="avatar-icon">📷</i>
-                <span>Chọn ảnh</span>
+                <span>Chưa có ảnh</span>
               </div>
             </div>
-            <div class="avatar-controls">
+            <div class="avatar-actions">
               <button type="button" class="btn btn-upload" @click="triggerFileInput">
-                <i class="btn-icon">📁</i>
                 Chọn ảnh
               </button>
               <button 
@@ -111,8 +108,7 @@ const statusOptions = {
                 class="btn btn-remove" 
                 @click="removeImage"
               >
-                <i class="btn-icon">🗑️</i>
-                Xóa
+                Xóa ảnh
               </button>
             </div>
             <input 
@@ -126,124 +122,100 @@ const statusOptions = {
           </div>
         </div>
 
-        <!-- Form Fields -->
-        <div class="form-content">
-          <div class="form-section">
-            <h3 class="section-title">
-              <i class="section-icon">📋</i>
-              Thông tin cá nhân
-            </h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">👤</i>
-                  Họ và tên
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  v-model="form.FullName" 
-                  type="text" 
-                  class="form-input"
-                  placeholder="Nhập họ và tên đầy đủ"
-                  required 
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">🎂</i>
-                  Ngày sinh
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  v-model="form.DateOfBirth" 
-                  type="date" 
-                  class="form-input"
-                  required 
-                />
-              </div>
-
-              <div class="form-group full-width">
-                <label class="form-label">
-                  <i class="label-icon">📍</i>
-                  Địa chỉ
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  v-model="form.Address" 
-                  type="text" 
-                  class="form-input"
-                  placeholder="Nhập địa chỉ đầy đủ"
-                  required 
-                />
-              </div>
+        <!-- Personal Info -->
+        <div class="form-section">
+          <h2>Thông tin cá nhân</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                Họ và tên <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.FullName" 
+                type="text" 
+                class="form-input"
+                placeholder="Nhập họ và tên đầy đủ"
+                required 
+              />
             </div>
-          </div>
 
-          <div class="form-section">
-            <h3 class="section-title">
-              <i class="section-icon">💼</i>
-              Thông tin công việc
-            </h3>
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📅</i>
-                  Ngày vào làm
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  v-model="form.StartDate" 
-                  type="date" 
-                  class="form-input"
-                  required 
-                />
-              </div>
+            <div class="form-group">
+              <label class="form-label">
+                Ngày sinh <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.DateOfBirth" 
+                type="date" 
+                class="form-input"
+                required 
+              />
+            </div>
 
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">💰</i>
-                  Lương (VNĐ)
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  v-model="form.Salary" 
-                  type="number" 
-                  min="0" 
-                  step="100000"
-                  class="form-input"
-                  placeholder="0"
-                  required 
-                />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
-                  <i class="label-icon">📊</i>
-                  Trạng thái
-                  <span class="required">*</span>
-                </label>
-                <div class="select-wrapper">
-                  <select v-model="form.Status" class="form-select" required>
-                    <option v-for="(label, code) in statusOptions" :key="code" :value="code">
-                      {{ label }}
-                    </option>
-                  </select>
-                  <i class="select-arrow">⌄</i>
-                </div>
-              </div>
+            <div class="form-group full-width">
+              <label class="form-label">
+                Địa chỉ <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.Address" 
+                type="text" 
+                class="form-input"
+                placeholder="Nhập địa chỉ đầy đủ"
+                required 
+              />
             </div>
           </div>
         </div>
 
-        <!-- Form Actions -->
+        <!-- Work Info -->
+        <div class="form-section">
+          <h2>Thông tin công việc</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                Ngày vào làm <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.StartDate" 
+                type="date" 
+                class="form-input"
+                required 
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Lương (VNĐ) <span class="required">*</span>
+              </label>
+              <input 
+                v-model="form.Salary" 
+                type="number" 
+                min="0" 
+                step="100000"
+                class="form-input"
+                placeholder="0"
+                required 
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Trạng thái <span class="required">*</span>
+              </label>
+              <select v-model="form.Status" class="form-select" required>
+                <option v-for="(label, code) in statusOptions" :key="code" :value="code">
+                  {{ label }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" @click="onCancel">
-            <i class="btn-icon">❌</i>
             Hủy bỏ
           </button>
           <button type="submit" class="btn btn-primary" :disabled="isLoading">
-            <i class="btn-icon">{{ isLoading ? '⏳' : '💾' }}</i>
             {{ isLoading ? 'Đang lưu...' : 'Lưu nhân viên' }}
           </button>
         </div>
@@ -253,72 +225,55 @@ const statusOptions = {
 </template>
 
 <style scoped>
-.employee-create-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  padding: 2rem;
+.employee-create-container {
+  padding: 20px;
 }
 
-/* Page Header */
-.page-header {
-  margin-bottom: 2rem;
-}
-
-.header-content {
+.header {
+  margin-bottom: 20px;
+  padding: 20px;
   background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
 }
 
 .breadcrumb-item {
-  color: #6366f1;
+  color: #007bff;
   cursor: pointer;
-  transition: color 0.2s ease;
 }
 
 .breadcrumb-item:hover {
-  color: #4f46e5;
+  text-decoration: underline;
 }
 
 .breadcrumb-separator {
-  color: #9ca3af;
-  font-size: 0.75rem;
+  color: #666;
 }
 
 .breadcrumb-current {
-  color: #6b7280;
+  color: #666;
 }
 
-.page-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
+.header h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #333;
 }
 
-.title-icon {
-  font-size: 2.5rem;
-}
-
-.page-subtitle {
-  color: #64748b;
-  font-size: 1.125rem;
+.header p {
   margin: 0;
+  color: #666;
+  font-size: 14px;
 }
 
-/* Form Container */
 .form-container {
   max-width: 800px;
   margin: 0 auto;
@@ -326,124 +281,103 @@ const statusOptions = {
 
 .employee-form {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  border: 1px solid #ddd;
   overflow: hidden;
 }
 
-/* Avatar Section */
-.avatar-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
-  text-align: center;
+.avatar-section,
+.form-section {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
 }
 
-.avatar-wrapper {
-  display: inline-block;
+.avatar-section:last-child,
+.form-section:last-child {
+  border-bottom: none;
+}
+
+.avatar-section h2,
+.form-section h2 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.avatar-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .avatar-preview {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 1rem;
-  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background: #f8f9fa;
 }
 
 .avatar-img {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
-  border: 4px solid white;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .avatar-placeholder {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px dashed rgba(255, 255, 255, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 0.875rem;
+  color: #666;
+  font-size: 12px;
 }
 
-.avatar-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.avatar-controls {
+.avatar-actions {
   display: flex;
-  gap: 0.75rem;
-  justify-content: center;
+  gap: 10px;
 }
 
 .btn-upload {
-  background: rgba(255, 255, 255, 0.2);
+  background: #007bff;
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .btn-upload:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: #0056b3;
 }
 
 .btn-remove {
-  background: rgba(239, 68, 68, 0.2);
+  background: #dc3545;
   color: white;
-  border: 2px solid rgba(239, 68, 68, 0.3);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .btn-remove:hover {
-  background: rgba(239, 68, 68, 0.3);
-  border-color: rgba(239, 68, 68, 0.5);
-}
-
-/* Form Content */
-.form-content {
-  padding: 2rem;
-}
-
-.form-section {
-  margin-bottom: 2rem;
-}
-
-.form-section:last-child {
-  margin-bottom: 0;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f3f4f6;
-}
-
-.section-icon {
-  font-size: 1.5rem;
+  background: #c82333;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 16px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .form-group.full-width {
@@ -451,134 +385,73 @@ const statusOptions = {
 }
 
 .form-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
-}
-
-.label-icon {
-  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
 }
 
 .required {
-  color: #ef4444;
-  font-weight: 700;
+  color: #dc3545;
 }
 
-.form-input {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  background: #fafafa;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.select-wrapper {
-  position: relative;
-}
-
+.form-input,
 .form-select {
-  width: 100%;
-  padding: 0.875rem 2.5rem 0.875rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 0.875rem;
-  background: #fafafa;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  appearance: none;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
+.form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #007bff;
 }
 
-.select-arrow {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  pointer-events: none;
-  font-size: 1.25rem;
-}
-
-/* Form Actions */
 .form-actions {
-  background: #f8fafc;
-  padding: 1.5rem 2rem;
+  background: #f8f9fa;
+  padding: 20px;
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  border-top: 1px solid #e2e8f0;
+  gap: 16px;
+  border-top: 1px solid #eee;
 }
 
-/* Buttons */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.875rem;
+  padding: 8px 16px;
   border: none;
+  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.btn-icon {
-  font-size: 1rem;
+  font-weight: 500;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: #007bff;
   color: white;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  background: #0056b3;
 }
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
 }
 
 .btn-secondary {
-  background: white;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
+  background: #6c757d;
+  color: white;
 }
 
 .btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
+  background: #5a6268;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .employee-create-page {
-    padding: 1rem;
+  .employee-create-container {
+    padding: 10px;
   }
   
   .form-grid {
@@ -593,8 +466,14 @@ const statusOptions = {
     flex-direction: column-reverse;
   }
   
-  .avatar-controls {
+  .avatar-content {
     flex-direction: column;
+    align-items: center;
+  }
+  
+  .avatar-actions {
+    flex-direction: column;
+    width: 100%;
   }
 }
 </style>

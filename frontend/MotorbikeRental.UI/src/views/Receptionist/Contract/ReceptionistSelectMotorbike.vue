@@ -2,7 +2,8 @@
 import ReceptionistLayout from '@/views/layouts/Receptionist/ReceptionistLayout.vue'
 import { ref, onMounted } from 'vue'
 import { motorbikeService } from '@/api/services/motorbikeService'
-import MotorbikeTable from '../../../components/Receptionist/Motorbikes/MotorbikeTable.vue';
+import MotorbikeTable from '@/components/Receptionist/Motorbikes/MotorbikeTable.vue'
+
 
 const query = ref({
   CategoryId: '',
